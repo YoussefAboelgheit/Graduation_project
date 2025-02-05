@@ -1,0 +1,292 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\DELL\\Documents\\test1.0\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\a_transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\a_transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\appli_job_adv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\appli_job_adv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\c_sub_taction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\c_sub_taction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\applicant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\applicant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\c_subscraption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\c_subscraption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\c_transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\c_transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\subscraption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\subscraption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\job_adv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\job_adv.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\a_subscrabtion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\a_subscrabtion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\a_sub_taction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\a_sub_taction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|c:\\users\\dell\\documents\\test1.0\\test1.0\\model\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0DBEC84D-2FE8-4C80-A8FA-BFB34A8C5501}|test1.0\\test1.0.csproj|solutionrelative:test1.0\\model\\transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Subscraption.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Subscraption.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\Subscraption.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Subscraption.cs",
+              "RelativeToolTip": "test1.0\\model\\Subscraption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:43:18.723Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Transaction.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\Transaction.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Transaction.cs",
+              "RelativeToolTip": "test1.0\\model\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:37:09.392Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\User.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\User.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\User.cs",
+              "RelativeToolTip": "test1.0\\model\\User.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:18:10.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appli_job_adv.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\appli_job_adv.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\appli_job_adv.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\appli_job_adv.cs",
+              "RelativeToolTip": "test1.0\\model\\appli_job_adv.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:17:23.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "C_Sub_Taction.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\C_Sub_Taction.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\C_Sub_Taction.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\C_Sub_Taction.cs",
+              "RelativeToolTip": "test1.0\\model\\C_Sub_Taction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:14:32.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "A_Sub_Taction.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\A_Sub_Taction.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\A_Sub_Taction.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\A_Sub_Taction.cs",
+              "RelativeToolTip": "test1.0\\model\\A_Sub_Taction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T15:10:36.289Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\appsettings.json",
+              "RelativeDocumentMoniker": "test1.0\\appsettings.json",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\appsettings.json",
+              "RelativeToolTip": "test1.0\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-02T14:41:54.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AppDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\AppDBContext.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\AppDBContext.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\AppDBContext.cs",
+              "RelativeToolTip": "test1.0\\model\\AppDBContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:41:48.59Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Admin.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Admin.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\Admin.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Admin.cs",
+              "RelativeToolTip": "test1.0\\model\\Admin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:38:16.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "c_Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\c_Transaction.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\c_Transaction.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\c_Transaction.cs",
+              "RelativeToolTip": "test1.0\\model\\c_Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:37:15.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "c_Subscraption.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\c_Subscraption.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\c_Subscraption.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\c_Subscraption.cs",
+              "RelativeToolTip": "test1.0\\model\\c_Subscraption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:36:50.15Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Company.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Company.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\Company.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Company.cs",
+              "RelativeToolTip": "test1.0\\model\\Company.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAwAkAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:35:54.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "job_Adv.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\job_Adv.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\job_Adv.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\job_Adv.cs",
+              "RelativeToolTip": "test1.0\\model\\job_Adv.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAywBEAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:35:29.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Applicant.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Applicant.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\Applicant.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\Applicant.cs",
+              "RelativeToolTip": "test1.0\\model\\Applicant.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:34:47.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "a_Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\a_Transaction.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\a_Transaction.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\a_Transaction.cs",
+              "RelativeToolTip": "test1.0\\model\\a_Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:34:15.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "a_Subscrabtion.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\a_Subscrabtion.cs",
+              "RelativeDocumentMoniker": "test1.0\\model\\a_Subscrabtion.cs",
+              "ToolTip": "C:\\Users\\DELL\\Documents\\test1.0\\test1.0\\model\\a_Subscrabtion.cs",
+              "RelativeToolTip": "test1.0\\model\\a_Subscrabtion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-02T14:33:29.738Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

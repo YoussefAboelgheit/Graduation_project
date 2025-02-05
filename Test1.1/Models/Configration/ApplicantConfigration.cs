@@ -4,7 +4,7 @@ using test1._0.model;
 
 namespace Test1._1.Models.Configration
 {
-	public class ApplicantConfigration : IEntityTypeConfiguration<Applicant>
+	public class ApplicantConfigration : TransactionConfigration, IEntityTypeConfiguration<Applicant>
 	{
 		public void Configure(EntityTypeBuilder<Applicant> builder)
 		{
@@ -25,23 +25,12 @@ namespace Test1._1.Models.Configration
 				.HasMaxLength(1500)
 				.IsRequired();
 
-			builder.ToTable("Applicant");
+			builder.HasMany(c => c.Job_Advs)
+				.WithMany(x => x.Applicants)
+				.UsingEntity<Appli_Job_Adv>();
+
+			builder.ToTable("Applicants");
 		}
-		public void Configure(EntityTypeBuilder<Transaction> builder)
-		{
 		
-
-			builder.Property(x => x.tran_date)
-				.HasColumnType("DATETIME")
-				.IsRequired();
-
-			builder.Property(x => x.amount)
-				.HasPrecision(15,2)
-				.IsRequired();
-			builder.ToTable("Transactions");
-		}
-
-
-
 	}
 }

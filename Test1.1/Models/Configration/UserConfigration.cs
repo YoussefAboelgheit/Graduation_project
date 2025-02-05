@@ -4,7 +4,7 @@ using test1._0.model;
 
 namespace Test1._1.Models.Configration
 {
-	public class UserConfigration
+	public class UserConfigration : CompanyConfigration
 	{
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
@@ -37,7 +37,7 @@ namespace Test1._1.Models.Configration
 				.HasMaxLength(50)
 				.IsRequired();
 
-			builder.ToTable("User");
+			builder.ToTable("Users");
 		}
 	}
 }

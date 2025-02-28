@@ -1,0 +1,42 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Test1._1.Models.Entity;
+
+namespace Test1._1.Models.Configration
+{
+	public class ApplicantAdvertiseConfigration :IEntityTypeConfiguration<ApplicantAdvertisment>
+	{
+		public void Configure(EntityTypeBuilder<ApplicantAdvertisment> builder)
+		{
+			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Id).UseIdentityColumn();
+
+		
+
+			builder.Property(x => x.Submation_Date)
+				.HasColumnType("DATETIME")
+				.IsRequired();
+
+			builder.Property(x => x.TellAboutYou)
+				.HasColumnType("Varchar")
+				.IsRequired();
+
+			// العلاقة مع Applicant
+			builder.HasOne(x => x.Applicant)
+				   .WithMany(x => x.ApplicantAdvertisments)
+				   .HasForeignKey(x => x.ApplicantId)
+				   .OnDelete(DeleteBehavior.Cascade);  // ✅ Cascade هنا فقط
+
+			// العلاقة مع JobAdvertisment
+			builder.HasOne(x => x.JobAdvertisment)
+				   .WithMany(x => x.ApplicantAdvertisments)
+				   .HasForeignKey(x => x.JobAdvertismentId)
+				   .OnDelete(DeleteBehavior.NoAction);
+
+
+
+			builder.ToTable("ApplicantAdvertisments");
+			
+		}
+	}
+}

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Test1._1.Models;
+using Test1._1.Models.Entity;
 
 namespace Test1._1.Controllers
 {

@@ -1,22 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using test1._0.model;
+using Test1._1.Models.Entity;
 
 namespace Test1._1.Models.Configration
 {
-	public class CompanyConfigration
+	public class CompanyConfigration : IEntityTypeConfiguration<Company>
 	{
 
 		public void Configure(EntityTypeBuilder<Company> builder)
 		{
-
-
-			builder.Property(x => x.Tax_card)
+			builder.Property(x => x.TaxCard)
 				.HasColumnType("VARCHAR")
 				.HasMaxLength(1000)
 				.IsRequired();
 
-			builder.Property(x => x.Commercia_register)
+			builder.Property(x => x.CommercialRegister)
 				.HasColumnType("VARCHAR")
 				.HasMaxLength(1000)
 				.IsRequired();
@@ -26,11 +24,15 @@ namespace Test1._1.Models.Configration
 				.HasMaxLength(1000)
 				.IsRequired();
 
-			builder.Property(x => x.Current_num_employees)
-				.HasMaxLength(10000)
+			builder.Property(x => x.CurrentNumEmployees)
 				.IsRequired();
 
-			builder.ToTable("Companies");
+			builder.HasMany(x => x.JobAdvertisments)
+				   .WithOne(x => x.Company)
+				   .HasForeignKey(x => x.CompanyId)
+				   .IsRequired();
+
+			
 		}
 	}
 }

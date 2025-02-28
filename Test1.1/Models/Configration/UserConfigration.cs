@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using test1._0.model;
+using Test1._1.Models.Entity;
 
 namespace Test1._1.Models.Configration
 {
-	public class UserConfigration : CompanyConfigration
+	public class UserConfigration : IEntityTypeConfiguration<User>
 	{
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
-
+			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Id).UseIdentityColumn();
 
 			builder.Property(x => x.Fname)
 				.HasColumnType("VARCHAR")
@@ -30,14 +31,15 @@ namespace Test1._1.Models.Configration
 				.HasMaxLength(50)
 				.IsRequired();
 
-
-
-			builder.Property(x => x.Email)
+			builder.Property(x => x.HashedPassword)
 				.HasColumnType("VARCHAR")
-				.HasMaxLength(50)
+				.HasMaxLength(60)
 				.IsRequired();
-
+			builder.Property(x => x.IsDeleted)
+				.HasDefaultValue(false);
+			builder.UseTptMappingStrategy();
 			builder.ToTable("Users");
 		}
 	}
 }
+ 

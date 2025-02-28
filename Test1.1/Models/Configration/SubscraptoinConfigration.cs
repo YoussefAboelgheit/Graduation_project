@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using test1._0.model;
+using Test1._1.Models.Entity;
 
 namespace Test1._1.Models.Configration
 {
@@ -10,21 +8,24 @@ namespace Test1._1.Models.Configration
 	{
 		public void Configure(EntityTypeBuilder<Subscraption> builder)
 		{
-			builder.HasKey(x => x.Sub_id);
-			builder.Property(x => x.Sub_id).ValueGeneratedNever();
+			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Id).UseIdentityColumn();
 
-			builder.Property(x => x.Sub_type)
+			builder.Property(x => x.SubType)
 				.HasColumnType("VARCHAR")
 				.HasMaxLength(50)
 				.IsRequired();
 
-			builder.Property(x => x.Num_allowed)
+			builder.Property(x => x.NumAllowed)
 				.HasMaxLength(50)
 				.IsRequired();
+
 			builder.Property(x => x.Price)
-				.HasPrecision(15, 2)
+				.HasPrecision(18, 2)
 				.IsRequired();
 
+			builder.Property("SubscraptionType").HasColumnType("Varchar")
+				.HasMaxLength(3);
 
 			builder.ToTable("Subscraptions");
 		}

@@ -7,6 +7,7 @@
 		public string FiledWork {  get; set; }
 		public string TaxCard { get; set; }
 		public string CommercialRegister { get; set; }
+		public string Description { get; set; }
 		
 		public ICollection<JobAdvertisment> JobAdvertisments { get; set; } = new List<JobAdvertisment>();
 		

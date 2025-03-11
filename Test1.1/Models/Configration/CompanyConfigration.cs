@@ -31,8 +31,11 @@ namespace Test1._1.Models.Configration
 				   .WithOne(x => x.Company)
 				   .HasForeignKey(x => x.CompanyId)
 				   .IsRequired();
+            builder.Property(x => x.Description)
+				.HasColumnType("VARCHAR")
+				.HasMaxLength(1000);
 
-			
-		}
+
+        }
 	}
 }

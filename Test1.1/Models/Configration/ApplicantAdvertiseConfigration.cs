@@ -25,7 +25,7 @@ namespace Test1._1.Models.Configration
 			builder.HasOne(x => x.Applicant)
 				   .WithMany(x => x.ApplicantAdvertisments)
 				   .HasForeignKey(x => x.ApplicantId)
-				   .OnDelete(DeleteBehavior.Cascade);  // ✅ Cascade هنا فقط
+				   .OnDelete(DeleteBehavior.NoAction);  // ✅ NoAction هنا فقط
 
 			// العلاقة مع JobAdvertisment
 			builder.HasOne(x => x.JobAdvertisment)

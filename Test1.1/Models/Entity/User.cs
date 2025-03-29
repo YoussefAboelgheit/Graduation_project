@@ -1,4 +1,6 @@
-﻿namespace Test1._1.Models.Entity
+﻿using System.ComponentModel;
+
+namespace Test1._1.Models.Entity
 {
 	public class User
 	{

@@ -374,7 +374,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantAdvertisments")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
@@ -393,19 +393,19 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantTranactions")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.ApplicantPayment", "ApplicantPayment")
                         .WithMany("ApplicantTransactions")
                         .HasForeignKey("ApplicantPaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.ApplicantSubscrabtion", "ApplicantSubscrabtion")
                         .WithMany("ApplicantTrasactions")
                         .HasForeignKey("ApplicantSubscrabtionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Applicant");
@@ -420,19 +420,19 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Company", "Company")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.CompanyPayment", "CompanyPayment")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanyPaymentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.CompanySubscrabtion", "CompanySubscraption")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanySubscraptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -447,7 +447,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Company", "Company")
                         .WithMany("JobAdvertisments")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -458,7 +458,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Payment", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.ApplicantPayment", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -467,7 +467,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Payment", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.CompanyPayment", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -476,7 +476,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Subscraption", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.ApplicantSubscrabtion", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -485,7 +485,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Subscraption", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.CompanySubscrabtion", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -494,7 +494,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.User", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.Admin", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -503,7 +503,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.User", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.Applicant", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -512,7 +512,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.User", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.Company", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

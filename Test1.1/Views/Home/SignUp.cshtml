@@ -1,0 +1,122 @@
+﻿@model Test1._1.Models.ViewModels.SignUpViewModel
+
+@{
+    ViewData["Title"] = "SignUp";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="~/css/styleSignUp.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="toggle-container">
+            <div class="toggle-button" onclick="toggleCard()">
+                <span id="toggle-text">Applicant</span>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="flip-card" id="flip-card">
+                <div class="flip-card-inner">
+
+                    <div class="flip-card-front">
+                        <h2>Sign Up as Applicant</h2>
+                        <form asp-action="ApplicantSignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            <input asp-for="Applicant.Fname" class="form-control" placeholder="First Name" required />
+                            <span asp-validation-for="Applicant.Fname" class="text-danger"></span>
+
+                            <input asp-for="Applicant.Lname" class="form-control" placeholder="Last Name" required />
+                            <span asp-validation-for="Applicant.Lname" class="text-danger"></span>
+
+                            <input asp-for="Applicant.Email" type="email" class="form-control" placeholder="Email" required />
+                            <span asp-validation-for="Applicant.Email" class="text-danger"></span>
+
+                            <input asp-for="Applicant.Password" type="password" class="form-control" placeholder="Password" required />
+                            <span asp-validation-for="Applicant.Password" class="text-danger"></span>
+
+                            <input asp-for="Applicant.ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" required />
+                            <span asp-validation-for="Applicant.ConfirmPassword" class="text-danger"></span>
+
+                            <input asp-for="Applicant.Phone" class="form-control" placeholder="Phone Number" required />
+                            <span asp-validation-for="Applicant.Phone" class="text-danger"></span>
+
+                            <input asp-for="Applicant.Field_work" class="form-control" placeholder="Field of Work" required />
+                            <span asp-validation-for="Applicant.Field_work" class="text-danger"></span>
+
+                            <label asp-for="Applicant.Years_experience">Years of Experience:</label>
+                            <input asp-for="Applicant.Years_experience"/>
+                            <span asp-validation-for="Applicant.Years_experience" class="text-danger"></span>
+
+                            <label asp-for="Applicant.CVFile">Upload CV (PDF/Image):</label>
+                            <input asp-for="Applicant.CVFile" type="file" accept=".pdf, .jpg, .png" class="form-control" required />
+                            <span asp-validation-for="Applicant.CVFile" class="text-danger"></span>
+
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                    </div>
+
+                    <div class="flip-card-back">
+                        <h2>Sign Up as Company</h2>
+                        <form asp-action="CompanySignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            <input asp-for="Company.Fname" class="form-control" placeholder="First Name" required />
+                            <span asp-validation-for="Company.Fname" class="text-danger"></span>
+
+                            <input asp-for="Company.Lname" class="form-control" placeholder="Last Name" required />
+                            <span asp-validation-for="Company.Lname" class="text-danger"></span>
+
+                            <input asp-for="Company.Email" type="email" class="form-control" placeholder="Email" required />
+                            <span asp-validation-for="Company.Email" class="text-danger"></span>
+
+                            <input asp-for="Company.Password" type="password" class="form-control" placeholder="Password" required />
+                            <span asp-validation-for="Company.Password" class="text-danger"></span>
+
+                            <input asp-for="Company.ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" required />
+                            <span asp-validation-for="Company.ConfirmPassword" class="text-danger"></span>
+
+                            <input asp-for="Company.Phone" class="form-control" placeholder="Phone" required />
+                            <span asp-validation-for="Company.Phone" class="text-danger"></span>
+
+                            <input asp-for="Company.FiledWork" class="form-control" placeholder="Field of Work" required />
+                            <span asp-validation-for="Company.FiledWork" class="text-danger"></span>
+
+                            <label asp-for="Company.Logo">Upload Company Logo:</label>
+                            <input asp-for="Company.Logo" type="file" accept=".jpg, .png" class="form-control" />
+                            <span asp-validation-for="Company.Logo" class="text-danger"></span>
+
+                            <label asp-for="Company.TaxCard">Upload Company TaxCard:</label>
+                            <input asp-for="Company.TaxCard" class="form-control" placeholder="Tax Card" required />
+                            <span asp-validation-for="Company.TaxCard" class="text-danger"></span>
+
+                            <label asp-for="Company.CommercialRegister">Upload Company Commercial Register:</label>
+                            <input asp-for="Company.CommercialRegister" class="form-control" placeholder="Commercial Register" required />
+                            <span asp-validation-for="Company.CommercialRegister" class="text-danger"></span>
+
+                            <textarea asp-for="Company.Description" class="form-control" placeholder="Description" maxlength="1000"></textarea>
+                            <span asp-validation-for="Company.Description" class="text-danger"></span>
+
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/js/indexSignUp.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

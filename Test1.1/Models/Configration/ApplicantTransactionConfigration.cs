@@ -15,19 +15,19 @@ namespace Test1._1.Models.Configration
 			builder.HasOne(x => x.Applicant)
 				   .WithMany(a => a.ApplicantTranactions)
 				   .HasForeignKey(x => x.ApplicantId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 			// العلاقة مع ApplicantSubscrabtion
 			builder.HasOne(x => x.ApplicantSubscrabtion)
 				   .WithMany(s => s.ApplicantTrasactions)
 				   .HasForeignKey(x => x.AppSubscrabtionId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 			// العلاقة مع ApplicantPayment
 			builder.HasOne(x => x.ApplicantPayment)
 				   .WithMany(p => p.ApplicantTransactions)
 				   .HasForeignKey(x => x.AppPaymentId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 		}
 	}

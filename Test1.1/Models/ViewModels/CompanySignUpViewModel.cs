@@ -32,5 +32,9 @@ namespace Test1._1.Models.ViewModels
         public IFormFile CommercialRegister { get; set; }
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
+
+
+
+
     }
 }

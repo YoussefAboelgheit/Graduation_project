@@ -34,8 +34,11 @@ namespace Test1._1.Models.ViewModels
         public int Years_experience { get; set; }
 
         [Required(ErrorMessage = "Commercial register is required")]
-        [RegularExpression(@".*\.(jpg|png|jpeg)$", ErrorMessage = "Only files with the following extensions are allowed: jpg-jpeg-png-pdf")]
+        //[RegularExpression(@".*\.(jpg|png|jpeg)$", ErrorMessage = "Only files with the following extensions are allowed: jpg-jpeg-png-pdf")]
         public IFormFile CVFile { get; set; }
+        
+
+
     }
 
 }

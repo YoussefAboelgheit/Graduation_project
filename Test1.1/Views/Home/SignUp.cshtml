@@ -29,7 +29,10 @@
 
                     <div class="flip-card-front">
                         <h2>Sign Up as Applicant</h2>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <form asp-action="ApplicantSignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
                             <input asp-for="Fname" class="form-control" placeholder="First Name" required />
                             <span asp-validation-for="Fname" class="text-danger"></span>
 
@@ -52,12 +55,12 @@
                             <span asp-validation-for="Field_work" class="text-danger"></span>
 
                             <label asp-for="Years_experience">Years of Experience:</label>
-                            <input asp-for="Years_experience"/>
+                            <input asp-for="Years_experience" type="number" min="0" class="form-control" />
                             <span asp-validation-for="Years_experience" class="text-danger"></span>
 
                             <label asp-for="CVFile">Upload CV (PDF/Image):</label>
-                            <input asp-for="CVFile" type="file" accept=".pdf, .jpg, .png" class="form-control" required />
-                            @* <span asp-validation-for="CVFile" class="text-danger"></span> *@
+                            <input asp-for="CVFile" type="file" accept=".pdf, .jpeg, .jpg, .png" class="form-control" required />
+                            <span asp-validation-for="CVFile" class="text-danger"></span>
 
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
@@ -66,7 +69,10 @@
 
                     <div class="flip-card-back">
                         <h2>Sign Up as Company</h2>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <form asp-action="CompanySignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
                             <input asp-for="Fname" class="form-control" placeholder="First Name" required />
                             <span asp-validation-for="Fname" class="text-danger"></span>
 
@@ -89,15 +95,15 @@
                             <span asp-validation-for="FiledWork" class="text-danger"></span>
 
                             <label asp-for="Logo">Upload Company Logo:</label>
-                            <input asp-for="Logo" type="file" accept=".jpg, .png" class="form-control" />
+                            <input asp-for="Logo" type="file" accept=".jpg, .jpeg, .png" class="form-control" />
                             <span asp-validation-for="Logo" class="text-danger"></span>
 
                             <label asp-for="TaxCard">Upload Company TaxCard:</label>
-                            <input asp-for="TaxCard" class="form-control" placeholder="Tax Card" required />
+                            <input asp-for="TaxCard" type="file" accept=".pdf" class="form-control" required />
                             <span asp-validation-for="TaxCard" class="text-danger"></span>
 
                             <label asp-for="CommercialRegister">Upload Company Commercial Register:</label>
-                            <input asp-for="CommercialRegister" class="form-control" placeholder="Commercial Register" required />
+                            <input asp-for="CommercialRegister" type="file" accept=".pdf" class="form-control" required />
                             <span asp-validation-for="CommercialRegister" class="text-danger"></span>
 
                             <textarea asp-for="Description" class="form-control" placeholder="Description" maxlength="1000"></textarea>

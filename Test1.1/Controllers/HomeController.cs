@@ -32,6 +32,22 @@ namespace Test1._1.Controllers
             return View();
         }
 
+        // Add this method to your HomeController.cs
+
+        [HttpPost]
+        public async Task<IActionResult> CheckEmailExists([FromBody] string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return Json(new { exists = false });
+            }
+
+            // Check if email exists in database
+            bool emailExists = await _context.Users
+                .AnyAsync(u => u.Email.ToLower() == email.ToLower() && !u.IsDeleted);
+
+            return Json(new { exists = emailExists });
+        }
 
 
         [HttpGet]
@@ -80,7 +96,7 @@ namespace Test1._1.Controllers
                 //❌ If any file validation fails, return view with errors
                 if (!ModelState.IsValid)
                 {
-                    return View(model);
+                    return View("SignUp", model);
                 }
 
                 // ✅ Hash password
@@ -134,6 +150,7 @@ namespace Test1._1.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+
             return View("SignUp",model);
         }
 
@@ -147,6 +164,7 @@ namespace Test1._1.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 // cv must be pdf or image
                 bool IsValidCV(IFormFile file)
                 {
@@ -164,7 +182,7 @@ namespace Test1._1.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    return View(model);
+                    return View("SignUp", model);
                 }
 
                 string hashedPassword = HashPassword(model.Password);
@@ -213,7 +231,6 @@ namespace Test1._1.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-
             return View("SignUp", model);
         }
 

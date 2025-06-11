@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Test1._1.Custom_Attributes;
 
 namespace Test1._1.Models.ViewModels
 {
@@ -33,18 +34,25 @@ namespace Test1._1.Models.ViewModels
         [Required(ErrorMessage = "Years Experience of work is required")]
         public int Years_experience { get; set; }
 
-        [Required(ErrorMessage = "Commercial register is required")]
-        [RegularExpression(@".*\.(pdf|jpg|png|jpeg)$", ErrorMessage = "Only files with the following extensions are allowed: jpg-jpeg-png-pdf")]
+        [Required(ErrorMessage = "CVFile is required")]
+        [FileExtension(".pdf", ".jpg", ".jpeg", ".png")]
         public IFormFile CVFile { get; set; }
 
+        [Required(ErrorMessage = "Logo is required")]
+        [FileExtension(".jpg", ".jpeg", ".png")]
         public IFormFile Logo { get; set; }
+
         [Required(ErrorMessage = "Field of work is required")]
         public string FiledWork { get; set; }
+
         [Required(ErrorMessage = "Tax card is required")]
+        [FileExtension(".pdf")]
         public IFormFile TaxCard { get; set; }
+
         [Required(ErrorMessage = "Commercial register is required")]
-        [RegularExpression(@".*\.(jpg|png|jpeg)$", ErrorMessage = "Only files with the following extensions are allowed: jpg-jpeg-png-pdf")]
+        [FileExtension(".pdf")]
         public IFormFile CommercialRegister { get; set; }
+
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
         

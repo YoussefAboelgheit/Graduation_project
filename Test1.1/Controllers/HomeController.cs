@@ -133,16 +133,16 @@ namespace Test1._1.Controllers
                 // ✅ Create new Company object
                 Company company = new Company
                 {
-                    Fname = model.Fname,
-                    Lname = model.Lname,
-                    HashedPassword = hashedPassword,
-                    Phone = model.Phone,
+                    UserName = model.UserName,
+                    PasswordHash = hashedPassword,
+                    PhoneNumber = model.Phone,
                     Email = model.Email,
                     Logo = logoPath,
                     FiledWork = model.FiledWork,
                     TaxCard = taxCardPath,
                     CommercialRegister = commercialRegisterPath,
-                    Description = model.Description
+                    Description = model.Description,
+                    address = model.Address
                 };
 
                 _context.Companies.Add(company);
@@ -180,6 +180,23 @@ namespace Test1._1.Controllers
                     ModelState.AddModelError("CVFile", "CV must be in .pdf, .jpg, .jpeg, or .png format.");
                 }
 
+
+                // ProfileImage must be image
+                bool IsValidProfileImage(IFormFile file)
+                {
+                    if (file == null || file.Length == 0)
+                        return false;
+
+                    string extension = Path.GetExtension(file.FileName);
+                    return Regex.IsMatch(extension, @"\.(jpg|jpeg|png)$", RegexOptions.IgnoreCase);
+                }
+
+                if (!IsValidCV(model.ProfileImage))
+                {
+                    ModelState.AddModelError("ProfileImage", "Profile_image must be in .jpg, .jpeg, or .png format.");
+                }
+
+
                 if (!ModelState.IsValid)
                 {
                     return View("SignUp", model);
@@ -213,17 +230,21 @@ namespace Test1._1.Controllers
                 // ✅ حفظ الـ CV
                 string cvPath = SaveFile(model.CVFile);
 
+                string ProfileImagePath = SaveFile(model.ProfileImage);
+
                 // ✅ إنشاء كائن `Applicant`
                 Applicant applicant = new Applicant
                 {
-                    Fname = model.Fname,
-                    Lname = model.Lname,
-                    HashedPassword = hashedPassword,
-                    Phone = model.Phone,
+                    UserName = model.Fname,
+                    lastName = model.Lname,
+                    PasswordHash = hashedPassword,
+                    PhoneNumber = model.Phone,
                     Email = model.Email,
                     Field_work = model.Field_work,
                     Years_experience = model.Years_experience,
-                    CV = cvPath
+                    address = model.Address,
+                    CV = cvPath,
+                    Profile_image = ProfileImagePath
                 };
 
                 _context.Applicants.Add(applicant);
@@ -262,7 +283,7 @@ namespace Test1._1.Controllers
             {
                 string hashedPassword = HashPassword(model.HashedPassword);
                 var user = _context.Users
-                    .FirstOrDefault(u => u.Email == model.Email && u.HashedPassword == hashedPassword && !u.IsDeleted);
+                    .FirstOrDefault(u => u.Email == model.Email && u.PasswordHash == hashedPassword && !u.IsDeleted);
 
                 if (user == null)
                 {
@@ -286,3 +307,4 @@ namespace Test1._1.Controllers
         }
     }
 }
+

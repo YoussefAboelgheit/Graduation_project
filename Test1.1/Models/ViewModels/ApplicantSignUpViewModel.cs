@@ -31,6 +31,9 @@ namespace Test1._1.Models.ViewModels
         [Required(ErrorMessage = "Field of work is required")]
         public string Field_work { get; set; }
 
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; }
+
         [Required(ErrorMessage = "Years_experience of work is required")]
         public int Years_experience { get; set; }
 
@@ -38,7 +41,9 @@ namespace Test1._1.Models.ViewModels
         [FileExtension(".pdf", ".jpg", ".jpeg", ".png")]
         public IFormFile CVFile { get; set; }
 
-
+        [Required(ErrorMessage = "Profile_image is required")]
+        [FileExtension(".jpg", ".jpeg", ".png")]
+        public IFormFile ProfileImage { get; set; }
 
     }
 

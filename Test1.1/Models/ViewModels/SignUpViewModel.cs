@@ -11,6 +11,9 @@ namespace Test1._1.Models.ViewModels
         [Required(ErrorMessage = "Last name is required")]
         public string Lname { get; set; }
 
+        [Required(ErrorMessage = "User name is required")]
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "Password is required")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$",
         ErrorMessage = "Password must be at least 8 characters long with at least: one uppercase letter, one lowercase letter, and one number.")]
@@ -55,7 +58,14 @@ namespace Test1._1.Models.ViewModels
 
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
-        
+
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "Profile_image is required")]
+        [FileExtension(".jpg", ".jpeg", ".png")]
+        public IFormFile ProfileImage { get; set; }
+
     }
 
 }

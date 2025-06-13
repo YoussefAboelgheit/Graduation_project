@@ -5,11 +5,8 @@ namespace Test1._1.Models.ViewModels
 {
     public class CompanySignUpViewModel
     {
-        [Required(ErrorMessage = "First name is required")]
-        public string Fname { get; set; }
-        
-        [Required(ErrorMessage = "Last name is required")]
-        public string Lname { get; set; }
+        [Required(ErrorMessage = "User name is required")]
+        public string UserName { get; set; }
         
         [Required(ErrorMessage = "Password is required")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$",
@@ -27,6 +24,9 @@ namespace Test1._1.Models.ViewModels
         [Required(ErrorMessage = "Email is required")]
         [RegularExpression(@"^.+@(gmail.com|hotmail.com)$", ErrorMessage = "Please enter a valid email address")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Address is required")]
+        public string Address { get; set; }
 
         [Required(ErrorMessage = "Logo is required")]
         [FileExtension(".jpg", ".jpeg", ".png")]

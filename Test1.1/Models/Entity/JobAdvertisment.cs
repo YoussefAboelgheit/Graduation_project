@@ -12,7 +12,7 @@ namespace Test1._1.Models.Entity
 		public decimal salary { get; set; }
 		public string language { get; set; }
 		public string Certificate { get; set; }
-		public int CompanyId { get; set; }
+		public string CompanyId { get; set; }
 		public Company Company { get; set; }
 
 		//public ICollection<Applicant> Applicants { get; set; } = new List<Applicant>();

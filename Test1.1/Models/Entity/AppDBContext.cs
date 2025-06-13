@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Test1._1.Models.Configration;
 
 namespace Test1._1.Models.Entity
 {
-	public class AppDBContext : DbContext
+	public class AppDBContext : IdentityDbContext<ApplicationUser>
 	{
 		private readonly IConfiguration _configuration;
 
@@ -16,7 +17,7 @@ namespace Test1._1.Models.Entity
 
 		
 		public DbSet<Admin> Admins { get; set; }
-		public DbSet<User> Users { get; set; }
+		//public DbSet<User> Users { get; set; }
 		public DbSet<Applicant> Applicants { get; set; }
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<Subscraption> Subscraptions { get; set; }
@@ -34,17 +35,16 @@ namespace Test1._1.Models.Entity
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<User>().UseTptMappingStrategy();
+			//modelBuilder.Entity<User>().UseTptMappingStrategy();
 			modelBuilder.Entity<Subscraption>().UseTptMappingStrategy();
 			modelBuilder.Entity<Payment>().UseTptMappingStrategy();
 
-			modelBuilder.ApplyConfiguration(new UserConfigration());
+			//modelBuilder.ApplyConfiguration(new UserConfigration());
 			modelBuilder.ApplyConfiguration(new ApplicantConfigration());
 			modelBuilder.ApplyConfiguration(new CompanyConfigration());
-			modelBuilder.ApplyConfiguration(new JobAdvConfigration());
+            modelBuilder.ApplyConfiguration(new JobAdvConfigration());
 			modelBuilder.ApplyConfiguration(new ApplicantAdvertiseConfigration()); 
 		}
 
 	}
 	}
-

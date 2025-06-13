@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250311194942_addCompanyDescription")]
-    partial class addCompanyDescription
+    [Migration("20250613213641_SignUpChanges")]
+    partial class SignUpChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,139 @@ namespace Test1._1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
                 {
                     b.Property<int>("Id")
@@ -33,8 +166,9 @@ namespace Test1._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApplicantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -75,6 +209,9 @@ namespace Test1._1.Migrations
                     b.Property<int>("ApplicantId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicantId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ApplicantPaymentId")
                         .HasColumnType("int");
 
@@ -92,13 +229,87 @@ namespace Test1._1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("ApplicantId1");
 
                     b.HasIndex("ApplicantPaymentId");
 
                     b.HasIndex("ApplicantSubscrabtionId");
 
                     b.ToTable("ApplicantTransactions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.CompanyTransaction", b =>
@@ -111,6 +322,9 @@ namespace Test1._1.Migrations
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CompanyId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CompanyPaymentId")
                         .HasColumnType("int");
@@ -132,7 +346,7 @@ namespace Test1._1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyId1");
 
                     b.HasIndex("CompanyPaymentId");
 
@@ -153,8 +367,9 @@ namespace Test1._1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
+                    b.Property<string>("CompanyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<TimeOnly>("Job_time")
                         .HasColumnType("time");
@@ -239,49 +454,75 @@ namespace Test1._1.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.User", b =>
+            modelBuilder.Entity("Test1._1.Models.Entity.Admin", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.HasBaseType("Test1._1.Models.Entity.ApplicationUser");
+
+                    b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.ApplicationUser");
+
+                    b.Property<string>("CV")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
+
+                    b.Property<string>("Field_work")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Profile_image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Years_experience")
+                        .HasMaxLength(20)
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("Fname")
+                    b.Property<string>("lastName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<string>("HashedPassword")
+                    b.ToTable("Applicants", (string)null);
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.ApplicationUser");
+
+                    b.Property<string>("CommercialRegister")
                         .IsRequired()
-                        .HasMaxLength(60)
+                        .HasMaxLength(1000)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<int>("CurrentNumEmployees")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Lname")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(20)
+                        .HasMaxLength(1000)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("FiledWork")
                         .IsRequired()
-                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("VARCHAR");
 
-                    b.HasKey("Id");
+                    b.Property<string>("TaxCard")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("VARCHAR");
 
-                    b.ToTable("Users", (string)null);
-
-                    b.UseTptMappingStrategy();
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
@@ -312,66 +553,55 @@ namespace Test1._1.Migrations
                     b.ToTable("CompanySubscraptions");
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.Admin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasBaseType("Test1._1.Models.Entity.User");
-
-                    b.ToTable("Admins");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasBaseType("Test1._1.Models.Entity.User");
-
-                    b.Property<string>("CV")
-                        .IsRequired()
-                        .HasMaxLength(1500)
-                        .HasColumnType("nvarchar(1500)");
-
-                    b.Property<string>("Field_work")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<int>("Years_experience")
-                        .HasMaxLength(20)
-                        .HasColumnType("int");
-
-                    b.ToTable("Applicants");
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasBaseType("Test1._1.Models.Entity.User");
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("CommercialRegister")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("VARCHAR");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("CurrentNumEmployees")
-                        .HasColumnType("int");
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("FiledWork")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Logo")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("TaxCard")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("VARCHAR");
-
-                    b.ToTable("Companies");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
@@ -397,20 +627,18 @@ namespace Test1._1.Migrations
                 {
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantTranactions")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("ApplicantId1");
 
                     b.HasOne("Test1._1.Models.Entity.ApplicantPayment", "ApplicantPayment")
                         .WithMany("ApplicantTransactions")
                         .HasForeignKey("ApplicantPaymentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.ApplicantSubscrabtion", "ApplicantSubscrabtion")
                         .WithMany("ApplicantTrasactions")
                         .HasForeignKey("ApplicantSubscrabtionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Applicant");
@@ -424,20 +652,18 @@ namespace Test1._1.Migrations
                 {
                     b.HasOne("Test1._1.Models.Entity.Company", "Company")
                         .WithMany("CompanyTransactions")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId1");
 
                     b.HasOne("Test1._1.Models.Entity.CompanyPayment", "CompanyPayment")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanyPaymentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Test1._1.Models.Entity.CompanySubscrabtion", "CompanySubscraption")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanySubscraptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -458,12 +684,30 @@ namespace Test1._1.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.Applicant", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.Company", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.Payment", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.ApplicantPayment", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -472,7 +716,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Payment", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.CompanyPayment", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -481,7 +725,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Subscraption", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.ApplicantSubscrabtion", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -490,40 +734,27 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Subscraption", null)
                         .WithOne()
                         .HasForeignKey("Test1._1.Models.Entity.CompanySubscrabtion", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.Admin", b =>
-                {
-                    b.HasOne("Test1._1.Models.Entity.User", null)
-                        .WithOne()
-                        .HasForeignKey("Test1._1.Models.Entity.Admin", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
-                {
-                    b.HasOne("Test1._1.Models.Entity.User", null)
-                        .WithOne()
-                        .HasForeignKey("Test1._1.Models.Entity.Applicant", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
-                {
-                    b.HasOne("Test1._1.Models.Entity.User", null)
-                        .WithOne()
-                        .HasForeignKey("Test1._1.Models.Entity.Company", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
                     b.Navigation("ApplicantAdvertisments");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
+                {
+                    b.Navigation("ApplicantAdvertisments");
+
+                    b.Navigation("ApplicantTranactions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
+                {
+                    b.Navigation("CompanyTransactions");
+
+                    b.Navigation("JobAdvertisments");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
@@ -544,20 +775,6 @@ namespace Test1._1.Migrations
             modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscrabtion", b =>
                 {
                     b.Navigation("CompanyTransactions");
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
-                {
-                    b.Navigation("ApplicantAdvertisments");
-
-                    b.Navigation("ApplicantTranactions");
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.Company", b =>
-                {
-                    b.Navigation("CompanyTransactions");
-
-                    b.Navigation("JobAdvertisments");
                 });
 #pragma warning restore 612, 618
         }

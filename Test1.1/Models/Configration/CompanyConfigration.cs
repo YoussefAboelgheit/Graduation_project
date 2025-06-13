@@ -35,7 +35,7 @@ namespace Test1._1.Models.Configration
 				.HasColumnType("VARCHAR")
 				.HasMaxLength(1000);
 
-
+            builder.ToTable("Companies");
         }
 	}
 }

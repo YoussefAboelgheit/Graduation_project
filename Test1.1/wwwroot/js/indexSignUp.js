@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // File validation configurations
     const fileValidationRules = {
         'CVFile': {
-            extensions: ['.pdf', '.jpg', '.jpeg', '.png'],
-            message: 'CV must be in .pdf, .jpg, .jpeg, or .png format.',
+            extensions: ['.pdf'],
+            message: 'CV must be in .pdf format.',
             maxSize: 5 * 1024 * 1024 // 5MB
         },
         'Logo': {
@@ -34,7 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
             extensions: ['.pdf'],
             message: 'Commercial register must be a .pdf extension',
             maxSize: 10 * 1024 * 1024 // 10MB
-        }
+        },
+        'ProfileImage': {
+            extensions: ['.jpg', '.jpeg', '.png'],
+            message: 'Profile Image must have a valid file extension: .jpg, .jpeg, or .png',
+            maxSize: 2 * 1024 * 1024 // 2MB
+        },
     };
 
     // Function to validate file

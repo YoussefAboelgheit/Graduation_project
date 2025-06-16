@@ -165,19 +165,30 @@ namespace Test1._1.Controllers
             if (ModelState.IsValid)
             {
 
-                // cv must be pdf or image
+                // Handle the "Other" field of work
+                if (model.Field_work == "Other" && !string.IsNullOrWhiteSpace(model.Field_work_other))
+                {
+                    model.Field_work = model.Field_work_other.Trim();
+                }
+                else if (model.Field_work == "Other" && string.IsNullOrWhiteSpace(model.Field_work_other))
+                {
+                    ModelState.AddModelError("Field_work", "Please specify your field of work when selecting 'Other'.");
+                    return View("SignUp", model);
+                }
+
+                // cv must be pdf
                 bool IsValidCV(IFormFile file)
                 {
                     if (file == null || file.Length == 0)
                         return false;
 
                     string extension = Path.GetExtension(file.FileName);
-                    return Regex.IsMatch(extension, @"\.(pdf|jpg|jpeg|png)$", RegexOptions.IgnoreCase);
+                    return Regex.IsMatch(extension, @"\.(pdf)$", RegexOptions.IgnoreCase);
                 }
 
                 if (!IsValidCV(model.CVFile))
                 {
-                    ModelState.AddModelError("CVFile", "CV must be in .pdf, .jpg, .jpeg, or .png format.");
+                    ModelState.AddModelError("CVFile", "CV must be in .pdf format.");
                 }
 
 
@@ -191,7 +202,7 @@ namespace Test1._1.Controllers
                     return Regex.IsMatch(extension, @"\.(jpg|jpeg|png)$", RegexOptions.IgnoreCase);
                 }
 
-                if (!IsValidCV(model.ProfileImage))
+                if (!IsValidProfileImage(model.ProfileImage))
                 {
                     ModelState.AddModelError("ProfileImage", "Profile_image must be in .jpg, .jpeg, or .png format.");
                 }
@@ -307,4 +318,3 @@ namespace Test1._1.Controllers
         }
     }
 }
-

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class SignUpChanges : Migration
+    public partial class handleID : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,8 @@ namespace Test1._1.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -26,7 +27,8 @@ namespace Test1._1.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -40,7 +42,8 @@ namespace Test1._1.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -99,7 +102,7 @@ namespace Test1._1.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -118,7 +121,7 @@ namespace Test1._1.Migrations
                 name: "Applicants",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     lastName = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false),
                     Field_work = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false),
                     Years_experience = table.Column<int>(type: "int", maxLength: 20, nullable: false),
@@ -142,7 +145,7 @@ namespace Test1._1.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -164,7 +167,7 @@ namespace Test1._1.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,8 +184,8 @@ namespace Test1._1.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +208,7 @@ namespace Test1._1.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -225,7 +228,7 @@ namespace Test1._1.Migrations
                 name: "Companies",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Logo = table.Column<string>(type: "VARCHAR(1000)", maxLength: 1000, nullable: false),
                     CurrentNumEmployees = table.Column<int>(type: "int", nullable: false),
                     FiledWork = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -326,7 +329,7 @@ namespace Test1._1.Migrations
                     salary = table.Column<decimal>(type: "decimal(15,2)", precision: 15, scale: 2, nullable: false),
                     language = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Certificate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CompanyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -345,7 +348,6 @@ namespace Test1._1.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    ApplicantId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AppSubscrabtionId = table.Column<int>(type: "int", nullable: false),
                     ApplicantSubscrabtionId = table.Column<int>(type: "int", nullable: false),
                     AppPaymentId = table.Column<int>(type: "int", nullable: false),
@@ -370,10 +372,11 @@ namespace Test1._1.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicantTransactions_Applicants_ApplicantId1",
-                        column: x => x.ApplicantId1,
+                        name: "FK_ApplicantTransactions_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
                         principalTable: "Applicants",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -383,7 +386,6 @@ namespace Test1._1.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    CompanyId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CompanySubId = table.Column<int>(type: "int", nullable: false),
                     CompanySubscraptionId = table.Column<int>(type: "int", nullable: false),
                     CompanyPaymentId = table.Column<int>(type: "int", nullable: false),
@@ -395,10 +397,11 @@ namespace Test1._1.Migrations
                 {
                     table.PrimaryKey("PK_CompanyTransactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CompanyTransactions_Companies_CompanyId1",
-                        column: x => x.CompanyId1,
+                        name: "FK_CompanyTransactions_Companies_CompanyId",
+                        column: x => x.CompanyId,
                         principalTable: "Companies",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CompanyTransactions_CompanyPayments_CompanyPaymentId",
                         column: x => x.CompanyPaymentId,
@@ -419,7 +422,7 @@ namespace Test1._1.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
                     JobAdvertismentId = table.Column<int>(type: "int", nullable: false),
                     TellAboutYou = table.Column<string>(type: "Varchar", nullable: false),
                     Submation_Date = table.Column<DateTime>(type: "DATETIME", nullable: false),
@@ -451,9 +454,9 @@ namespace Test1._1.Migrations
                 column: "JobAdvertismentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicantTransactions_ApplicantId1",
+                name: "IX_ApplicantTransactions_ApplicantId",
                 table: "ApplicantTransactions",
-                column: "ApplicantId1");
+                column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantTransactions_ApplicantPaymentId",
@@ -505,9 +508,9 @@ namespace Test1._1.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyTransactions_CompanyId1",
+                name: "IX_CompanyTransactions_CompanyId",
                 table: "CompanyTransactions",
-                column: "CompanyId1");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyTransactions_CompanyPaymentId",

@@ -15,8 +15,8 @@ namespace Test1._1.Models.ViewModels
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$",
-        ErrorMessage = "Password must be at least 8 characters long with at least: one uppercase letter, one lowercase letter, and one number.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$",
+            ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Confirm password is required")]

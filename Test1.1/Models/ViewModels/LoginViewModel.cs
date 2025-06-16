@@ -8,8 +8,8 @@ namespace Test1._1.Models.ViewModels
         public string Email { get; set; }
 
         [Required]
-        
-        public string HashedPassword { get; set; }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
         public bool RememberMe { get; set; }
     }

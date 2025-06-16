@@ -38,7 +38,7 @@ namespace Test1._1.Models.ViewModels
         public int Years_experience { get; set; }
 
         [Required(ErrorMessage = "CVFile is required")]
-        [FileExtension(".pdf", ".jpg", ".jpeg", ".png")]
+        [FileExtension(".pdf")]
         public IFormFile CVFile { get; set; }
 
         [Required(ErrorMessage = "Logo is required")]
@@ -65,7 +65,7 @@ namespace Test1._1.Models.ViewModels
         [Required(ErrorMessage = "Profile_image is required")]
         [FileExtension(".jpg", ".jpeg", ".png")]
         public IFormFile ProfileImage { get; set; }
-
+        public int Id { get; set; }
     }
 
 }

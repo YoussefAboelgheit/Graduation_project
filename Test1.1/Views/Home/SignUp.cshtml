@@ -182,34 +182,20 @@
                 }
             });
 
-            // Handle form submission
+            // Handle form submission - simplified approach
             const applicantForm = document.querySelector('form[asp-action="ApplicantSignUp"]');
             if (applicantForm) {
                 applicantForm.addEventListener('submit', (e) => {
-                    if (select.value === 'Other') {
-                        const customValue = otherInput.value.trim();
-
-                        if (customValue === '') {
-                            e.preventDefault();
-                            alert('Please specify your field of work.');
-                            otherInput.focus();
-                            return false;
-                        }
-
-                        // Instead of creating a hidden input, directly set the select value
-                        // Create a new option with the custom value and select it
-                        const customOption = document.createElement('option');
-                        customOption.value = customValue;
-                        customOption.text = customValue;
-                        customOption.selected = true;
-
-                        // Remove the "Other" option temporarily and add the custom option
-                        select.innerHTML = '';
-                        select.appendChild(customOption);
-
-                        // Make sure the select is enabled for submission
-                        select.disabled = false;
+                    // Basic validation for the "Other" field
+                    if (select.value === 'Other' && otherInput.value.trim() === '') {
+                        e.preventDefault();
+                        alert('Please specify your field of work.');
+                        otherInput.focus();
+                        return false;
                     }
+
+                    // Let the form submit normally - the server will handle the "Other" logic
+                    return true;
                 });
             }
         });

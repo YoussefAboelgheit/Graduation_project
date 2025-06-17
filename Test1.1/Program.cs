@@ -9,31 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 🔹 Configure Identity with integer keys
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
-{
-    // Password settings
+// Add Identity services - Updated to match your DbContext configuration
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options => {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
-    options.Password.RequiredUniqueChars = 1;
-
-    // Lockout settings
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
-
-    // User settings
-    options.User.AllowedUserNameCharacters =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = true;
-
-    // Sign-in settings
-    options.SignIn.RequireConfirmedAccount = false;
-    options.SignIn.RequireConfirmedEmail = false;
-    options.SignIn.RequireConfirmedPhoneNumber = false;
 })
 .AddEntityFrameworkStores<AppDBContext>()
 .AddDefaultTokenProviders();
@@ -41,14 +23,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(14); // ← مدة بقاء الكوكي لو Persistent
+    options.SlidingExpiration = true;               // ← يعيد تجديد الكوكي إذا المستخدم نشط
 });
 
 var app = builder.Build();
@@ -65,11 +43,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// 🔹 Add Authentication and Authorization middleware in correct order
 app.UseAuthentication();
 app.UseAuthorization();
 
-// 🔹 Configure Stripe
+// Configure Stripe
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<String>();
 
 app.MapControllerRoute(

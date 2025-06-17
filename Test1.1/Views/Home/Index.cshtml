@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@{
     ViewData["Title"] = "Home Page";
     Layout = null;
 }
@@ -38,9 +40,18 @@
                 <a href="#Advertisements">Advertisements</a>
                 <a href="#Contact_us">Contact us</a>
             </div>
-
-            <a asp-controller="Home" asp-action="SignIn" class="btn log-in">Log In</a>
-            <a asp-controller="Home" asp-action="SignUp" class="btn sign_up">SignUp</a>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <span class="welcome-text">Welcome, @User.Identity.Name</span>
+                <form asp-controller="Home" asp-action="Logout" method="post">
+                    <button type="submit" class="btn">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Home" asp-action="SignIn" class="btn log-in">Log In</a>
+                <a asp-controller="Home" asp-action="SignUp" class="btn sign_up">SignUp</a>
+            }
 
         </div>
         <div class="menu-btn">
@@ -166,7 +177,9 @@
     </div>
 
     <!-- ****************************************************************************************************************************** -->
-    <div class="applicant" id="Applicants">
+
+
+    @* <div class="applicant" id="Applicants">
         <div class="card">
             <img src="pic/السيسي.jpeg" alt="" />
             <div class="info">
@@ -224,6 +237,13 @@
             </p>
         </div>
 
+    </div> *@
+
+    <div class="applicant" id="Applicants">
+        @foreach (var applicant in Model.Applicants)
+        {
+            <partial name="_ApplicantCard" model="applicant" />
+        }
     </div>
 
     <!-- ******************************Advs************************************** -->
@@ -277,65 +297,73 @@
 
 
     <!-- ********************************************************************************************************** -->
+    @* <div class="ads-container">
+
+
+        <div class="ad">
+            <div class="ad-image">
+                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
+            </div>
+            <div class="ad-content">
+                <h3 class="company-name">Mza.company</h3>
+                <p class="ad-details">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit
+                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
+                    aliquid animi voluptatibus molestiae vitae..
+                </p>
+                <button class="details-btn">View More Details</button>
+            </div>
+        </div>
+
+
+
+
+        <div class="ad">
+            <div class="ad-image">
+                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
+            </div>
+            <div class="ad-content">
+                <h3 class="company-name">Mza.company</h3>
+                <p class="ad-details">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit
+                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
+                    aliquid animi voluptatibus molestiae vitae..
+                </p>
+                <button class="details-btn">View More Details</button>
+            </div>
+        </div>
+
+
+
+
+        <div class="ad">
+            <div class="ad-image">
+                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
+            </div>
+            <div class="ad-content">
+                <h3 class="company-name">Mza.company</h3>
+                <p class="ad-details">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit
+                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
+                    aliquid animi voluptatibus molestiae vitae..
+                </p>
+                <button class="details-btn">View More Details</button>
+            </div>
+        </div>
+
+
+
+
+
+    </div> *@
+
     <div class="ads-container">
-
-
-        <div class="ad">
-            <div class="ad-image">
-                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
-            </div>
-            <div class="ad-content">
-                <h3 class="company-name">Mza.company</h3>
-                <p class="ad-details">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit
-                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
-                    aliquid animi voluptatibus molestiae vitae..
-                </p>
-                <button class="details-btn">View More Details</button>
-            </div>
-        </div>
-
-
-
-
-        <div class="ad">
-            <div class="ad-image">
-                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
-            </div>
-            <div class="ad-content">
-                <h3 class="company-name">Mza.company</h3>
-                <p class="ad-details">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit
-                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
-                    aliquid animi voluptatibus molestiae vitae..
-                </p>
-                <button class="details-btn">View More Details</button>
-            </div>
-        </div>
-
-
-
-
-        <div class="ad">
-            <div class="ad-image">
-                <img src="pic/فلسطين2 .jpg" alt="Company 1 Logo">
-            </div>
-            <div class="ad-content">
-                <h3 class="company-name">Mza.company</h3>
-                <p class="ad-details">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit
-                    . Repellendus inventore quisquam fugiat cupiditate nostrum nihil
-                    aliquid animi voluptatibus molestiae vitae..
-                </p>
-                <button class="details-btn">View More Details</button>
-            </div>
-        </div>
-
-
-
-
-
+        @foreach (var company in Model.Companies)
+        {
+            <partial name="_CompanyAd" model="company" />
+        }
     </div>
+
     <!-- ***************************foter************************************* -->
     <div id="Contact_us">
         <footer>

@@ -14,8 +14,10 @@
 </head>
 
 <body>
-    <form asp-action="CheckSignIn" asp-controller="Home" method="post" class="login-form">
+    <form asp-action="CheckSignIn" asp-controller="Home" method="post" asp-antiforgery="true" class="login-form">
         <h1 class="login-title">Login</h1>
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="input-box">
             <input asp-for="Email" class="form-control" placeholder="Email" />
@@ -23,8 +25,8 @@
         </div>
 
         <div class="input-box">
-            <input asp-for="HashedPassword" class="form-control" placeholder="Password" type="password" />
-            <span asp-validation-for="HashedPassword" class="text-danger"></span>
+            <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
 
         <div class="remember-forgot-box">
@@ -39,10 +41,12 @@
 
         <p class="register">
             Don't have an account?
-            <a href="#">Register</a>
+            <a asp-controller="Home" asp-action="SignUp">Register</a>
         </p>
     </form>
 
-    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>

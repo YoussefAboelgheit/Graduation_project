@@ -4,7 +4,7 @@
 	{
 		//not completed yet
 		public int Id { get; set; }
-		public int ApplicantId { get; set; }
+		public string ApplicantId { get; set; }
 		public Applicant Applicant { get; set; }
 		public int JobAdvertismentId { get; set; }
 		public JobAdvertisment JobAdvertisment { get; set; }

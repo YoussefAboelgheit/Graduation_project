@@ -4,7 +4,7 @@ namespace Test1._1.Models.ViewModels
 {
     public class CompanyEditViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         // All fields are optional for editing - no Required attributes
         public string UserName { get; set; }

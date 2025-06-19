@@ -18,12 +18,12 @@ namespace Test1._1.Controllers
             _env = env;
         }
 
-        public IActionResult Index(int? id)
+        public IActionResult Index(string id)
         {
-            if (!id.HasValue)
+            if (string.IsNullOrEmpty(id))
                 return RedirectToAction("ErrorPage");
 
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id.Value);
+            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
             if (company == null)
                 return NotFound();
 
@@ -195,8 +195,11 @@ namespace Test1._1.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var company = _context.Companies.FirstOrDefault(c => c.Id == id);
             if (company == null)
                 return NotFound();
@@ -261,8 +264,11 @@ namespace Test1._1.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadTaxCard(int id)
+        public IActionResult DownloadTaxCard(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var company = _context.Companies.FirstOrDefault(c => c.Id == id);
             if (company == null || string.IsNullOrEmpty(company.TaxCard))
                 return NotFound("Company or Tax Card not found.");
@@ -271,8 +277,11 @@ namespace Test1._1.Controllers
         }
 
         [HttpGet]
-        public IActionResult DownloadCommercialRegister(int id)
+        public IActionResult DownloadCommercialRegister(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var company = _context.Companies.FirstOrDefault(c => c.Id == id);
             if (company == null || string.IsNullOrEmpty(company.CommercialRegister))
                 return NotFound("Company or Commercial Register not found.");

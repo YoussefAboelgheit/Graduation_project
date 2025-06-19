@@ -18,12 +18,12 @@ namespace Test1._1.Controllers
             _env = env;
         }
 
-        public IActionResult Index(int? id)
+        public IActionResult Index(string id)
         {
-            if (!id.HasValue)
+            if (string.IsNullOrEmpty(id))
                 return RedirectToAction("ErrorPage");
 
-            var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id.Value);
+            var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id);
             if (applicant == null)
                 return NotFound();
 
@@ -187,10 +187,12 @@ namespace Test1._1.Controllers
             }
         }
 
-
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id);
             if (applicant == null)
                 return NotFound();
@@ -256,8 +258,11 @@ namespace Test1._1.Controllers
         }
 
         [HttpGet]
-        public IActionResult ViewCV(int id)
+        public IActionResult ViewCV(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
             var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id);
             if (applicant == null || string.IsNullOrEmpty(applicant.CV))
                 return NotFound("Applicant or CV not found.");

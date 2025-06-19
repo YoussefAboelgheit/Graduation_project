@@ -15,14 +15,14 @@ namespace Test1._1.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole<int>> _roleManager; // Changed from IdentityRole to IdentityRole<int>
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly AppDBContext _context;
 
         public HomeController(
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole<int>> roleManager, // Changed from IdentityRole to IdentityRole<int>
+            RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IWebHostEnvironment webHostEnvironment, AppDBContext context)
         {
@@ -203,7 +203,7 @@ namespace Test1._1.Controllers
                     {
                         // ✅ Add to role
                         if (!await _roleManager.RoleExistsAsync("Company"))
-                            await _roleManager.CreateAsync(new IdentityRole<int>("Company"));
+                            await _roleManager.CreateAsync(new IdentityRole("Company"));
 
                         await _userManager.AddToRoleAsync(company, "Company");
 
@@ -359,7 +359,7 @@ namespace Test1._1.Controllers
                     {
                         // ✅ Ensure "Applicant" role exists
                         if (!await _roleManager.RoleExistsAsync("Applicant"))
-                            await _roleManager.CreateAsync(new IdentityRole<int>("Applicant"));
+                            await _roleManager.CreateAsync(new IdentityRole("Applicant"));
 
                         await _userManager.AddToRoleAsync(applicant, "Applicant");
 

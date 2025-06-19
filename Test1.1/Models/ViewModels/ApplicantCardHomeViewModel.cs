@@ -2,7 +2,7 @@
 {
     public class ApplicantCardHomeViewModel
     {
-        public int Id { get; set; } // Add this property
+        public string Id { get; set; } // Add this property
         public string Name { get; set; }
         public string LastName { get; set; }
         public string FieldWork { get; set; }

@@ -6,7 +6,7 @@ using Test1._1.Models.Configration;
 
 namespace Test1._1.Models.Entity
 {
-    public class AppDBContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    public class AppDBContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IConfiguration _configuration;
 

@@ -1,0 +1,289 @@
+﻿@model List<Test1._1.Models.Entity.Company>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = null;
+}
+
+
+<link rel="stylesheet" href="~/css/styleAdmin.css" />
+
+
+
+<script src="~/js/indexAdmin.js"></script>
+
+
+<nav class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-font-awesome"></i>
+        <a href="#">jobify</a>
+    </div>
+    <div class="menu">
+        <div class="menu-links">
+            <a href="#nacc">New Company Account</a>
+            <a href="#Modify_ads">Modify ads</a>
+            <a href="#Payment">Payment</a>
+        </div>
+    </div>
+    <div class="menu-btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</nav>
+<div style="height: 100px;"></div>
+<br>
+<br>
+<br>
+
+<!-- ***************************************************acc******************************************************************** -->
+<section class="company-requests" id="nacc">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var company in Model)
+        {
+            <div class="company-box">
+                <div class="company-info">
+                    <a href="#" class="company-link">
+                        <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
+                    </a>
+
+                    <div class="company-details">
+                        <p><strong>Username:</strong> @company.UserName</p>
+                        <p><strong>Field of Work:</strong> @company.FiledWork</p>
+                        <p><strong>Number of Employees:</strong> @company.CurrentNumEmployees</p>
+                        <p><strong>Description:</strong> @company.Description</p>
+                        <p>
+                            <strong>Tax Card:</strong>
+                            <a href='@Url.Content("~/" + company.TaxCard.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
+                        </p>
+
+                        <p>
+                            <strong>Commercial Register:</strong>
+                            <a href='@Url.Content("~/" + company.CommercialRegister.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <form asp-action="RejectCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
+                        <button type="submit" class="reject-btn">Reject</button>
+                    </form>
+
+                    <form asp-action="AcceptCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
+                        <button type="submit" class="accept-btn">Accept</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
+    }
+</section>
+<!-- ***************************************************end acc******************************************************************** -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- ***************************************************ads******************************************************************** -->
+<section class="ad-comparisons" id="Modify_ads">
+    <div class="ad-comparison-box">
+        <div class="ad-box">
+            <div class="ad old-ad">
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.cpmpany</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
+                        officiis, voluptate nobis corrupti consequatur
+                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="ad-box">
+            <div class="ad new-ad">
+                <div class="new-label">NEW</div>
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.company</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
+                        ullam quaerat unde nam? Rem, cumque debitis!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-actions">
+            <button class="reject-btn">Reject</button>
+            <button class="accept-btn">Accept</button>
+        </div>
+    </div>
+</section>
+
+<section class="ad-comparisons" id="Modify_ads">
+    <div class="ad-comparison-box">
+        <div class="ad-box">
+            <div class="ad old-ad">
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.cpmpany</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
+                        officiis, voluptate nobis corrupti consequatur
+                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="ad-box">
+            <div class="ad new-ad">
+                <div class="new-label">NEW</div>
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.company</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
+                        ullam quaerat unde nam? Rem, cumque debitis!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-actions">
+            <button class="reject-btn">Reject</button>
+            <button class="accept-btn">Accept</button>
+        </div>
+    </div>
+</section>
+
+<section class="ad-comparisons" id="Modify_ads">
+    <div class="ad-comparison-box">
+        <div class="ad-box">
+            <div class="ad old-ad">
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.cpmpany</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
+                        officiis, voluptate nobis corrupti consequatur
+                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="ad-box">
+            <div class="ad new-ad">
+                <div class="new-label">NEW</div>
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.company</h3>
+                    <p class="ad-details">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
+                        ullam quaerat unde nam? Rem, cumque debitis!
+                    </p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-actions">
+            <button class="reject-btn">Reject</button>
+            <button class="accept-btn">Accept</button>
+        </div>
+    </div>
+</section>
+
+<!-- ***************************************************end ads******************************************************************** -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!-- ***************************************************payment******************************************************************** -->
+
+<div class="subscription-container">
+    <div class="subscription-box">
+        <h3>Daily Subscription</h3>
+        <p class="price">$10</p>
+        <button class="edit-btn">Edit</button>
+    </div>
+    <div class="subscription-box">
+        <h3>Weekly Subscription</h3>
+        <p class="price">$20</p>
+        <button class="edit-btn">Edit</button>
+    </div>
+    <div class="subscription-box">
+        <h3>Monthly Subscription</h3>
+        <p class="price">$30</p>
+        <button class="edit-btn">Edit</button>
+    </div>
+    <div class="subscription-box">
+        <h3>Yearly Subscription</h3>
+        <p class="price">$40</p>
+        <button class="edit-btn">Edit</button>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h4 id="modal-title">Edit Subscription</h4>
+        <div class="modal-body">
+            <p id="subscription-name">Subscription Name</p>
+            <div class="price-row">
+                <span class="old-price">$0</span>
+                <input type="text" id="new-price-input" placeholder="New Price" />
+            </div>
+            <button id="confirm-edit-btn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<section id="Payment">
+</section>
+
+<script src="~/js/indexAdmin.js"></script>

@@ -155,6 +155,34 @@ namespace Test1._1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicantAdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("Varchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantAdvertismentId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers", (string)null);
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
                 {
                     b.Property<int>("Id")
@@ -170,21 +198,12 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("JobAdvertismentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Submation_Date")
+                    b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("DATETIME");
-
-                    b.Property<string>("TellAboutYou")
-                        .IsRequired()
-                        .HasColumnType("Varchar");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicantId");
-
-                    b.HasIndex("JobAdvertismentId");
 
                     b.ToTable("ApplicantAdvertisments", (string)null);
                 });
@@ -426,6 +445,35 @@ namespace Test1._1.Migrations
                     b.UseTptMappingStrategy();
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsShared")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobAdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobAdvertismentId");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.Subscraption", b =>
                 {
                     b.Property<int>("Id")
@@ -519,6 +567,13 @@ namespace Test1._1.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("VARCHAR");
 
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR")
+                        .HasDefaultValue("Pending");
+
                     b.ToTable("Companies", (string)null);
                 });
 
@@ -601,6 +656,25 @@ namespace Test1._1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.Answer", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.ApplicantAdvertisment", "ApplicantAdvertisments")
+                        .WithMany("Answers")
+                        .HasForeignKey("ApplicantAdvertismentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Test1._1.Models.Entity.Question", "Questions")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ApplicantAdvertisments");
+
+                    b.Navigation("Questions");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
@@ -609,15 +683,7 @@ namespace Test1._1.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
-                        .WithMany("ApplicantAdvertisments")
-                        .HasForeignKey("JobAdvertismentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Applicant");
-
-                    b.Navigation("JobAdvertisment");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
@@ -681,6 +747,15 @@ namespace Test1._1.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.Question", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
+                        .WithMany("Questions")
+                        .HasForeignKey("JobAdvertismentId");
+
+                    b.Navigation("JobAdvertisment");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.ApplicationUser", null)
@@ -735,9 +810,19 @@ namespace Test1._1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
+                {
+                    b.Navigation("Answers");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
-                    b.Navigation("ApplicantAdvertisments");
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Question", b =>
+                {
+                    b.Navigation("Answers");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.Applicant", b =>

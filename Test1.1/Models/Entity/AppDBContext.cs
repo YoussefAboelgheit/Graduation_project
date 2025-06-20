@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Test1._1.Models.Configration;
@@ -22,6 +21,8 @@ namespace Test1._1.Models.Entity
         public DbSet<Subscraption> Subscraptions { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<JobAdvertisment> JobAdvertisments { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
         public DbSet<ApplicantAdvertisment> ApplicantAdvertisments { get; set; }
         public DbSet<ApplicantSubscrabtion> ApplicantSubscrabtions { get; set; }
         public DbSet<ApplicantPayment> ApplicantPayments { get; set; }
@@ -41,6 +42,7 @@ namespace Test1._1.Models.Entity
             modelBuilder.ApplyConfiguration(new CompanyConfigration());
             modelBuilder.ApplyConfiguration(new JobAdvConfigration());
             modelBuilder.ApplyConfiguration(new ApplicantAdvertiseConfigration());
+            modelBuilder.ApplyConfiguration(new AnswerConfigration());
         }
     }
 }

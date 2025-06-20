@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class stringOfID : Migration
+    public partial class MergeAmr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -231,7 +231,8 @@ namespace Test1._1.Migrations
                     FiledWork = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TaxCard = table.Column<string>(type: "VARCHAR(1000)", maxLength: 1000, nullable: false),
                     CommercialRegister = table.Column<string>(type: "VARCHAR(1000)", maxLength: 1000, nullable: false),
-                    Description = table.Column<string>(type: "VARCHAR(1000)", maxLength: 1000, nullable: false)
+                    Description = table.Column<string>(type: "VARCHAR(1000)", maxLength: 1000, nullable: false),
+                    status = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false, defaultValue: "Pending")
                 },
                 constraints: table =>
                 {
@@ -310,6 +311,26 @@ namespace Test1._1.Migrations
                         principalTable: "Subscraptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicantAdvertisments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubmissionDate = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicantAdvertisments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicantAdvertisments_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -414,41 +435,65 @@ namespace Test1._1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicantAdvertisments",
+                name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    JobAdvertismentId = table.Column<int>(type: "int", nullable: false),
-                    TellAboutYou = table.Column<string>(type: "Varchar", nullable: false),
-                    Submation_Date = table.Column<DateTime>(type: "DATETIME", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsShared = table.Column<bool>(type: "bit", nullable: false),
+                    JobAdvertismentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicantAdvertisments", x => x.Id);
+                    table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicantAdvertisments_Applicants_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ApplicantAdvertisments_JobAdvertisments_JobAdvertismentId",
+                        name: "FK_Questions_JobAdvertisments_JobAdvertismentId",
                         column: x => x.JobAdvertismentId,
                         principalTable: "JobAdvertisments",
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Answers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantAdvertismentId = table.Column<int>(type: "int", nullable: false),
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    Response = table.Column<string>(type: "Varchar(1500)", maxLength: 1500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Answers_ApplicantAdvertisments_ApplicantAdvertismentId",
+                        column: x => x.ApplicantAdvertismentId,
+                        principalTable: "ApplicantAdvertisments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answers_ApplicantAdvertismentId",
+                table: "Answers",
+                column: "ApplicantAdvertismentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
+                column: "QuestionId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantAdvertisments_ApplicantId",
                 table: "ApplicantAdvertisments",
                 column: "ApplicantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicantAdvertisments_JobAdvertismentId",
-                table: "ApplicantAdvertisments",
-                column: "JobAdvertismentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantTransactions_ApplicantId1",
@@ -523,6 +568,11 @@ namespace Test1._1.Migrations
                 name: "IX_JobAdvertisments_CompanyId",
                 table: "JobAdvertisments",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_JobAdvertismentId",
+                table: "Questions",
+                column: "JobAdvertismentId");
         }
 
         /// <inheritdoc />
@@ -532,7 +582,7 @@ namespace Test1._1.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
-                name: "ApplicantAdvertisments");
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "ApplicantTransactions");
@@ -556,16 +606,16 @@ namespace Test1._1.Migrations
                 name: "CompanyTransactions");
 
             migrationBuilder.DropTable(
-                name: "JobAdvertisments");
+                name: "ApplicantAdvertisments");
+
+            migrationBuilder.DropTable(
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "ApplicantPayments");
 
             migrationBuilder.DropTable(
                 name: "ApplicantSubscrabtions");
-
-            migrationBuilder.DropTable(
-                name: "Applicants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -577,13 +627,19 @@ namespace Test1._1.Migrations
                 name: "CompanySubscraptions");
 
             migrationBuilder.DropTable(
-                name: "Companies");
+                name: "Applicants");
+
+            migrationBuilder.DropTable(
+                name: "JobAdvertisments");
 
             migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Subscraptions");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

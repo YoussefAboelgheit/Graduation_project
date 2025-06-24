@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class MergeAmr : Migration
+    public partial class tryAdv3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -342,11 +342,11 @@ namespace Test1._1.Migrations
                     Jobdetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumEmployee = table.Column<int>(type: "int", nullable: false),
                     jobtitle = table.Column<string>(type: "VARCHAR(25)", maxLength: 25, nullable: false),
-                    Job_time = table.Column<TimeOnly>(type: "time", nullable: false),
+                    Job_time = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     governorate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    salary = table.Column<decimal>(type: "decimal(15,2)", precision: 15, scale: 2, nullable: false),
-                    language = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Certificate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    salary = table.Column<string>(type: "nvarchar(max)", precision: 15, scale: 2, nullable: false),
+                    JobRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

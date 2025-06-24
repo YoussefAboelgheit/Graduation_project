@@ -50,26 +50,74 @@ namespace Test1._1.Controllers
                 .ToList();
 
             var companies = _context.Companies
-                .Take(3)
-                .Select(c => new CompanyAdvHomeViewModel
-                {
-                    CompanyName = c.UserName,
-                    Description = c.Description,
-                    LogoPath = c.Logo
-                })
-                .ToList();
+        .Include(c => c.JobAdvertisments)
+        .SelectMany(c => c.JobAdvertisments.Select(ad => new CompanyAdvHomeViewModel
+        {
+            AdvertisementId = ad.Id,
+            CompanyId = c.Id,
+            CompanyName = c.UserName,
+            CompanyDescription = c.Description,
+            LogoPath = c.Logo,
+
+            // Map advertisement details
+            JobTitle = ad.jobtitle,           
+            Salary = ad.salary.ToString(),    
+            Location = ad.governorate,       
+            JobTime = ad.Job_time,           
+            CreatedDate = ad.CreatedDate
+        }))
+        .OrderByDescending(ad => ad.CreatedDate)
+        .ToList();
 
             var viewModel = new HomeViewModel
             {
-                Applicants = applicants,    
+                Applicants = applicants,
                 Companies = companies
             };
 
             return View(viewModel);
         }
+		[HttpGet]
+		public IActionResult FilterApplicants(string governorate, string experience, string job)
+		{
+			var query = _context.Applicants.AsQueryable();
+
+			if (!string.IsNullOrEmpty(governorate))
+				query = query.Where(a => a.address == governorate);
+
+			if (!string.IsNullOrEmpty(experience))
+			{
+				if (experience.StartsWith(">"))
+				{
+					int years = int.Parse(experience.Substring(1));
+					query = query.Where(a => a.Years_experience > years);
+				}
+				else if (int.TryParse(experience, out int years))
+				{
+					query = query.Where(a => a.Years_experience == years);
+				}
+			}
+
+			if (!string.IsNullOrEmpty(job))
+				query = query.Where(a => a.Field_work == job);
+
+			var applicants = query
+				.Select(a => new ApplicantCardHomeViewModel
+				{
+					Id = a.Id,
+					Name = a.UserName,
+					LastName = a.lastName,
+					FieldWork = a.Field_work,
+					ImagePath = a.Profile_image
+				})
+				.ToList();
+
+			return PartialView("_ApplicantList", applicants);
+		}
 
 
-        public IActionResult Privacy()
+
+		public IActionResult Privacy()
         {
             return View();
         }
@@ -448,3 +496,4 @@ namespace Test1._1.Controllers
         }
     }
 }
+

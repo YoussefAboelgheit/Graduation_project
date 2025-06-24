@@ -1,5 +1,4 @@
-﻿
-namespace Test1._1.Models.Entity
+﻿namespace Test1._1.Models.Entity
 {
     public class JobAdvertisment
     {
@@ -7,17 +6,17 @@ namespace Test1._1.Models.Entity
         public string Jobdetail { get; set; }
         public int NumEmployee { get; set; }
         public string jobtitle { get; set; }
-        public TimeOnly Job_time { get; set; }
+        public string Job_time { get; set; }
         public string governorate { get; set; }
-        public decimal salary { get; set; }
-        public string language { get; set; }
-        public string Certificate { get; set; }
+        public string salary { get; set; } // Changed from decimal to string to store ranges like "2000-4000"
+        public string JobRequirements { get; set; }
 
-        // list Requirments plus
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        // Navigation properties
         public string CompanyId { get; set; }
         public Company Company { get; set; }
 
-        //public ICollection<Applicant> Applicants { get; set; } = new List<Applicant>();
         public ICollection<Question> Questions { get; set; } = new List<Question>();
     }
 }

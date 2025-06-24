@@ -209,16 +209,34 @@ position: relative;
 
 
 /* *******************************************card***************************************** */
-.applicant{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 25px; 
-    justify-content: center; 
-    align-items: center; 
-    padding: 20px;
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+    color: #e43f5a;
+    margin: 20px 0 30px;
+}
+
+
+.applicant {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
 .card {
     position: relative;
@@ -237,78 +255,85 @@ position: relative;
     cursor: pointer;
     transition: all 0.3s;
     padding: 20px;
+    margin-left: 30px;
 }
-.card img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 0.3s;
-}
-.card p {
-    margin-top: 130px;
-    opacity: 0;
-}
+
+    .card img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s;
+    }
+
+    .card p {
+        margin-top: 130px;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
 
 .info {
+    position: absolute;
     bottom: 0;
     left: 0;
+    width: 100%;
     padding: 15px;
-    position: absolute;
+    background: rgba(65, 64, 64, 0.5);
     display: flex;
     flex-direction: column;
-    width: 100%;
-    background: #41404079;
     transition: all 0.3s;
 }
-
 
 .name {
     font-size: 20px;
     font-weight: 600;
     color: #f9f9f9;
-    }
+}
 
-    .role {
+.role {
     font-size: 16px;
     font-weight: 400;
     color: #e9e7e7;
-    }
-    
-    .card:hover img {
+}
+
+.card:hover img {
     top: 20px;
     left: 20px;
-    height: 100px;
     width: 100px;
+    height: 100px;
     border-radius: 50%;
-    }
-    
-    .card:hover .info {
+}
+
+.card:hover .info {
     left: 50%;
     top: 30px;
     height: 50px;
-    color: black;
-    }
-    
-    .card:hover p {
+    transform: translateX(-50%);
+    color: #000;
+}
+
+.card:hover p {
     animation: fadeUp 0.5s forwards;
-    }
-    
-    @keyframes fadeUp {
+}
+
+@keyframes fadeUp {
     from {
-    opacity: 0;
-    transform: translateY(20px);
+        opacity: 0;
+        transform: translateY(20px);
     }
-    
+
     to {
-    opacity: 1;
-    transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-    
-    }
+}
 
 
-    /* ***********************advs**************************** */
+
+
+/* ***********************advs**************************** */
 .ads-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
@@ -408,6 +433,13 @@ footer p{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     border: solid #ff9595 3px;
+}
+.ie {
+    width: 200px;
+    height: 40px;
+    margin-top: 12px;
+    margin-left: 25px;
+    font-size: 18px;
 }
 
 .filter-header {

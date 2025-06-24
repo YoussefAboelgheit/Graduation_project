@@ -379,16 +379,20 @@ namespace Test1._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Certificate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CompanyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<TimeOnly>("Job_time")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JobRequirements")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Job_time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Jobdetail")
                         .IsRequired()
@@ -406,13 +410,10 @@ namespace Test1._1.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<string>("language")
+                    b.Property<string>("salary")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("salary")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

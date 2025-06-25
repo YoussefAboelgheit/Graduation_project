@@ -89,17 +89,59 @@ namespace Test1._1.Controllers
 			{
 				if (experience.StartsWith(">"))
 				{
-					int years = int.Parse(experience.Substring(1));
-					query = query.Where(a => a.Years_experience > years);
+					if (int.TryParse(experience.Substring(1), out int years))
+					{
+						query = query.Where(a => a.Years_experience > years);
+					}
 				}
-				else if (int.TryParse(experience, out int years))
+				else if (int.TryParse(experience, out int exactYears))
 				{
-					query = query.Where(a => a.Years_experience == years);
+					query = query.Where(a => a.Years_experience == exactYears);
 				}
 			}
 
 			if (!string.IsNullOrEmpty(job))
-				query = query.Where(a => a.Field_work == job);
+			{
+				if (job == "Other")
+				{
+					// Known job options from the dropdown
+					var knownJobs = new List<string>
+		{
+			"AI Engineer",
+			"AR/VR Developer",
+			"Back‑End Developer",
+			"Blockchain Developer",
+			"Cloud Engineer",
+			"Cybersecurity Specialist",
+			"Data Analyst",
+			"Data Scientist",
+			"Database Administrator",
+			"DevOps Engineer",
+			"Embedded Systems Engineer",
+			"Front‑End Developer",
+			"Full Stack Developer",
+			"Game Developer",
+			"IT Project Manager",
+			"IT Support Specialist",
+			"Machine Learning Engineer",
+			"Mobile App Developer",
+			"Network Engineer",
+			"QA/Test Engineer",
+			"Software Engineer",
+			"System Administrator",
+			"Technical Writer",
+			"UI/UX Designer"
+		};
+
+					// Get only applicants whose Field_work is not in the known jobs
+					query = query.Where(a => !knownJobs.Contains(a.Field_work));
+				}
+				else
+				{
+					// Regular job match
+					query = query.Where(a => a.Field_work == job);
+				}
+			}
 
 			var applicants = query
 				.Select(a => new ApplicantCardHomeViewModel
@@ -114,6 +156,276 @@ namespace Test1._1.Controllers
 
 			return PartialView("_ApplicantList", applicants);
 		}
+
+
+
+		//[HttpGet]
+		//public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		//{
+		//	var query = _context.JobAdvertisments
+		//		.Include(ad => ad.Company)
+		//		.AsQueryable();
+
+		//	// Filter by governorate (city)
+		//	if (!string.IsNullOrEmpty(governorate))
+		//		query = query.Where(ad => ad.governorate == governorate);
+
+		//	// Filter by job title
+		//	if (!string.IsNullOrEmpty(job))
+		//	{
+		//		if (job == "Others")
+		//		{
+		//			var knownJobs = new List<string>
+		//	{
+		//		"AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+		//		"Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+		//		"Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+		//		"Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+		//		"IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+		//		"Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+		//		"Technical Writer", "UI/UX Designer"
+		//	};
+
+		//			query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+		//		}
+		//		else
+		//		{
+		//			query = query.Where(ad => ad.jobtitle == job);
+		//		}
+		//	}
+
+		//	// Get the filtered results first (without salary filtering)
+		//	var advertisements = query
+		//		.OrderByDescending(ad => ad.CreatedDate)
+		//		.Select(ad => new CompanyAdvHomeViewModel
+		//		{
+		//			AdvertisementId = ad.Id,
+		//			CompanyId = ad.CompanyId,
+		//			CompanyName = ad.Company.UserName,
+		//			CompanyDescription = ad.Company.Description,
+		//			LogoPath = ad.Company.Logo,
+		//			JobTitle = ad.jobtitle,
+		//			Salary = ad.salary,
+		//			Location = ad.governorate,
+		//			JobTime = ad.Job_time,
+		//			CreatedDate = ad.CreatedDate,
+		//			JobDescription = ad.Jobdetail,
+		//			Requirements = ad.JobRequirements
+		//		})
+		//		.ToList();
+
+		//	// Filter by salary in memory (after data is retrieved from database)
+		//	if (!string.IsNullOrEmpty(salary))
+		//	{
+		//		if (salary.StartsWith(">"))
+		//		{
+		//			// Handle cases like ">10000", ">15000", ">20000"
+		//			if (int.TryParse(salary.Substring(1), out int minSalary))
+		//			{
+		//				advertisements = advertisements.Where(ad =>
+		//					int.TryParse(ad.Salary, out int adSalary) && adSalary > minSalary).ToList();
+		//			}
+		//		}
+		//		else if (salary.Contains("-"))
+		//		{
+		//			// Handle salary ranges like "2000-4000", "4000-6000", etc.
+		//			var parts = salary.Split('-');
+		//			if (parts.Length == 2 &&
+		//				int.TryParse(parts[0], out int min) &&
+		//				int.TryParse(parts[1], out int max))
+		//			{
+		//				advertisements = advertisements.Where(ad =>
+		//					int.TryParse(ad.Salary, out int adSalary) &&
+		//					adSalary >= min && adSalary <= max).ToList();
+		//			}
+		//		}
+		//	}
+
+		//	return PartialView("_CompanyAdList", advertisements);
+		//}
+
+		//[HttpGet]
+		//public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		//{
+		//	var query = _context.JobAdvertisments
+		//		.Include(ad => ad.Company)
+		//		.AsQueryable();
+
+		//	// Filter by governorate (city)
+		//	if (!string.IsNullOrEmpty(governorate))
+		//		query = query.Where(ad => ad.governorate == governorate);
+
+		//	// Filter by job title
+		//	if (!string.IsNullOrEmpty(job))
+		//	{
+		//		if (job == "Others")
+		//		{
+		//			var knownJobs = new List<string>
+		//	{
+		//		"AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+		//		"Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+		//		"Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+		//		"Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+		//		"IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+		//		"Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+		//		"Technical Writer", "UI/UX Designer"
+		//	};
+
+		//			query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+		//		}
+		//		else
+		//		{
+		//			query = query.Where(ad => ad.jobtitle == job);
+		//		}
+		//	}
+
+		//	// Get the filtered results first (without salary filtering)
+		//	var advertisements = query
+		//		.OrderByDescending(ad => ad.CreatedDate)
+		//		.Select(ad => new CompanyAdvHomeViewModel
+		//		{
+		//			AdvertisementId = ad.Id,
+		//			CompanyId = ad.CompanyId,
+		//			CompanyName = ad.Company.UserName,
+		//			CompanyDescription = ad.Company.Description,
+		//			LogoPath = ad.Company.Logo,
+		//			JobTitle = ad.jobtitle,
+		//			Salary = ad.salary,
+		//			Location = ad.governorate,
+		//			JobTime = ad.Job_time,
+		//			CreatedDate = ad.CreatedDate,
+		//			JobDescription = ad.Jobdetail,
+		//			Requirements = ad.JobRequirements
+		//		})
+		//		.ToList();
+
+		//	// Filter by salary in memory (after data is retrieved from database)
+		//	if (!string.IsNullOrEmpty(salary))
+		//	{
+		//		if (salary.StartsWith(">"))
+		//		{
+		//			// Handle cases like ">10000", ">15000", ">20000"
+		//			if (int.TryParse(salary.Substring(1), out int minSalary))
+		//			{
+		//				advertisements = advertisements.Where(ad =>
+		//				{
+		//					// Try to parse the salary as a single number
+		//					if (int.TryParse(ad.Salary, out int adSalary))
+		//					{
+		//						return adSalary > minSalary;
+		//					}
+		//					// If it's a range like "5000-8000", take the minimum value
+		//					else if (ad.Salary.Contains("-"))
+		//					{
+		//						var parts = ad.Salary.Split('-');
+		//						if (parts.Length == 2 && int.TryParse(parts[0], out int rangeSalary))
+		//						{
+		//							return rangeSalary > minSalary;
+		//						}
+		//					}
+		//					return false;
+		//				}).ToList();
+		//			}
+		//		}
+		//		else if (salary.Contains("-"))
+		//		{
+		//			// Handle salary ranges like "2000-4000", "4000-6000", etc.
+		//			var parts = salary.Split('-');
+		//			if (parts.Length == 2 &&
+		//				int.TryParse(parts[0], out int min) &&
+		//				int.TryParse(parts[1], out int max))
+		//			{
+		//				advertisements = advertisements.Where(ad =>
+		//				{
+		//					// Try to parse the salary as a single number
+		//					if (int.TryParse(ad.Salary, out int adSalary))
+		//					{
+		//						return adSalary >= min && adSalary <= max;
+		//					}
+		//					// If it's a range like "5000-8000", check if ranges overlap
+		//					else if (ad.Salary.Contains("-"))
+		//					{
+		//						var adParts = ad.Salary.Split('-');
+		//						if (adParts.Length == 2 &&
+		//							int.TryParse(adParts[0], out int adMin) &&
+		//							int.TryParse(adParts[1], out int adMax))
+		//						{
+		//							// Check if ranges overlap
+		//							return adMin <= max && adMax >= min;
+		//						}
+		//					}
+		//					return false;
+		//				}).ToList();
+		//			}
+		//		}
+		//	}
+
+		//	return PartialView("_CompanyAdList", advertisements);
+		//}
+
+		[HttpGet]
+		public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		{
+			var query = _context.JobAdvertisments
+				.Include(ad => ad.Company)
+				.AsQueryable();
+
+			// Filter by governorate (city)
+			if (!string.IsNullOrEmpty(governorate))
+				query = query.Where(ad => ad.governorate == governorate);
+
+			// Filter by job title
+			if (!string.IsNullOrEmpty(job))
+			{
+				if (job == "Others")
+				{
+					var knownJobs = new List<string>
+			{
+				"AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+				"Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+				"Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+				"Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+				"IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+				"Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+				"Technical Writer", "UI/UX Designer"
+			};
+					query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+				}
+				else
+				{
+					query = query.Where(ad => ad.jobtitle == job);
+				}
+			}
+
+			// Filter by salary directly in the database query for exact matching
+			if (!string.IsNullOrEmpty(salary))
+			{
+				query = query.Where(ad => ad.salary == salary);
+			}
+
+			// Get the filtered results
+			var advertisements = query
+				.OrderByDescending(ad => ad.CreatedDate)
+				.Select(ad => new CompanyAdvHomeViewModel
+				{
+					AdvertisementId = ad.Id,
+					CompanyId = ad.CompanyId,
+					CompanyName = ad.Company.UserName,
+					CompanyDescription = ad.Company.Description,
+					LogoPath = ad.Company.Logo,
+					JobTitle = ad.jobtitle,
+					Salary = ad.salary,
+					Location = ad.governorate,
+					JobTime = ad.Job_time,
+					CreatedDate = ad.CreatedDate,
+					JobDescription = ad.Jobdetail,
+					Requirements = ad.JobRequirements
+				})
+				.ToList();
+
+			return PartialView("_CompanyAdList", advertisements);
+		}
+
 
 
 

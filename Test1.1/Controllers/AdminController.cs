@@ -207,17 +207,27 @@ namespace Test1._1.Controllers
                 return NotFound();
 
             // 1. إرسال الإيميل
-            var subject = "Company Rejection Notification";
-            var body = $"Dear {model.CompanyName},\n\n" +
-                       $"Thank you for registering with Jobify.\n\n" +
-                       $"We regret to inform you that your company registration has been rejected for the following reason:\n\n" +
-                       $"{model.ReportMessage}\n\n" +
-                       $"If you address the mentioned issues or make the necessary changes, you are welcome to contact us for further review.\n\n" +
-                       $"Best regards,\n" +
-                       $"The Jobify Team";
+            string subject = "Company Rejection Notification";
+            // HTML body
+            var body = $@"
+                    <p>Dear <strong>{model.CompanyName}</strong>,</p>
 
+                    <p>Thank you for registering with <strong>Jobify</strong>.</p>
+
+                    <p>We regret to inform you that your company registration has been <strong style='color:red;'>rejected</strong> for the following reason:</p>
+
+                    <blockquote style='color: #b30000; font-style: italic;'>
+                        {model.ReportMessage}
+                    </blockquote>
+
+                    <p>If you address the mentioned issues or make the necessary changes, you are welcome to contact us for further review.</p>
+
+                    <p>Best regards,<br/>
+                    <strong>The Jobify Team</strong></p>
+                    ";
 
             await SendEmailAsync(model.CompanyEmail, subject, body);
+
 
             // 2. تحديث حالة الشركة
             company.status = "Rejected";
@@ -240,7 +250,7 @@ namespace Test1._1.Controllers
                 From = new MailAddress(_smtpSettings.Email, "Jobify Team"),
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = false,
+                IsBodyHtml = true,
             };
 
             mailMessage.To.Add(toEmail);

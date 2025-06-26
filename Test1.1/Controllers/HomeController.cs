@@ -38,9 +38,10 @@ namespace Test1._1.Controllers
         public IActionResult Index()
         {
             var applicants = _context.Applicants
-                .Take(4)
+                .Take(5)
                 .Select(a => new ApplicantCardHomeViewModel
                 {
+                    Id = a.Id, // Add this line
                     Name = a.UserName,
                     LastName = a.lastName,
                     FieldWork = a.Field_work,
@@ -253,21 +254,30 @@ namespace Test1._1.Controllers
         {
             try
             {
+                // Handle the "Other" field work selection
+                if (model.Field_work == "Other" && !string.IsNullOrWhiteSpace(model.Field_work_other))
+                {
+                    model.Field_work = model.Field_work_other.Trim();
+                }
+
+                // Remove Field_work_other from ModelState validation if not needed
+                ModelState.Remove("Field_work_other");
+
                 if (ModelState.IsValid)
                 {
-                    // cv must be pdf or image
+                    // cv must be pdf
                     bool IsValidCV(IFormFile file)
                     {
                         if (file == null || file.Length == 0)
                             return false;
 
                         string extension = Path.GetExtension(file.FileName);
-                        return Regex.IsMatch(extension, @"\.(pdf|jpg|jpeg|png)$", RegexOptions.IgnoreCase);
+                        return Regex.IsMatch(extension, @"\.(pdf)$", RegexOptions.IgnoreCase);
                     }
 
                     if (!IsValidCV(model.CVFile))
                     {
-                        ModelState.AddModelError("CVFile", "CV must be in .pdf, .jpg, .jpeg, or .png format.");
+                        ModelState.AddModelError("CVFile", "CV must be in .pdf format.");
                     }
 
                     // ProfileImage must be image
@@ -280,9 +290,9 @@ namespace Test1._1.Controllers
                         return Regex.IsMatch(extension, @"\.(jpg|jpeg|png)$", RegexOptions.IgnoreCase);
                     }
 
-                    if (!IsValidCV(model.ProfileImage))
+                    if (!IsValidProfileImage(model.ProfileImage))
                     {
-                        ModelState.AddModelError("ProfileImage", "Profile_image must be in .jpg, .jpeg, or .png format.");
+                        ModelState.AddModelError("ProfileImage", "Profile image must be in .jpg, .jpeg, or .png format.");
                     }
 
                     if (!ModelState.IsValid)
@@ -303,10 +313,10 @@ namespace Test1._1.Controllers
                         });
                     }
 
-                    // ✅ التأكد من وجود مجلد التخزين
+                    // ✅ Ensure uploads folder exists
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
 
-                    // ✅ دالة لحفظ الملف وإرجاع المسار
+                    // ✅ Function to save file and return path
                     string SaveFile(IFormFile? file)
                     {
                         if (file == null || file.Length == 0)
@@ -326,18 +336,18 @@ namespace Test1._1.Controllers
                         return Path.Combine("uploads", fileName);
                     }
 
-                    // ✅ حفظ الـ CV
+                    // ✅ Save files
                     string cvPath = SaveFile(model.CVFile);
                     string ProfileImagePath = SaveFile(model.ProfileImage);
 
-                    // ✅ إنشاء كائن `Applicant`
+                    // ✅ Create Applicant object
                     Applicant applicant = new Applicant
                     {
                         UserName = model.Fname,
                         lastName = model.Lname,
                         PhoneNumber = model.Phone,
                         Email = model.Email,
-                        Field_work = model.Field_work,
+                        Field_work = model.Field_work, // This will now contain the custom value if "Other" was selected
                         Years_experience = model.Years_experience,
                         address = model.Address,
                         CV = cvPath,
@@ -373,7 +383,7 @@ namespace Test1._1.Controllers
                 ModelState.AddModelError(string.Empty, "An error occurred while processing your request. Please try again.");
                 // You might want to log the actual exception details here
             }
-            
+
             // If we get here, something failed, return to signup with a new SignUpViewModel
             return View("SignUp", new SignUpViewModel
             {
@@ -446,4 +456,3 @@ namespace Test1._1.Controllers
         }
     }
 }
-

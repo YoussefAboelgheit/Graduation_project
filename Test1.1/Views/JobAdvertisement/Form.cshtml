@@ -217,7 +217,28 @@
             }
             else
             {
-                @if (User.IsInRole("Company"))
+                @if (isCompanyOwner && ViewBag.ApplicantResponses != null)
+                {
+                    <div class="questions-section">
+                        <h3>@ViewBag.ApplicantName's Response:</h3>
+
+                        @foreach (var question in Model.Questions)
+                        {
+                            var answer = ViewBag.ApplicantResponses.ContainsKey(question.Id) ?
+                            ViewBag.ApplicantResponses[question.Id] : "No answer provided";
+
+                            <div class="question-item">
+                                <div class="question-text">@question.Text</div>
+                                <div class="existing-answer">
+                                    @answer
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                if (User.IsInRole("Company"))
                 {
                     <div class="form-group">
                         <label>Field of Work:</label>
@@ -300,6 +321,7 @@
                             @Html.AntiForgeryToken()
                         </form>
                     </div>
+                }
                 }
             }
         </div>

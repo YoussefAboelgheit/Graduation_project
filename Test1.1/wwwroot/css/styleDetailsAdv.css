@@ -115,7 +115,6 @@ table {
 }
 thead th {
   background: #162447;
-  cursor: pointer;
   padding: 8px;
   text-align: left;
   position: relative;
@@ -123,13 +122,13 @@ thead th {
   font-weight: bolder;
 }
 thead th .arrow {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 5px;
-  vertical-align: middle;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    vertical-align: middle;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
 }
 thead th.sort-asc .arrow {
   border-bottom: 7px solid #666;
@@ -164,11 +163,11 @@ button {
   color: #fff;
   }
 button.delete {
-  background: #e74c3c;
+  background: #ff6a00;
   color: #fff;
 }
 button.delete:hover {
-  background: #c62828;
+  background: #ffd800;
 }
 button.accept {
   background: #2ecc71;
@@ -190,3 +189,36 @@ button + button {
   margin-left: 20px;
 }
 
+/* Loading state */
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #162447;
+}
+
+/* Error state */
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #e43f5a;
+}
+
+/* No applicants message */
+.no-applicants {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    .table-container {
+        width: 95%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

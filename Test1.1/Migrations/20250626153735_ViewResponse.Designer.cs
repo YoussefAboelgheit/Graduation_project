@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250625013042_hello")]
-    partial class hello
+    [Migration("20250626153735_ViewResponse")]
+    partial class ViewResponse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -201,12 +201,23 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("JobAdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("JobAdvertismentId");
+
+                    b.HasIndex("ApplicantId", "JobAdvertismentId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ApplicantAdvertisment_Unique");
 
                     b.ToTable("ApplicantAdvertisments", (string)null);
                 });
@@ -687,7 +698,15 @@ namespace Test1._1.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
+                        .WithMany("Applications")
+                        .HasForeignKey("JobAdvertismentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Applicant");
+
+                    b.Navigation("JobAdvertisment");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
@@ -821,6 +840,8 @@ namespace Test1._1.Migrations
 
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Questions");
                 });
 

@@ -100,15 +100,14 @@ namespace Test1._1.Controllers
         }
 
         [Authorize]
-        // GET: View advertisement details
-        public async Task<IActionResult> Form(int id, bool viewMode = false)
+        public async Task<IActionResult> Form(int id, bool viewMode = false, string applicantId = null)
         {
             var jobAd = await _context.JobAdvertisments
-            .Include(j => j.Company)
-            .Include(j => j.Questions)
-            .Include(j => j.Applications)
-                .ThenInclude(a => a.Answers)
-            .FirstOrDefaultAsync(j => j.Id == id);
+                .Include(j => j.Company)
+                .Include(j => j.Questions)
+                .Include(j => j.Applications)
+                    .ThenInclude(a => a.Answers)
+                .FirstOrDefaultAsync(j => j.Id == id);
 
             if (jobAd == null)
             {
@@ -116,7 +115,7 @@ namespace Test1._1.Controllers
             }
 
             // Get current user's ID
-            var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             // Check if user is an applicant OR the company owner of this job ad
             bool isApplicant = User.IsInRole("Applicant");
@@ -124,7 +123,18 @@ namespace Test1._1.Controllers
 
             if (!isApplicant && !isCompanyOwner)
             {
-                return Forbid(); // Return 403 Forbidden if user is neither applicant nor company owner
+                return Forbid();
+            }
+
+            // If company owner is viewing an applicant's responses
+            if (isCompanyOwner && !string.IsNullOrEmpty(applicantId))
+            {
+                var application = jobAd.Applications.FirstOrDefault(a => a.ApplicantId == applicantId);
+                if (application != null)
+                {
+                    ViewBag.ApplicantResponses = application.Answers.ToDictionary(a => a.QuestionId, a => a.Response);
+                    ViewBag.ApplicantName = _context.Users.FirstOrDefault(u => u.Id == applicantId)?.UserName;
+                }
             }
 
             ViewBag.ViewMode = viewMode;
@@ -298,6 +308,84 @@ namespace Test1._1.Controllers
                 .AnyAsync(a => a.JobAdvertismentId == jobId &&
                               a.ApplicantId == userId &&
                               !a.IsDeleted);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateApplicationStatus([FromBody] ApplicationStatusUpdate model)
+        {
+            try
+            {
+                var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (currentUserId == null)
+                {
+                    return Unauthorized();
+                }
+
+                var application = await _context.ApplicantAdvertisments
+                    .Include(a => a.JobAdvertisment)
+                    .FirstOrDefaultAsync(a => a.Id == model.applicationId);
+
+                if (application == null || application.JobAdvertisment.CompanyId != currentUserId)
+                {
+                    return NotFound();
+                }
+
+                application.Status = model.status;
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the application status.");
+            }
+        }
+
+        public class ApplicationStatusUpdate
+        {
+            public int applicationId { get; set; }
+            public string status { get; set; }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetApplicants(int jobId)
+        {
+            var jobAd = await _context.JobAdvertisments
+                .Include(j => j.Applications)
+                    .ThenInclude(a => a.Applicant)
+                .FirstOrDefaultAsync(j => j.Id == jobId);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            var result = new
+            {
+                Accepted = jobAd.Applications
+                    .Where(a => a.Status == "Accepted" && !a.IsDeleted)
+                    .Select(a => new
+                    {
+                        Id = a.Id,
+                        ApplicantId = a.ApplicantId,
+                        Name = a.Applicant.UserName,
+                        FieldOfWork = a.Applicant.Field_work,
+                        YearsExperience = a.Applicant.Years_experience
+                    }),
+                Pending = jobAd.Applications
+                    .Where(a => a.Status == "Pending" && !a.IsDeleted)
+                    .Select(a => new
+                    {
+                        Id = a.Id,
+                        ApplicantId = a.ApplicantId,
+                        Name = a.Applicant.UserName,
+                        FieldOfWork = a.Applicant.Field_work,
+                        YearsExperience = a.Applicant.Years_experience
+                    })
+            };
+
+            return Json(result);
         }
 
     }

@@ -201,6 +201,10 @@ namespace Test1._1.Migrations
                     b.Property<int>("JobAdvertismentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("DATETIME");
 

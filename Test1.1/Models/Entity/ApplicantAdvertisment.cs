@@ -9,6 +9,7 @@
         public JobAdvertisment JobAdvertisment { get; set; }
         public DateTime SubmissionDate { get; set; }
         public bool IsDeleted { get; set; }
+        public string Status { get; set; } = "Pending"; // New: Pending/Accepted/Rejected
         public ICollection<Answer> Answers { get; set; } = new List<Answer>();
     }
 }

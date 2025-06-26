@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class TrySomething : Migration
+    public partial class ViewResponse : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -423,7 +423,8 @@ namespace Test1._1.Migrations
                     ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     JobAdvertismentId = table.Column<int>(type: "int", nullable: false),
                     SubmissionDate = table.Column<DateTime>(type: "DATETIME", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

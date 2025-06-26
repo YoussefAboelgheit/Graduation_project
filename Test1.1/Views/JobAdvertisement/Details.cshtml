@@ -5,6 +5,8 @@
     Layout = null;
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     var hasApplied = Model.Applications?.Any(a => a.ApplicantId == currentUserId && !a.IsDeleted) ?? false;
+    var acceptedApplicants = Model.Applications?.Where(a => a.Status == "Accepted" && !a.IsDeleted).ToList();
+    var pendingApplicants = Model.Applications?.Where(a => a.Status == "Pending" && !a.IsDeleted).ToList();
 }
 
 <!DOCTYPE html>
@@ -16,6 +18,7 @@
     <link rel="stylesheet" href="~/css/styleDetailsAdv.css">
 </head>
 <body>
+    @Html.AntiForgeryToken()
 
     <div class="ad-container">
         <div class="ad-content">
@@ -87,49 +90,81 @@
     @if (Model.Company.Id == currentUserId)
     {
         <main>
-            <!-- Table A------------------------------------------------------------------ -->
+            <!-- Table A: Accepted applicants -->
             <section class="table-container">
                 <h2>Accepted applicants</h2>
                 <table id="table-a">
                     <thead>
                         <tr>
                             <th data-field="name">Name <span class="arrow"></span></th>
-                            <th data-field="age">Age <span class="arrow"></span></th>
-                            <th data-field="city">City <span class="arrow"></span></th>
+                            <th data-field="fieldOfWork">Field of work <span class="arrow"></span></th>
+                            <th data-field="yearsExperience">Experience <span class="arrow"></span></th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        @foreach (var applicant in acceptedApplicants)
+                        {
+                            <tr data-applicant-id="@applicant.ApplicantId" data-application-id="@applicant.Id">
+                                <td>
+                                <a asp-controller="ApplicantInfo"
+                                   asp-action="Index"
+                                   asp-route-id="@applicant.ApplicantId"
+                                   style="color: inherit; text-decoration: none;">
+                                    @applicant.Applicant.UserName @applicant.Applicant.lastName
+                                </a>
+                                </td>
+                                <td>@applicant.Applicant.Field_work</td>
+                                <td>@applicant.Applicant.Years_experience</td>
+                                <td>
+                                    <button class="delete">Unaccept</button>
+                                    <button class="View" onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id, applicantId = applicant.ApplicantId })'">View response</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </section>
 
-            <!-- Table B------------------------------------------------------------------ -->
+            <!-- Table B: All Applicants -->
             <section class="table-container">
                 <h2>All Applicants</h2>
                 <table id="table-b">
                     <thead>
                         <tr>
                             <th data-field="name">Name <span class="arrow"></span></th>
-                            <th data-field="age">Age <span class="arrow"></span></th>
-                            <th data-field="city">City <span class="arrow"></span></th>
+                            <th data-field="fieldOfWork">Field of work <span class="arrow"></span></th>
+                            <th data-field="yearsExperience">Experience <span class="arrow"></span></th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        @foreach (var applicant in pendingApplicants)
+                        {
+                            <tr data-applicant-id="@applicant.ApplicantId" data-application-id="@applicant.Id">
+                                <td>
+                                    <a asp-controller="ApplicantInfo"
+                                       asp-action="Index"
+                                       asp-route-id="@applicant.ApplicantId"
+                                       style="color: inherit; text-decoration: none;">
+                                        @applicant.Applicant.UserName @applicant.Applicant.lastName
+                                    </a>
+                                </td>
+                                <td>@applicant.Applicant.Field_work</td>
+                                <td>@applicant.Applicant.Years_experience</td>
+                                <td>
+                                    <button class="accept">Accept</button>
+                                    <button class="reject">Reject</button>
+                                    <button class="View" onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id, applicantId = applicant.ApplicantId })'">View response</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </section>
         </main>
     }
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
 
-    </div>
-    <script src="~/js/home_index.js"></script>
+    <script src="~/js/scriptDetailsAdv.js"></script>
 </body>
 </html>

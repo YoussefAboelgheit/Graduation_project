@@ -23,7 +23,12 @@ namespace Test1._1.Controllers
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction("ErrorPage");
 
-            var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id);
+            var applicant = _context.Applicants
+                .Include(a => a.ApplicantAdvertisments)
+                .ThenInclude(aa => aa.JobAdvertisment)
+                .ThenInclude(ja => ja.Company)
+                .FirstOrDefault(a => a.Id == id);
+
             if (applicant == null)
                 return NotFound();
 

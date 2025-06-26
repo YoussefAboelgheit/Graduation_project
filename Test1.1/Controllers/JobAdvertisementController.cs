@@ -3,6 +3,7 @@ using Test1._1.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using Test1._1.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Test1._1.Controllers
 {
@@ -100,12 +101,14 @@ namespace Test1._1.Controllers
 
         [Authorize]
         // GET: View advertisement details
-        public async Task<IActionResult> Form(int id)
+        public async Task<IActionResult> Form(int id, bool viewMode = false)
         {
             var jobAd = await _context.JobAdvertisments
-                .Include(j => j.Company)
-                .Include(j => j.Questions)
-                .FirstOrDefaultAsync(j => j.Id == id);
+            .Include(j => j.Company)
+            .Include(j => j.Questions)
+            .Include(j => j.Applications)
+                .ThenInclude(a => a.Answers)
+            .FirstOrDefaultAsync(j => j.Id == id);
 
             if (jobAd == null)
             {
@@ -124,6 +127,7 @@ namespace Test1._1.Controllers
                 return Forbid(); // Return 403 Forbidden if user is neither applicant nor company owner
             }
 
+            ViewBag.ViewMode = viewMode;
             return View(jobAd);
         }
 
@@ -131,9 +135,11 @@ namespace Test1._1.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var jobAd = await _context.JobAdvertisments
-                .Include(j => j.Company)
-                .Include(j => j.Questions)
-                .FirstOrDefaultAsync(j => j.Id == id);
+            .Include(j => j.Company)
+            .Include(j => j.Questions)
+            .Include(j => j.Applications.Where(a => !a.IsDeleted))
+                .ThenInclude(a => a.Applicant)
+            .FirstOrDefaultAsync(j => j.Id == id);
 
             if (jobAd == null)
             {
@@ -169,5 +175,130 @@ namespace Test1._1.Controllers
                 questions = jobAd.Questions?.Select(q => new { id = q.Id, text = q.Text, type = q.Type }).ToList()
             });
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Apply(int id)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (currentUserId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var jobAd = await _context.JobAdvertisments
+                .Include(j => j.Company)
+                .Include(j => j.Questions)
+                .Include(j => j.Applications)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            // Check if user already applied
+            var existingApplication = await _context.ApplicantAdvertisments
+                .FirstOrDefaultAsync(a => a.ApplicantId == currentUserId &&
+                                          a.JobAdvertismentId == id &&
+                                          !a.IsDeleted);
+
+            if (existingApplication != null)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            // If no custom questions, apply directly
+            if (jobAd.Questions == null || !jobAd.Questions.Any())
+            {
+                var application = new ApplicantAdvertisment
+                {
+                    ApplicantId = currentUserId,
+                    JobAdvertismentId = id,
+                    SubmissionDate = DateTime.Now,
+                    IsDeleted = false
+                };
+
+                _context.ApplicantAdvertisments.Add(application);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            // If there are custom questions, redirect to form
+            return RedirectToAction("Form", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitApplication(int jobId, Dictionary<int, string> answers)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (currentUserId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var jobAd = await _context.JobAdvertisments
+                .Include(j => j.Questions)
+                .Include(j => j.Applications)
+                .FirstOrDefaultAsync(j => j.Id == jobId);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            // Check if user already applied
+            var existingApplication = await _context.ApplicantAdvertisments
+                .FirstOrDefaultAsync(a => a.ApplicantId == currentUserId &&
+                                          a.JobAdvertismentId == jobId &&
+                                          !a.IsDeleted);
+
+            if (existingApplication != null)
+            {
+                return RedirectToAction("Details", new { id = jobId });
+            }
+
+            // Create new application
+            var application = new ApplicantAdvertisment
+            {
+                ApplicantId = currentUserId,
+                JobAdvertismentId = jobId,
+                SubmissionDate = DateTime.Now,
+                IsDeleted = false
+            };
+
+            _context.ApplicantAdvertisments.Add(application);
+            await _context.SaveChangesAsync();
+
+            // Save answers if provided
+            if (answers != null && answers.Any())
+            {
+                foreach (var answer in answers)
+                {
+                    var answerEntity = new Answer
+                    {
+                        ApplicantAdvertismentId = application.Id,
+                        QuestionId = answer.Key,
+                        Response = answer.Value
+                    };
+                    _context.Answers.Add(answerEntity);
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Details", new { id = jobId });
+        }
+
+        // Helper method to check if user has applied
+        private async Task<bool> HasUserApplied(int jobId, string userId)
+        {
+            return await _context.ApplicantAdvertisments
+                .AnyAsync(a => a.JobAdvertismentId == jobId &&
+                              a.ApplicantId == userId &&
+                              !a.IsDeleted);
+        }
+
     }
 }

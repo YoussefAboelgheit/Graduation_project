@@ -42,15 +42,29 @@
             </div>
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                <span class="welcome-text">Welcome, @User.Identity.Name</span>
+                <span class="welcome-text">
+                    @{
+                        string typeOfUser = "ApplicantInfo";
+                    }
+                    @if (User.IsInRole("Company"))
+                    {
+                        typeOfUser = "CompanyInfo";
+                    }
+                    <a asp-controller="@typeOfUser"
+                       asp-action="Index"
+                       asp-route-id="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)"
+                       style="color: inherit; text-decoration: none;">
+                    Welcome, @User.Identity.Name
+                    </a>
+                </span>
                 <form asp-controller="Home" asp-action="Logout" method="post">
-                    <button type="submit" class="btn">Logout</button>
+                    <button type="submit" class="sign_up">Log out</button>
                 </form>
             }
             else
             {
-                <a asp-controller="Home" asp-action="SignIn" class="btn log-in">Log In</a>
-                <a asp-controller="Home" asp-action="SignUp" class="btn sign_up">SignUp</a>
+                <a asp-controller="Home" asp-action="SignIn" class="btn log-in">Log in</a>
+                <a asp-controller="Home" asp-action="SignUp" class="btn sign_up">Sign up</a>
             }
 
         </div>
@@ -169,9 +183,9 @@
 
 
               <div class="filter-item">
-                  <label for="job">Job:</label>
+                  <label for="job">Field of work:</label>
                   <select id="job">
-                      <option value="">Select Job</option>
+                      <option value="">Select field of work</option>
                       <option>AI Engineer</option>
                       <option>AR/VR Developer</option>
                       <option>Back‑End Developer</option>
@@ -196,11 +210,10 @@
                       <option>System Administrator</option>
                       <option>Technical Writer</option>
                       <option>UI/UX Designer</option>
-                      <option>Other</option>
-                      <option value="Others">Others</option>
+                      <option value="Other">Other</option>
                   </select>
               </div>
-              <button class="ie"> Apply</button>
+              <button class="ie">Apply</button>
           </div>
       </div>
   </div>
@@ -221,42 +234,42 @@
             <span class="section-title" id="Advertisements">Advertisements</span>
             <div class="filters">
                 <div class="filter-item">
-                    <label for="governorate-ad">City:</label>
+                    <label for="governorate-ad">Governorate:</label>
                     <select id="governorate-ad">
                         <option value="">Select Governorate</option>
-                        <option value="Cairo">Cairo</option>
-                        <option value="Giza">Giza</option>
                         <option value="Alexandria">Alexandria</option>
-                        <option value="Qalyubia">Qalyubia</option>
-                        <option value="Sharqia">Sharqia</option>
-                        <option value="Dakahlia">Dakahlia</option>
-                        <option value="Beheira">Beheira</option>
-                        <option value="Kafr El Sheikh">Kafr El Sheikh</option>
-                        <option value="Gharbia">Gharbia</option>
-                        <option value="Monufia">Monufia</option>
-                        <option value="Fayoum">Fayoum</option>
-                        <option value="Beni Suef">Beni Suef</option>
-                        <option value="Minya">Minya</option>
                         <option value="Assiut">Assiut</option>
-                        <option value="Sohag">Sohag</option>
-                        <option value="Qena">Qena</option>
-                        <option value="Luxor">Luxor</option>
                         <option value="Aswan">Aswan</option>
-                        <option value="Red Sea">Red Sea</option>
-                        <option value="New Valley">New Valley</option>
-                        <option value="Matrouh">Matrouh</option>
-                        <option value="North Sinai">North Sinai</option>
-                        <option value="South Sinai">South Sinai</option>
-                        <option value="Port Said">Port Said</option>
-                        <option value="Suez">Suez</option>
-                        <option value="Ismailia">Ismailia</option>
+                        <option value="Beheira">Beheira</option>
+                        <option value="Beni Suef">Beni Suef</option>
+                        <option value="Cairo">Cairo</option>
+                        <option value="Dakahlia">Dakahlia</option>
                         <option value="Damietta">Damietta</option>
+                        <option value="Fayoum">Fayoum</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Giza">Giza</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                        <option value="Luxor">Luxor</option>
+                        <option value="Matrouh">Matrouh</option>
+                        <option value="Minya">Minya</option>
+                        <option value="Monufia">Monufia</option>
+                        <option value="New Valley">New Valley</option>
+                        <option value="North Sinai">North Sinai</option>
+                        <option value="Port Said">Port Said</option>
+                        <option value="Qalyubia">Qalyubia</option>
+                        <option value="Qena">Qena</option>
+                        <option value="Red Sea">Red Sea</option>
+                        <option value="Sharqia">Sharqia</option>
+                        <option value="Sohag">Sohag</option>
+                        <option value="South Sinai">South Sinai</option>
+                        <option value="Suez">Suez</option>
                     </select>
                 </div>
                 <div class="filter-item">
-                    <label for="job-ad">Job:</label>
+                    <label for="job-ad">Field of work:</label>
                     <select id="job-ad">
-                        <option value="">Select Job</option>
+                        <option value="">Select field of work</option>
                         <option>AI Engineer</option>
                         <option>AR/VR Developer</option>
                         <option>Back‑End Developer</option>
@@ -297,6 +310,7 @@
                         <option value=">20000">More than 20000</option>
                     </select>
                 </div>
+                <button class="aa">Apply</button>
             </div>
         </div>
     </div>

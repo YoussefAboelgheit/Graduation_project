@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Applicant Profile";
     Layout = null;
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
 <!DOCTYPE html>
@@ -27,12 +28,18 @@
                 <a href="#payment">Payment</a>
             </nav>
             <div class="user-info">
-                <img src="~/@Model.Profile_image" alt="User Photo" class="user-photo" />
+                @if (Model.Id == currentUserId)
+                {
+                    <img src="~/@Model.Profile_image" alt="User Photo" class="user-photo" />
+                }
                 <span class="user-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
                     @Model.UserName @Model.lastName
                 </span>
             </div>
-            <a href="@Url.Action("Edit", "ApplicantInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            @if (Model.Id == currentUserId)
+            {
+                <a href="@Url.Action("Edit", "ApplicantInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            }
         </div>
     </header>
 
@@ -68,27 +75,47 @@
     </div>
 
     <!-- ============================ Advertisements ============================ -->
-    <h2 id="Advertisements">Advertisements</h2>
-    <div class="ads-container">
-        @for (int i = 0; i < 3; i++)
+    @if (Model.Id == currentUserId)
+    {
+        <h2 id="Advertisements">Applied Advertisements</h2>
+        <div class="ads-container">
+        @if (Model.ApplicantAdvertisments != null && Model.ApplicantAdvertisments.Any())
         {
-            <div class="ad">
-                <div class="ad-image">
-                    @*<img src="~/pic/فلسطين2 .jpg" alt="Company Logo">*@
+            @foreach (var application in Model.ApplicantAdvertisments.Where(a => !a.IsDeleted))
+            {
+                var jobAd = application.JobAdvertisment;
+                <div class="ad">
+                        <div class="ad-image">
+                            @if (!string.IsNullOrEmpty(jobAd.Company?.Logo))
+                            {
+                                <a href="@Url.Action("Index", "CompanyInfo", new { id = jobAd.Company.Id })">
+                                    <img src="~/@jobAd.Company.Logo" alt="Company Logo" style="cursor: pointer;">
+                                </a>
+                            }
+                        </div>
+                    <div class="ad-content">
+                        <h3 class="company-name">@jobAd.Company?.UserName</h3>
+                        <p class="ad-details">
+                            <strong>@jobAd.jobtitle</strong><br>
+                            @jobAd.governorate - @jobAd.Job_time<br>
+                            Salary: @jobAd.salary
+                        </p>
+                        <a href="@Url.Action("Details", "JobAdvertisement", new { id = jobAd.Id })" class="details-btn">View Details</a>
+                    </div>
                 </div>
-                <div class="ad-content">
-                    <h3 class="company-name">Mza.company</h3>
-                    <p class="ad-details">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
+            }
         }
-    </div>
+        else
+        {
+                <p style="text-align: center; color: #ccc; font-style: italic;">You haven't applied to any advertisements yet.</p>
+        }
+        </div>
 
-    <!-- Payment Section -->
-    <h2 id="payment">Payment</h2>
+        <!-- Payment Section -->
+        <h2 id="payment">Payment</h2>
 
-    <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
+        <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
 
+    }
 </body>
 </html>

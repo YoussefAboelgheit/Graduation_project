@@ -11,19 +11,31 @@ namespace Test1._1.Models.Configration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
 
-
             builder.Property(x => x.SubmissionDate)
                 .HasColumnType("DATETIME")
                 .IsRequired();
 
+            builder.Property(x => x.JobAdvertismentId)
+                .IsRequired();
 
+            // Relationship with Applicant
             builder.HasOne(x => x.Applicant)
                    .WithMany(x => x.ApplicantAdvertisments)
                    .HasForeignKey(x => x.ApplicantId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            builder.ToTable("ApplicantAdvertisments");
+            // Relationship with JobAdvertisment
+            builder.HasOne(x => x.JobAdvertisment)
+                   .WithMany(x => x.Applications)
+                   .HasForeignKey(x => x.JobAdvertismentId)
+                   .OnDelete(DeleteBehavior.NoAction);
 
+            // Composite unique index to prevent duplicate applications
+            builder.HasIndex(x => new { x.ApplicantId, x.JobAdvertismentId })
+                   .IsUnique()
+                   .HasDatabaseName("IX_ApplicantAdvertisment_Unique");
+
+            builder.ToTable("ApplicantAdvertisments");
         }
     }
 }

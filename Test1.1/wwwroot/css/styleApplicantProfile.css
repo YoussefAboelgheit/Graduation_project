@@ -41,6 +41,9 @@ body {
     align-items: center;
 }
 
+.user-name{
+    margin-right: 10px;
+}
 .user-info {
     display: flex;
     align-items: center;
@@ -69,9 +72,10 @@ body {
     border-radius: 5px;
     border: 2px solid white;
     transition: 0.2s;
-    margin-right: 20px;
+    margin-right: 30px;
     font-size: larger;
     transition: 0.3s;
+    text-decoration: none;
 }
 .edit-btn:hover{
     background: #ff6363;

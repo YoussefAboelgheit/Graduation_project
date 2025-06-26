@@ -18,5 +18,6 @@
         public Company Company { get; set; }
 
         public ICollection<Question> Questions { get; set; } = new List<Question>();
+        public ICollection<ApplicantAdvertisment> Applications { get; set; } = new List<ApplicantAdvertisment>();
     }
 }

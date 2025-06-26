@@ -72,10 +72,10 @@ position: relative;
     margin-right: 20px;
     font-size: larger;
     transition: 0.3s;
+    text-decoration: none;
 }
 .log-in:hover {
     background: #ff6363;
-
 }
 
 
@@ -91,13 +91,18 @@ position: relative;
     margin-right: 20px;
     font-size: larger;
     transition: 0.3s;
-
+    text-decoration: none;
 }
 .sign_up:hover{
     background: #ff6363;
 
 }
 
+.welcome-text{
+    color: white;
+    font-size: larger;
+    padding: 5px 10px;
+}
 
 .menu-btn {
     font-size: 32px;
@@ -231,31 +236,30 @@ h1 {
 
 .applicant {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
+    max-width: 1315px;
+    margin: 0 auto;
 }
 
 .card {
     position: relative;
     overflow: hidden;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 10px;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s;
     padding: 20px;
-    margin-left: 30px;
+    margin: 0 auto;
 }
 
     .card img {
@@ -329,7 +333,6 @@ h1 {
         transform: translateY(0);
     }
 }
-
 
 
 
@@ -434,12 +437,35 @@ footer p{
     border-radius: 10px;
     border: solid #ff9595 3px;
 }
-.ie {
+.ie{
     width: 200px;
     height: 40px;
     margin-top: 12px;
     margin-left: 25px;
     font-size: 18px;
+    background: #e43f5a;
+    color: white;
+    border: white solid 2px;
+    border-radius: 5px;
+}
+
+.ie:hover {
+    background: #ff6363;
+}
+
+.aa {
+    width: 200px;
+    height: 40px;
+    margin-top: 12px;
+    margin-left: 25px;
+    font-size: 18px;
+    background: #e43f5a;
+    color: white;
+    border: white solid 2px;
+    border-radius: 5px;
+}
+.aa:hover {
+    background: #ff6363;
 }
 
 .filter-header {

@@ -23,16 +23,22 @@
         </div>
         <div class="navbar-right">
             <nav class="nav-links">
-                <a href="#Applicant_Table">Applicant Table</a>
-                <a href="#old_advs">Old Advertisements</a>
+                <a href="#old_advs">Advertisements</a>
                 <a href="#Payment">Payment</a>
 
             </nav>
             <div class="company-info">
+                @if (Model.Id == currentUserId)
+                {
+                    <img src="~/@Model.Logo" alt="User Photo" class="user-photo" />
+                }
                 <span class="company-name" style="color: #ec0027; font-size: larger;
         font-weight: 800;">@Model.UserName</span>
             </div>
-            <a href="@Url.Action("Edit", "CompanyInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            @if (Model.Id == currentUserId)
+            {
+                <a href="@Url.Action("Edit", "CompanyInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            }
         </div>
 
     </header>

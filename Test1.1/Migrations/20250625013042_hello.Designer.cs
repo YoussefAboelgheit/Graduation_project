@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Test1._1.Models.Entity;
 
@@ -11,9 +12,11 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250625013042_hello")]
+    partial class hello
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,19 +201,12 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("JobAdvertismentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JobAdvertismentId");
-
-                    b.HasIndex("ApplicantId", "JobAdvertismentId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_ApplicantAdvertisment_Unique");
+                    b.HasIndex("ApplicantId");
 
                     b.ToTable("ApplicantAdvertisments", (string)null);
                 });
@@ -691,15 +687,7 @@ namespace Test1._1.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
-                        .WithMany("Applications")
-                        .HasForeignKey("JobAdvertismentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("Applicant");
-
-                    b.Navigation("JobAdvertisment");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
@@ -833,8 +821,6 @@ namespace Test1._1.Migrations
 
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
-                    b.Navigation("Applications");
-
                     b.Navigation("Questions");
                 });
 

@@ -1,7 +1,10 @@
-﻿@model List<Test1._1.Models.Entity.Company>
+﻿@model List<Test1._1.Models.ViewModels.CompanyViewModel>
 @{
     ViewBag.Title = "Dashboard";
     Layout = null;
+    var totalCompanies = Model.Count;
+    var maxToShow = 5;
+    var companiesToShow = Model.Take(maxToShow).ToList();
 }
 
 
@@ -19,10 +22,16 @@
     </div>
     <div class="menu">
         <div class="menu-links">
-            <a href="#nacc">New Company Account</a>
+            <a asp-controller="Admin" asp-action="CompaniesAccept">Companies Accept</a>
+            <a asp-controller="Admin" asp-action="CompaniesReject"> Companies Reject</a>
+            <a asp-controller="Admin" asp-action="CompaniesPending">Companies Pending</a>
             <a href="#Modify_ads">Modify ads</a>
             <a href="#Payment">Payment</a>
         </div>
+        <span class="welcome-text">Welcome, @User.Identity.Name</span>
+        <form asp-controller="Home" asp-action="Logout" method="post">
+            <button type="submit" class="btn">Logout</button>
+        </form>
     </div>
     <div class="menu-btn">
         <i class="fa-solid fa-bars"></i>
@@ -30,11 +39,16 @@
 </nav>
 <div style="height: 100px;"></div>
 <br>
+@* <div style="border:1px solid blue" id="companyInformation">
+
+</div> *@
 <br>
 <br>
 
+
+
 <!-- ***************************************************acc******************************************************************** -->
-<section class="company-requests" id="nacc">
+@* <section class="company-requests" id="nacc">
     @if (Model != null && Model.Any())
     {
         foreach (var company in Model)
@@ -78,7 +92,58 @@
     {
         <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
     }
-</section>
+</section> *@
+
+@* 
+@foreach (var company in Model)
+{
+
+    <section class="company-requests" id="nacc">
+        <div class="company-box">
+            <!-- في اللينك دا هنحط بروفايل الشركه -->
+            <a href="#" onclick="getdata('@company.Id')" class="company-link">
+
+
+                <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
+            </a>
+            <!-- في اللينك دا هنحط بروفايل الشركه -->
+            <a href="#" onclick="getdata('@company.Id')" class="company-link company-name">@company.UserName</a>
+            <div class="action-buttons">
+                <button class="reject-btn">Reject</button>
+                <button class="accept-btn">Accept</button>
+            </div>
+        </div>
+    </section>
+}
+ *@
+
+@foreach (var company in companiesToShow)
+{
+
+    <section class="company-requests" id="nacc">
+        <div class="company-box">
+        <a asp-controller="Admin" asp-action="CompanyCheckout" asp-route-id="@company.Id" class="company-link">
+                <img src="@Url.Content("~/" + company.Logo)" alt="Company Logo" class="company-logo" />
+        </a>
+
+            <a asp-controller="Admin" asp-action="CompanyCheckout" asp-route-id="@company.Id" class="company-link company-name">
+                
+            @company.UserName
+        </a>
+        </div>
+    </section>
+}
+@if (totalCompanies > maxToShow)
+{
+    <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+        <form asp-controller="Admin" asp-action="CompaniesPending" method="get">
+            <button type="submit" class="btn btn-primary details-btn">Show More</button>
+        </form>
+    </div>
+}
+
+
+
 <!-- ***************************************************end acc******************************************************************** -->
 <br>
 <br>
@@ -287,3 +352,23 @@
 </section>
 
 <script src="~/js/indexAdmin.js"></script>
+
+<!-- سكربت AJAX مباشرة -->
+@* <script src="/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function getdata(compId) {
+        event.preventDefault();
+
+        $.ajax({
+            url: "/Admin/CompanyDetails/" + compId,
+            method: "GET",
+            success: function (result) {
+                document.getElementById("companyInformation").innerHTML = result;
+            },
+            error: function (err) {
+                console.error("Error loading company details:", err);
+            }
+        });
+    }
+</script> *@
+

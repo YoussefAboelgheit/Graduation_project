@@ -414,7 +414,14 @@ namespace Test1._1.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid password.");
@@ -422,6 +429,7 @@ namespace Test1._1.Controllers
 
             return View("SignIn", model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

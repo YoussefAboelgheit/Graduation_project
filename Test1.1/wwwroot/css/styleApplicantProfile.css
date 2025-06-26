@@ -252,3 +252,8 @@ body {
     background-color: #0056b3;
 }
 
+.Admin_profile_container{
+    font-size:larger;
+    margin-left:50px;
+    text-align:center;
+}

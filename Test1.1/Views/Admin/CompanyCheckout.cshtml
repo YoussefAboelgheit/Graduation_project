@@ -1,0 +1,34 @@
+﻿@model Test1._1.Models.ViewModels.CompanyViewModel
+@{
+    ViewData["Title"] = "CompanyCheckout";
+    Layout = null;
+}
+
+
+<link rel="stylesheet" href="~/css/styleAdmin.css" />
+
+
+
+<script src="~/js/indexAdmin.js"></script>
+
+
+<nav class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-font-awesome"></i>
+        <a href="#">jobify</a>
+    </div>
+    <div class="menu">
+        <div class="menu-links">
+            <a asp-controller="Admin" asp-action="CompaniesReject"> Companies Reject</a>
+            <a href="#nacc">Companies Pending</a>
+            <a href="#Modify_ads">Modify ads</a>
+            <a href="#Payment">Payment</a>
+        </div>
+    </div>
+    <div class="menu-btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</nav>
+<div style="height: 60px;"></div>
+
+<partial name="_CompanyCardPartial" model="Model" />

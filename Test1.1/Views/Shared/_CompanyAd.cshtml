@@ -1,0 +1,13 @@
+﻿@using Test1._1.Models.ViewModels
+@model CompanyAdvHomeViewModel
+
+<div class="ad">
+    <div class="ad-image">
+        <img src="@Model.LogoPath" alt="@Model.CompanyName Logo">
+    </div>
+    <div class="ad-content">
+        <h3 class="company-name">@Model.CompanyName</h3>
+        <p class="ad-details">@Model.Description</p>
+        <button class="details-btn">View More Details</button>
+    </div>
+</div>

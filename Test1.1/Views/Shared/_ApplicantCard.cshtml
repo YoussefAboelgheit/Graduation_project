@@ -1,0 +1,13 @@
+﻿@using Test1._1.Models.ViewModels
+@model ApplicantCardHomeViewModel
+
+<a href="@Url.Action("Index", "ApplicantInfo", new { id = Model.Id })" class="card-link">
+    <div class="card">
+        <img src="@Model.ImagePath" alt="" />
+        <div class="info">
+            <span class="name">@Model.Name</span>
+            <span class="role">@Model.LastName</span>
+        </div>
+        <p>@Model.FieldWork</p>
+    </div>
+</a>

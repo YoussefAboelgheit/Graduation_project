@@ -1,0 +1,41 @@
+﻿<!-- Views/CompanySubscraptions/Index.cshtml -->
+@model List<Test1._1.Models.Entity.CompanySubscraption>
+
+@{
+    ViewData["Title"] = "Company Subscriptions";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/Substyle.css" />
+</head>
+<body>
+    <h2 style="text-align:center;">Available Company Subscriptions</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <p style="text-align:center; color:green;">@TempData["Message"]</p>
+    }
+
+    <div class="subscription-container">
+        @foreach (var sub in Model)
+        {
+            <div class="subscription-box">
+                <h3>@sub.SubType</h3>
+                <p class="price">$@sub.Price</p>
+
+                <form asp-action="Select" asp-controller="Transaction" method="post">
+                    <input type="hidden" name="subId" value="@sub.Id" />
+                    <input type="hidden" name="companyId" value="@TempData["CompanyId"]" />
+                    <button class="subscribe-btn" type="submit">Subscribe Now</button>
+                </form>
+            </div>
+        }
+    </div>
+</body>
+</html>

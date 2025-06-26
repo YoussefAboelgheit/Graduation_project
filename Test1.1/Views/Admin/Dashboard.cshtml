@@ -1,0 +1,298 @@
+﻿@model Test1._1.Models.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/styleAdmin.css" />
+<script src="~/js/indexAdmin.js"></script>
+
+<nav class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-font-awesome"></i>
+        <a href="#">Jobify</a>
+    </div>
+    <div class="menu">
+        <div class="menu-links">
+            <a href="#nacc">New Company Account</a>
+            <a href="#Modify_ads">Modify Ads</a>
+            <a href="#CompanySubscraptions">Company Subscriptions</a>
+            <a href="#ApplicantSubscraptions">Applicant Subscriptions</a>
+            <a href="#ConfirmSubscriptions">Confirm Subscriptions</a>
+        </div>
+    </div>
+    <div class="menu-btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+</nav>
+
+<div style="height: 100px;"></div>
+<br>
+<br>
+<br>
+
+<!-- Company Requests Section -->
+<section class="company-requests" id="nacc">
+    @if (Model.Companies != null && Model.Companies.Any())
+    {
+        foreach (var company in Model.Companies)
+        {
+            <div class="company-box">
+                <div class="company-info">
+                    <a href="#" class="company-link">
+                        <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
+                    </a>
+
+                    <div class="company-details">
+                        <p><strong>Username:</strong> @company.UserName</p>
+                        <p><strong>Field of Work:</strong> @company.FiledWork</p>
+                        <p><strong>Number of Employees:</strong> @company.CurrentNumEmployees</p>
+                        <p><strong>Description:</strong> @company.Description</p>
+                        <p><strong>Tax Card:</strong> <a href='@Url.Content("~/" + company.TaxCard.Replace("\\", "/"))' target="_blank">View PDF</a></p>
+                        <p><strong>Commercial Register:</strong> <a href='@Url.Content("~/" + company.CommercialRegister.Replace("\\", "/"))' target="_blank">View PDF</a></p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <form asp-action="RejectCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
+                        <button type="submit" class="reject-btn">Reject</button>
+                    </form>
+                    <form asp-action="AcceptCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
+                        <button type="submit" class="accept-btn">Accept</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
+    }
+</section>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- Modify Ads Section -->
+<section class="ad-comparisons" id="Modify_ads">
+    <div class="ad-comparison-box">
+        <div class="ad-box">
+            <div class="ad old-ad">
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.company</h3>
+                    <p class="ad-details">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed earum ad dignissimos labore.</p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="ad-box">
+            <div class="ad new-ad">
+                <div class="new-label">NEW</div>
+                <div class="ad-image">
+                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">MZA.company</h3>
+                    <p class="ad-details">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae expedita esse est ipsa.</p>
+                    <button class="details-btn">View More Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-actions">
+            <button class="reject-btn">Reject</button>
+            <button class="accept-btn">Accept</button>
+        </div>
+    </div>
+</section>
+
+<!-- Company Subscriptions Section -->
+<section class="subscription-container" id="CompanySubscraptions">
+    @foreach (var item in Model.CompanySubscraptions)
+    {
+        <div class="subscription-box">
+            <h3>@item.SubType</h3>
+            <p class="price">$@item.Price</p>
+
+            <button class="edit-btn"
+                    data-id="@item.Id"
+                    data-subscription-name="@item.SubType"
+                    data-old-price="@item.Price">
+                Edit
+            </button>
+        </div>
+    }
+</section>
+
+<!-- Applicant Subscriptions Section -->
+<section class="subscription-container" id="ApplicantSubscraptions">
+    @foreach (var item in Model.ApplicantSubscraptions)
+    {
+        <div class="subscription-box">
+            <h3>@item.SubType</h3>
+            <p class="price">$@item.Price</p>
+
+            <button class="edit-btn"
+                    data-id="@item.Id"
+                    data-subscription-name="@item.SubType"
+                    data-old-price="@item.Price">
+                Edit
+            </button>
+        </div>
+    }
+</section>
+
+
+<<!-- Confirm Subscriptions Section -->
+<section id="ConfirmSubscriptions">
+    <style>
+        #ConfirmSubscriptions {
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
+
+            #ConfirmSubscriptions h2 {
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 28px;
+                color: #162447;
+            }
+
+        .subscription-confirmations {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .subscription-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .subscription-box:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+
+            .subscription-box h4 {
+                margin-bottom: 15px;
+                font-size: 20px;
+                color: #0a3d62;
+            }
+
+            .subscription-box p {
+                margin: 8px 0;
+                color: #333;
+                font-size: 14px;
+            }
+
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+            .approve-btn:hover {
+                background-color: #218838;
+            }
+    </style>
+
+    <h2>Pending Subscriptions</h2>
+
+    @if ((Model.PendingCompanyTransactions?.Any() ?? false) || (Model.PendingApplicantTransactions?.Any() ?? false))
+    {
+        <div class="subscription-confirmations">
+            @foreach (var transaction in Model.PendingCompanyTransactions)
+            {
+                <div class="subscription-box">
+                    <h4>Company Subscription</h4>
+                    <p><strong>Company:</strong> @transaction.Company.UserName</p>
+                    <p><strong>Subscription:</strong> @transaction.CompanySubscraption.SubType</p>
+                    <p><strong>Price:</strong> $@transaction.CompanySubscraption.Price</p>
+                    <p><strong>Payment Code:</strong> @transaction.ReferenceCode</p>
+
+                    <form asp-action="ActivateTransaction" asp-controller="Admin" method="post">
+                        <input type="hidden" name="transactionId" value="@transaction.Id" />
+                        <input type="hidden" name="type" value="company" />
+                        <button type="submit" class="approve-btn">Confirm Payment</button>
+                    </form>
+                </div>
+            }
+
+            @foreach (var transaction in Model.PendingApplicantTransactions)
+            {
+                <div class="subscription-box">
+                    <h4>Applicant Subscription</h4>
+                    <p><strong>Applicant:</strong> @transaction.Applicant.UserName</p>
+                    <p><strong>Subscription:</strong> @transaction.ApplicantSubscraption.SubType</p>
+                    <p><strong>Price:</strong> $@transaction.ApplicantSubscraption.Price</p>
+                    <p><strong>Payment Code:</strong> @transaction.ReferenceCode</p>
+
+                    <form asp-action="ActivateTransaction" asp-controller="Admin" method="post">
+                        <input type="hidden" name="transactionId" value="@transaction.Id" />
+                        <input type="hidden" name="type" value="applicant" />
+                        <button type="submit" class="approve-btn">Confirm Payment</button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p style="text-align:center; color:gray;">No pending subscriptions at the moment.</p>
+    }
+</section>
+
+
+
+
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h4 id="modal-title">Edit Subscription</h4>
+
+        <form method="post" asp-action="UpdateSubscriptionPrice">
+            <input type="hidden" name="id" id="subscription-id" />
+            <div class="modal-body">
+                <p id="subscription-name">Subscription Name</p>
+                <div class="price-row">
+                    <span class="old-price">$0</span>
+                    <input type="text" name="newPrice" id="new-price-input" placeholder="New Price" />
+                </div>
+                <button type="submit" id="confirm-edit-btn">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/indexAdmin.js"></script>

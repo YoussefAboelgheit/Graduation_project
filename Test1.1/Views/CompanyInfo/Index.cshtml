@@ -1,0 +1,90 @@
+﻿@model Test1._1.Models.Entity.Company
+@{
+    ViewData["Title"] = "Company Profile";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
+
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
+            <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
+            <span class="site-name">Jobify</span>
+            </a>
+        </div>
+        <div class="navbar-right">
+            <nav class="nav-links">
+                <a href="#JobPostings">Job Postings</a>
+                <a href="#Applications">Applications</a>
+                <a href="@Url.Action("Index", "CompanySubscraptions", new { companyId = Model.Id })">Subscriptions</a>
+
+            </nav>
+            <div class="user-info">
+                <img src="~/@Model.Logo" alt="Company Logo" class="user-photo" />
+                <span class="user-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
+                    @Model.UserName
+                </span>
+            </div>
+            <a href="@Url.Action("Edit", "CompanyInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+        </div>
+    </header>
+
+    <!-- ========================= Profile Details ========================= -->
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="profile-container">
+        <div class="profile-image">
+            <img src="~/@Model.Logo" alt="Company Logo" />
+        </div>
+        <div class="profile-details">
+            <p><strong>Company Name:</strong> @Model.UserName</p><br />
+            <p><strong>Field of Work:</strong> @Model.FiledWork</p><br />
+            <p><strong>Email:</strong> @Model.Email</p><br />
+            <p><strong>Phone:</strong> @Model.PhoneNumber</p><br />
+            <p><strong>Address:</strong> @Model.address</p><br />
+            <p><strong>Description:</strong> @Model.Description</p><br /> 
+        </div>
+    </div>
+
+    <!-- ============================ Job Postings ============================ -->
+    <h2 id="JobPostings">Job Postings</h2>
+    <div class="ads-container">
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="ad">
+                <div class="ad-image">
+                    <img src="~/@Model.Logo" alt="Company Logo">
+                </div>
+                <div class="ad-content">
+                    <h3 class="company-name">@Model.UserName</h3>
+                    <p class="ad-details">Job posting details will be displayed here...</p>
+                    <button class="details-btn">View Applications</button>
+                    <button class="details-btn">Edit Posting</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- ============================ Applications ============================ -->
+    <h2 id="Applications">Applications Received</h2>
+    <div class="applications-container">
+        <!-- Applications content will be loaded here -->
+        <p>Manage applications from job seekers here.</p>
+    </div>
+
+    <script src="~/js/indexCompanyInfo.js" asp-append-version="true"></script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Test1._1</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Custom Attributes\wwwroot\css\background3.jpg" />
+    <Content Include="Custom Attributes\wwwroot\css\font\home_index_all.min.css" />
+    <Content Include="Custom Attributes\wwwroot\css\home_index_all.min.css" />
+    <Content Include="Custom Attributes\wwwroot\css\home_style_index.css" />
+    <Content Include="Custom Attributes\wwwroot\css\site.css" />
+    <Content Include="Custom Attributes\wwwroot\css\stylelogin.css" />
+    <Content Include="Custom Attributes\wwwroot\css\styleSignUp.css" />
+    <Content Include="Custom Attributes\wwwroot\data\background3.jpg" />
+    <Content Include="Custom Attributes\wwwroot\favicon.ico" />
+    <Content Include="Custom Attributes\wwwroot\js\home_index.js" />
+    <Content Include="Custom Attributes\wwwroot\js\indexSignUp.js" />
+    <Content Include="Custom Attributes\wwwroot\js\site.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\bootstrap\LICENSE" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery-validation\LICENSE.md" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery\dist\jquery.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery\dist\jquery.min.js" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery\dist\jquery.min.map" />
+    <Content Include="Custom Attributes\wwwroot\lib\jquery\LICENSE.txt" />
+    <Content Include="Custom Attributes\wwwroot\uploads\091a5bc9-7ffa-4241-97d1-cd90922d21a1.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\1ad94e1c-2bac-4530-a1f8-e73c86437c0d.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\1e7d7d55-5965-40e0-a1a0-10dae1ec3968.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\26366b40-ddc6-4eeb-8dae-bf6c9182bcbc.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\28747c94-11e0-45ee-94a8-1bae1f82ae17.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\32e5e0a5-1803-459d-8fa6-20fa14e4182b.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\38fd3920-aaa6-4aaa-985f-492a32ca6997.png" />
+    <Content Include="Custom Attributes\wwwroot\uploads\3b723cf9-5a18-4b39-a1d3-4c32b189f1b4.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\4834b426-527f-43a1-934d-b38a81c582d5.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\4a282579-85f5-46a1-b066-df6b31a8f264.png" />
+    <Content Include="Custom Attributes\wwwroot\uploads\4e0cc8d5-ceb5-4275-a1ce-c9fd3b33a63c.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\59d2d4ba-4815-4682-9721-08a4fa3ce91f.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\59d3fe92-2e0c-4416-989c-0beccd941a96.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\5e54620b-9fb1-4e1d-93d2-e95228045d67.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\60c4fdc0-f5bb-441c-973b-bbe26480d184.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\6b6f8746-c5cd-48c6-ac21-b65db1fe725b.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\71db5a39-c3ca-4316-80b4-28e8b2984f3d.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\729fc7bd-0f7d-45c3-ab00-b124f9f7ca17.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\73e680e1-f94d-4c49-bc01-7bcd5d37bc7b.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\77534c68-3c75-4d11-bc00-2d6baeb9953c.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\79983b0f-049f-4365-8b04-3796c92d2a2f.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\7d735e67-6947-400d-bfa6-28b53d7421f8.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\8c92a1b1-692e-4c8d-a339-d49496bfd289.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\8e3c08e6-030a-45c9-a2fc-5a10b00c4194.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\9c2a15b5-9afe-469b-99dd-78fe69611e8d.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\b32927aa-4b15-4918-ada3-2fca18e6d56d.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\bc198345-2e08-4208-8a13-94a6e97d0374.png" />
+    <Content Include="Custom Attributes\wwwroot\uploads\c06112ab-90fd-4170-ba91-05acdfd1ab87.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\c383427f-491f-4ba4-8df1-31b4f663e7fd.png" />
+    <Content Include="Custom Attributes\wwwroot\uploads\c57ff672-1f35-432f-885b-a2831d70a1c6.jpg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\c6b8ee97-5a7e-4d4e-a374-12ba11f5c2b6.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\download.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\e2045a7c-9de9-4b4a-af6d-3eec15f403be.jpeg" />
+    <Content Include="Custom Attributes\wwwroot\uploads\e639a852-a544-4175-891c-76b8e7ffb4ff.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\ea719667-035b-4e65-ac92-36fe938130e4.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\ece8e379-0f1f-41d2-a8b7-9e374cdad64d.pdf" />
+    <Content Include="Custom Attributes\wwwroot\uploads\images %283%29.jfif" />
+    <Content Include="Custom Attributes\wwwroot\uploads\maxresdefault.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\Subindex.js" />
+    <None Include="wwwroot\css\Substyle.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Stripe.net" Version="47.4.0" />
+  </ItemGroup>
+
+</Project>

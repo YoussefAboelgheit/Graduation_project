@@ -246,6 +246,9 @@ namespace Test1._1.Migrations
                     b.Property<int>("ApplicantSubscraptionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CompanySubscraptionId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -333,6 +336,10 @@ namespace Test1._1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("salary")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -362,6 +369,9 @@ namespace Test1._1.Migrations
                     b.Property<string>("SubType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -646,10 +656,18 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantAdvertisments")
                         .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
+                        .WithMany("ApplicantAdvertisments")
+                        .HasForeignKey("JobAdvertismentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Applicant");
+
+                    b.Navigation("JobAdvertisment");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
@@ -686,6 +704,8 @@ namespace Test1._1.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("CompanyPayment");
 
                     b.Navigation("CompanySubscraption");
                 });

@@ -16,9 +16,6 @@ namespace Test1._1.Models.Configration
 				.HasColumnType("DATETIME")
 				.IsRequired();
 
-			builder.Property(x => x.TellAboutYou)
-				.HasColumnType("Varchar")
-				.IsRequired();
 
 			// العلاقة مع Applicant
 			builder.HasOne(x => x.Applicant)
@@ -26,11 +23,7 @@ namespace Test1._1.Models.Configration
 				   .HasForeignKey(x => x.ApplicantId)
 				   .OnDelete(DeleteBehavior.Cascade);  // ✅ Cascade هنا فقط
 
-			// العلاقة مع JobAdvertisment
-			builder.HasOne(x => x.JobAdvertisment)
-				   .WithMany(x => x.ApplicantAdvertisments)
-				   .HasForeignKey(x => x.JobAdvertismentId)
-				   .OnDelete(DeleteBehavior.NoAction);
+		
 
 
 

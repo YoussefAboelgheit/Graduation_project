@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250625194240_edit")]
-    partial class edit
+    [Migration("20250627160309_hamdy")]
+    partial class hamdy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,9 +242,6 @@ namespace Test1._1.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("AppSubsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ApplicantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -354,32 +351,6 @@ namespace Test1._1.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.CompanyPayment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReferenceCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompanyPayments");
-                });
-
             modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscraption", b =>
                 {
                     b.Property<int>("Id")
@@ -414,9 +385,6 @@ namespace Test1._1.Migrations
                     b.Property<string>("CompanyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CompanySubsId")
-                        .HasColumnType("int");
 
                     b.Property<int>("CompanySubscraptionId")
                         .HasColumnType("int");
@@ -681,7 +649,7 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantAdvertisments")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Applicant");

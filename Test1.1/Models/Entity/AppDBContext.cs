@@ -17,7 +17,6 @@ namespace Test1._1.Models.Entity
 
 		
 		public DbSet<Admin> Admins { get; set; }
-		public DbSet<User> Users { get; set; }
 		public DbSet<Applicant> Applicants { get; set; }
 		public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicantSubscraption> ApplicantSubscraptions { get; set; }
@@ -26,8 +25,6 @@ namespace Test1._1.Models.Entity
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 		public DbSet<ApplicantAdvertisment> ApplicantAdvertisments { get; set; }
-		public DbSet<ApplicantSubscrabtion> ApplicantSubscrabtions { get; set; }
-		public DbSet<ApplicantPayment> ApplicantPayments { get; set; }
 		public DbSet<ApplicantTransaction> ApplicantTransactions { get; set; }
         public DbSet<CompanySubscraption> CompanySubscraptions { get; set; }
      
@@ -39,7 +36,7 @@ namespace Test1._1.Models.Entity
 
            
 
-			modelBuilder.ApplyConfiguration(new UserConfigration());
+		
 			modelBuilder.ApplyConfiguration(new ApplicantConfigration());
 			modelBuilder.ApplyConfiguration(new CompanyConfigration());
 			modelBuilder.ApplyConfiguration(new JobAdvConfigration());

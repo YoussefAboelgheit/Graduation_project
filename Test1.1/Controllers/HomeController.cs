@@ -363,8 +363,70 @@ namespace Test1._1.Controllers
 		//	return PartialView("_CompanyAdList", advertisements);
 		//}
 
+		//[HttpGet]
+		//public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		//{
+		//	var query = _context.JobAdvertisments
+		//		.Include(ad => ad.Company)
+		//		.AsQueryable();
+
+		//	// Filter by governorate (city)
+		//	if (!string.IsNullOrEmpty(governorate))
+		//		query = query.Where(ad => ad.governorate == governorate);
+
+		//	// Filter by job title
+		//	if (!string.IsNullOrEmpty(job))
+		//	{
+		//		if (job == "Others")
+		//		{
+		//			var knownJobs = new List<string>
+		//	{
+		//		"AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+		//		"Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+		//		"Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+		//		"Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+		//		"IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+		//		"Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+		//		"Technical Writer", "UI/UX Designer"
+		//	};
+		//			query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+		//		}
+		//		else
+		//		{
+		//			query = query.Where(ad => ad.jobtitle == job);
+		//		}
+		//	}
+
+		//	// Filter by salary directly in the database query for exact matching
+		//	if (!string.IsNullOrEmpty(salary))
+		//	{
+		//		query = query.Where(ad => ad.salary == salary);
+		//	}
+
+		//	// Get the filtered results
+		//	var advertisements = query
+		//		.OrderByDescending(ad => ad.CreatedDate)
+		//		.Select(ad => new CompanyAdvHomeViewModel
+		//		{
+		//			AdvertisementId = ad.Id,
+		//			CompanyId = ad.CompanyId,
+		//			CompanyName = ad.Company.UserName,
+		//			CompanyDescription = ad.Company.Description,
+		//			LogoPath = ad.Company.Logo,
+		//			JobTitle = ad.jobtitle,
+		//			Salary = ad.salary,
+		//			Location = ad.governorate,
+		//			JobTime = ad.Job_time,
+		//			CreatedDate = ad.CreatedDate,
+		//			JobDescription = ad.Jobdetail,
+		//			Requirements = ad.JobRequirements
+		//		})
+		//		.ToList();
+
+		//	return PartialView("_CompanyAdList", advertisements);
+		//}
 		[HttpGet]
-		public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		public IActionResult FilterAdvertisements(string governorate, string job, string workType, string salary)
 		{
 			var query = _context.JobAdvertisments
 				.Include(ad => ad.Company)
@@ -395,6 +457,12 @@ namespace Test1._1.Controllers
 				{
 					query = query.Where(ad => ad.jobtitle == job);
 				}
+			}
+
+			// Filter by work type
+			if (!string.IsNullOrEmpty(workType))
+			{
+				query = query.Where(ad => ad.Job_time == workType);
 			}
 
 			// Filter by salary directly in the database query for exact matching

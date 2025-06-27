@@ -11,22 +11,22 @@ using Microsoft.Extensions.Options;
 namespace Test1._1.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
-    {
-        private readonly AppDBContext _context;
+	public class AdminController : Controller
+	{
+		private readonly AppDBContext _context;
         private readonly SmtpSettings _smtpSettings;
 
         public AdminController(AppDBContext context, IOptions<SmtpSettings> smtpOptions)
-        {
-            _context = context;
+		{
+			_context = context;
             _smtpSettings = smtpOptions.Value;
-        }
+		}
 
-        public IActionResult Dashboard()
+		public IActionResult Dashboard()
 
-        {
-            var pendingCompanies = _context.Companies
-                .Where(c => c.status == "Pending")
+		{
+			var pendingCompanies = _context.Companies
+				.Where(c => c.status == "Pending")
                 .Select(c => new CompanyViewModel
                 {
                     Id = c.Id,
@@ -38,8 +38,10 @@ namespace Test1._1.Controllers
                     TaxCard = c.TaxCard,
                     CommercialRegister = c.CommercialRegister
                 })
-                .ToList();
+				.ToList();
 
+			var companySubscriptions = _context.CompanySubscraptions.ToList();
+			var applicantSubscriptions = _context.ApplicantSubscraptions.ToList();
 
             return View(pendingCompanies);
 
@@ -108,7 +110,7 @@ namespace Test1._1.Controllers
                     TaxCard = c.TaxCard,
                     CommercialRegister = c.CommercialRegister
                 })
-                .ToList();
+				.ToList();
 
 
             return View(pendingCompanies);
@@ -129,7 +131,7 @@ namespace Test1._1.Controllers
                     TaxCard = c.TaxCard,
                     CommercialRegister = c.CommercialRegister
                 })
-                .ToList();
+				.ToList();
 
             return View("CompaniesPending", acceptedCompanies); // ✅ نفس الفيو
         }
@@ -140,7 +142,7 @@ namespace Test1._1.Controllers
             var rejectedCompanies = _context.Companies
                 .Where(c => c.status == "Rejected")
                 .Select(c => new CompanyViewModel
-                {
+			{
                     Id = c.Id,
                     UserName = c.UserName,
                     Logo = c.Logo,
@@ -153,35 +155,35 @@ namespace Test1._1.Controllers
                 .ToList();
 
             return View("CompaniesPending", rejectedCompanies); // ✅ نفس الفيو
-        }
+		}
 
 
 
-        [HttpPost]
-        public IActionResult AcceptCompany(string id)
-        {
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
-            if (company != null)
-            {
-                company.status = "Accepted";
-                _context.SaveChanges();
-            }
+		[HttpPost]
+		public IActionResult AcceptCompany(string id)
+		{
+			var company = _context.Companies.FirstOrDefault(c => c.Id == id);
+			if (company != null)
+			{
+				company.status = "Accepted";
+				_context.SaveChanges();
+			}
 
-            return RedirectToAction("Dashboard");
-        }
+			return RedirectToAction("Dashboard");
+		}
 
-        [HttpPost]
-        public IActionResult RejectCompany(string id)
-        {
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
-            if (company != null)
-            {
-                company.status = "Rejected";
-                _context.SaveChanges();
-            }
+		[HttpPost]
+		public IActionResult RejectCompany(string id)
+		{
+			var company = _context.Companies.FirstOrDefault(c => c.Id == id);
+			if (company != null)
+			{
+				company.status = "Rejected";
+				_context.SaveChanges();
+			}
 
-            return RedirectToAction("Dashboard");
-        }
+			return RedirectToAction("Dashboard");
+		}
         [HttpGet]
         public IActionResult RejectForm(string id)
         {
@@ -190,18 +192,18 @@ namespace Test1._1.Controllers
                 return NotFound();
 
             var model = new RejectCompanyViewModel
-            {
+			{
                 CompanyId = company.Id,
                 CompanyEmail = company.Email,
                 CompanyName = company.UserName
             };
 
             return View(model);
-        }
+			}
 
         [HttpPost]
         public async Task<IActionResult> RejectForm(RejectCompanyViewModel model)
-        {
+				{
             var company = await _context.Companies.FirstOrDefaultAsync(c => c.Id == model.CompanyId);
             if (company == null)
                 return NotFound();
@@ -233,20 +235,20 @@ namespace Test1._1.Controllers
             company.status = "Rejected";
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Dashboard");
-        }
+			return RedirectToAction("Dashboard");
+		}
 
         private async Task SendEmailAsync(string toEmail, string subject, string body)
-        {
+				{
             var smtpClient = new SmtpClient(_smtpSettings.Host)
-            {
+			{
                 Port = _smtpSettings.Port,
                 Credentials = new NetworkCredential(_smtpSettings.Email, _smtpSettings.AppPassword),
                 EnableSsl = true,
             };
 
             var mailMessage = new MailMessage
-            {
+				{
                 From = new MailAddress(_smtpSettings.Email, "Jobify Team"),
                 Subject = subject,
                 Body = body,
@@ -256,9 +258,9 @@ namespace Test1._1.Controllers
             mailMessage.To.Add(toEmail);
 
             await smtpClient.SendMailAsync(mailMessage);
-        }
+			}
 
 
-    }
+	}
 }
 

@@ -128,6 +128,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\Subindex.js" />
+    <None Include="wwwroot\css\Substyle.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.12">

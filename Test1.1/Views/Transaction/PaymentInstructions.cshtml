@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Payment Instructions";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Payment Instructions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            padding: 30px;
+            color: #333;
+        }
+
+        .box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .code {
+            font-size: 22px;
+            color: #d9534f;
+            font-weight: bold;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .number {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .generate-btn {
+            margin-top: 25px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .generate-btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Complete Your Payment</h2>
+
+        @if (ViewBag.RefCode != null)
+        {
+            <p class="info">Transfer the amount via Vodafone Cash:</p>
+            <p class="amount">$@ViewBag.Amount</p>
+            <p class="info">To number:</p>
+            <p class="number">010xxxxxxxx</p>
+            <p class="info">Use this reference code:</p>
+            <p class="code">@ViewBag.RefCode</p>
+        }
+        else
+        {
+            <p class="info">You selected the subscription: <strong>@ViewBag.SubType</strong></p>
+            <p class="amount">Amount: $@ViewBag.Amount</p>
+
+            <form asp-action="GenerateCode" asp-controller="Transaction" method="post">
+                <input type="hidden" name="companyId" value="@ViewBag.CompanyId" />
+                <input type="hidden" name="subscriptionId" value="@ViewBag.SubscriptionId" />
+                <button type="submit" class="generate-btn">Generate Payment Code</button>
+            </form>
+        }
+
+        <br />
+        <p class="info">After sending, provide screenshot and code to admin.</p>
+    </div>
+</body>
+</html>

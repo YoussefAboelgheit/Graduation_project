@@ -5,7 +5,7 @@ body {
     background-color: #f5f5f5;
 }
 
-  /* ================= Navbar ================= */
+/* ================ Navbar ================ */
 .navbar {
     width: 100%;
     background: #162447;
@@ -18,25 +18,26 @@ body {
     z-index: 1000;
 }
 
-.navbar .logo i {
-    margin-left: 20px;
-    color: #0aa5ff;
-    font-size: 22px;
-}
+    .navbar .logo i {
+        margin-left: 20px;
+        color: #0aa5ff;
+        font-size: 22px;
+    }
 
-.navbar .logo a {
-    font-size: 30px;
-    font-weight: 700;
-    color: white;
-    margin-left: 12px;
-    text-decoration: none;
-}
+    .navbar .logo a {
+        font-size: 30px;
+        font-weight: 700;
+        color: white;
+        margin-left: 12px;
+        text-decoration: none;
+    }
 
 .menu {
     display: flex;
     align-items: center;
     gap: 20px;
 }
+
 .menu-links {
     display: flex;
     gap: 20px;
@@ -44,17 +45,17 @@ body {
     padding-inline: 24px;
 }
 
-.menu-links a {
-    font-weight: 500;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    font-size: larger;
-}
+    .menu-links a {
+        font-weight: 500;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        font-size: larger;
+    }
 
-.menu-links a:hover {
-    color: #ff6363;
-}
+        .menu-links a:hover {
+            color: #ff6363;
+        }
 
 .menu-btn {
     font-size: 32px;
@@ -65,14 +66,15 @@ body {
 
 @media (max-width: 53rem) {
     .menu {
-    display: none;
+        display: none;
     }
+
     .menu-btn {
-    display: block;
+        display: block;
     }
 }
 
-  /* ============== acc ============== */
+/* ============== Company Requests Section ============== */
 .company-requests {
     width: 90%;
     max-width: 1200px;
@@ -89,22 +91,22 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.company-box .company-link {
-    text-decoration: none;
-    color: #333;
-}
+    .company-box .company-link {
+        text-decoration: none;
+        color: #333;
+    }
 
-.company-box .company-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    margin-right: 10px;
-}
+    .company-box .company-logo {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
 
-.company-box .company-name {
-    flex: 1;
-    font-size: 1.2rem;
-}
+    .company-box .company-name {
+        flex: 1;
+        font-size: 1.2rem;
+    }
 
 .action-buttons button {
     margin-left: 10px;
@@ -114,6 +116,7 @@ body {
     cursor: pointer;
     color: #fff;
 }
+
 .reject-btn {
     background-color: #dc3545;
 }
@@ -122,16 +125,16 @@ body {
     background-color: #28a745;
 }
 
-
-
-hr{
+/* ============== Section Divider ============== */
+hr {
     text-align: center;
     width: 60%;
     font-weight: 500;
     background-color: navy;
     height: 2px;
 }
-  /* ============== Advertisement ============== */
+
+/* ============== Advertisement Comparison ============== */
 .ad-comparisons {
     width: 90%;
     max-width: 1200px;
@@ -186,11 +189,11 @@ hr{
     flex: 0 0 30%;
 }
 
-.ad-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    .ad-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
 .ad-content {
     flex: 1;
@@ -200,11 +203,11 @@ hr{
     justify-content: space-between;
 }
 
-.ad-content .company-name {
-    margin: 0;
-    font-size: 1.2rem;
-    text-align: center;
-}
+    .ad-content .company-name {
+        margin: 0;
+        font-size: 1.2rem;
+        text-align: center;
+    }
 
 .ad-details {
     margin: 10px 0;
@@ -223,9 +226,9 @@ hr{
     transition: background-color 0.3s ease;
 }
 
-.details-btn:hover {
-    background-color: #0056b3;
-}
+    .details-btn:hover {
+        background-color: #0056b3;
+    }
 
 .comparison-actions {
     width: 100%;
@@ -233,150 +236,172 @@ hr{
     margin-top: 10px;
 }
 
-.comparison-actions button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #fff;
-}
+    .comparison-actions button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: #fff;
+    }
 
-.comparison-actions .reject-btn {
-    background-color: #dc3545;
-}
+    .comparison-actions .reject-btn {
+        background-color: #dc3545;
+    }
 
-.comparison-actions .accept-btn {
-    background-color: #28a745;
-}
+    .comparison-actions .accept-btn {
+        background-color: #28a745;
+    }
 
 @media (max-width: 768px) {
     .ad-comparison-box {
-    flex-direction: column;
+        flex-direction: column;
     }
+
     .ad-box {
-    margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 }
 
-
-/* ***********************payment*********************************** */
-
-
-
+/* ============== Subscriptions Section ============== */
 .subscription-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 50px;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 50px;
+    gap: 20px;
 }
 
 .subscription-box {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  width: 220px;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.subscription-box h3 {
-  margin-top: 0;
-}
+    .subscription-box h3 {
+        margin-top: 0;
+    }
 
-.subscription-box .price {
-  font-size: 24px;
-  margin: 20px 0;
-}
+    .subscription-box .price {
+        font-size: 24px;
+        margin: 20px 0;
+    }
 
-.subscription-box .edit-btn {
-  background: #007BFF;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    .subscription-box .edit-btn {
+        background: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-.subscription-box .edit-btn:hover {
-  background: #011d3b;
-}
+        .subscription-box .edit-btn:hover {
+            background: #011d3b;
+        }
 
+/* ============== Modal ============== */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  overflow: auto;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    overflow: auto;
 }
 
 .modal-content {
-  background: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 320px;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    background: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .close-button {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 24px;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .modal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 #subscription-name {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .price-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .old-price {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 #new-price-input {
-  width: 120px;
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    width: 120px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 #confirm-edit-btn {
-  background: #007BFF;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-#confirm-edit-btn:hover {
-  background: #011d3b;
-}
+    #confirm-edit-btn:hover {
+        background: #011d3b;
+    }
 
-.empty-message {
-    margin-top: 50px;
-    text-align: center;
-    color: #333;
-    font-size: 24px;
+/* ? Confirm Subscriptions Section */
+#ConfirmSubscriptions {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
 }
+#ConfirmSubscriptions h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: #162447;
+}
+.subscription-confirmations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.subscription-confirmations .subscription-box {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        width: 280px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }

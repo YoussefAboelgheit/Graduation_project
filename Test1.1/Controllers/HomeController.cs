@@ -430,8 +430,8 @@ namespace Test1._1.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
+                }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid password.");

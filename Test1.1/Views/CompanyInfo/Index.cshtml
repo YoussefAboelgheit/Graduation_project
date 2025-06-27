@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
+
 </head>
 <body>
 
@@ -24,6 +25,8 @@
             <nav class="nav-links">
                 <a href="#JobPostings">Job Postings</a>
                 <a href="#Applications">Applications</a>
+                <a href="@Url.Action("Index", "CompanySubscraptions", new { companyId = Model.Id })">Subscriptions</a>
+
             </nav>
             <div class="user-info">
                 <img src="~/@Model.Logo" alt="Company Logo" class="user-photo" />

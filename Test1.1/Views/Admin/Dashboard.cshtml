@@ -1,12 +1,11 @@
 ﻿@model Test1._1.Models.ViewModels.AdminDashboardViewModel
 
-@model List<Test1._1.Models.ViewModels.CompanyViewModel>
 @{
     ViewBag.Title = "Dashboard";
     Layout = null;
-    var totalCompanies = Model.Count;
+    var totalCompanies = Model.Companies.Count;
     var maxToShow = 5;
-    var companiesToShow = Model.Take(maxToShow).ToList();
+    var companiesToShow = Model.Companies.Take(maxToShow).ToList();
 }
 
 
@@ -42,83 +41,12 @@
 
 <div style="height: 100px;"></div>
 <br>
-@* <div style="border:1px solid blue" id="companyInformation">
-
-</div> *@
 <br>
 <br>
 
 
 
 <!-- ***************************************************acc******************************************************************** -->
-@* <section class="company-requests" id="nacc">
-    @if (Model != null && Model.Any())
-    {
-        foreach (var company in Model)
-        {
-            <div class="company-box">
-                <div class="company-info">
-                    <a href="#" class="company-link">
-                        <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
-                    </a>
-
-                    <div class="company-details">
-                        <p><strong>Username:</strong> @company.UserName</p>
-                        <p><strong>Field of Work:</strong> @company.FiledWork</p>
-                        <p><strong>Number of Employees:</strong> @company.CurrentNumEmployees</p>
-                        <p><strong>Description:</strong> @company.Description</p>
-                        <p>
-                            <strong>Tax Card:</strong>
-                            <a href='@Url.Content("~/" + company.TaxCard.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
-                        </p>
-
-                        <p>
-                            <strong>Commercial Register:</strong>
-                            <a href='@Url.Content("~/" + company.CommercialRegister.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="action-buttons">
-                    <form asp-action="RejectCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
-                        <button type="submit" class="reject-btn">Reject</button>
-                    </form>
-
-                    <form asp-action="AcceptCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
-                        <button type="submit" class="accept-btn">Accept</button>
-                    </form>
-                </div>
-            </div>
-        }
-    }
-    else
-    {
-        <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
-    }
-</section> *@
-
-@* 
-@foreach (var company in Model)
-{
-
-    <section class="company-requests" id="nacc">
-        <div class="company-box">
-            <!-- في اللينك دا هنحط بروفايل الشركه -->
-            <a href="#" onclick="getdata('@company.Id')" class="company-link">
-
-
-                <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
-            </a>
-            <!-- في اللينك دا هنحط بروفايل الشركه -->
-            <a href="#" onclick="getdata('@company.Id')" class="company-link company-name">@company.UserName</a>
-            <div class="action-buttons">
-                <button class="reject-btn">Reject</button>
-                <button class="accept-btn">Accept</button>
-            </div>
-        </div>
-</section>
-}
- *@
 
 @foreach (var company in companiesToShow)
 {
@@ -376,23 +304,4 @@
 </section>
 
 <script src="~/js/indexAdmin.js"></script>
-
-<!-- سكربت AJAX مباشرة -->
-@* <script src="/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    function getdata(compId) {
-        event.preventDefault();
-
-        $.ajax({
-            url: "/Admin/CompanyDetails/" + compId,
-            method: "GET",
-            success: function (result) {
-                document.getElementById("companyInformation").innerHTML = result;
-            },
-            error: function (err) {
-                console.error("Error loading company details:", err);
-            }
-        });
-    }
-</script> *@
 

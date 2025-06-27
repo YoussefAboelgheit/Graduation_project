@@ -405,3 +405,9 @@ hr {
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+.empty-message {
+    margin-top: 50px;
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+}

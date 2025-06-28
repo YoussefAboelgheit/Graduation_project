@@ -238,90 +238,45 @@
                 }
                 else
                 {
-                if (User.IsInRole("Company"))
-                {
-                    <div class="form-group">
-                        <label>Field of Work:</label>
-                        <div class="value">@Model.jobtitle</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Salary Range:</label>
-                        <div class="value">@Model.salary</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>City:</label>
-                        <div class="value">@Model.governorate</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Job Time:</label>
-                        <div class="value">@Model.Job_time</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Job Requirements:</label>
-                        <textarea class="value" readonly>@Model.JobRequirements</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Job Description:</label>
-                        <textarea class="value" readonly>@Model.Jobdetail</textarea>
-                    </div>
-                }
                 
-                @if (!isCompanyOwner && hasQuestions)
-                {
-                    <form asp-controller="JobAdvertisement" asp-action="SubmitApplication" method="post">
-                        <input type="hidden" name="jobId" value="@Model.Id" />
-
-                        <div class="questions-section">
-                            @foreach (var question in Model.Questions)
-                            {
-                                <div class="question-item">
-                                    <div class="question-text">@question.Text</div>
-
-                                    <input type="text" name="answers[@question.Id]" class="answer-input"
-                                           placeholder="Please enter your answer here..." required />
-                                </div>
-                            }
-
-                            @if (!viewMode)
-                            {
-                                <button type="submit" class="submit-btn">Submit Application</button>
-                            }
-                        </div>
-
-                        @Html.AntiForgeryToken()
-                    </form>
-                }
-                else if (isCompanyOwner && hasQuestions)
-                {
-                    <div class="questions-section">
-                        <h3>Your Custom Questions:</h3>
-
-                        @foreach (var question in Model.Questions)
-                        {
-                            <div class="question-item">
-                                <div class="question-text">@question.Text</div>
-                            </div>
-                        }
-                    </div>
-                }
-                else if (!isCompanyOwner && !hasQuestions)
-                {
-                    <div class="questions-section">
-                        <h3>Ready to Apply?</h3>
-                        <p style="color: white;">This position doesn't require additional questions. Click the button below to submit your application.</p>
-
+                    @if (!isCompanyOwner && hasQuestions)
+                    {
                         <form asp-controller="JobAdvertisement" asp-action="SubmitApplication" method="post">
                             <input type="hidden" name="jobId" value="@Model.Id" />
-                            <button type="submit" class="submit-btn">Submit Application</button>
+
+                            <div class="questions-section">
+                                @foreach (var question in Model.Questions)
+                                {
+                                    <div class="question-item">
+                                        <div class="question-text">@question.Text</div>
+
+                                        <input type="text" name="answers[@question.Id]" class="answer-input"
+                                               placeholder="Please enter your answer here..." required />
+                                    </div>
+                                }
+
+                                @if (!viewMode)
+                                {
+                                    <button type="submit" class="submit-btn">Submit Application</button>
+                                }
+                            </div>
+
                             @Html.AntiForgeryToken()
                         </form>
-                    </div>
-                }
+                    }
+                    else if (!isCompanyOwner && !hasQuestions)
+                    {
+                        <div class="questions-section">
+                            <h3>Ready to Apply?</h3>
+                            <p style="color: white;">This position doesn't require additional questions. Click the button below to submit your application.</p>
+
+                            <form asp-controller="JobAdvertisement" asp-action="SubmitApplication" method="post">
+                                <input type="hidden" name="jobId" value="@Model.Id" />
+                                <button type="submit" class="submit-btn">Submit Application</button>
+                                @Html.AntiForgeryToken()
+                            </form>
+                        </div>
+                    }
                 }
             }
         </div>

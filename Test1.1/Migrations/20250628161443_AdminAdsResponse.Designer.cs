@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250626153735_ViewResponse")]
-    partial class ViewResponse
+    [Migration("20250628161443_AdminAdsResponse")]
+    partial class AdminAdsResponse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -385,6 +385,59 @@ namespace Test1._1.Migrations
                     b.ToTable("CompanyTransactions");
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.EditAdvertisment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EditDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EditorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Governorate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("JobAdvertismentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JobDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobRequirements")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salary")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobAdvertismentId");
+
+                    b.ToTable("EditAdvertisments");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
                     b.Property<int>("Id")
@@ -400,6 +453,9 @@ namespace Test1._1.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("HasPendingEdits")
+                        .HasColumnType("bit");
+
                     b.Property<string>("JobRequirements")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -411,9 +467,6 @@ namespace Test1._1.Migrations
                     b.Property<string>("Jobdetail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumEmployee")
-                        .HasColumnType("int");
 
                     b.Property<string>("governorate")
                         .IsRequired()
@@ -759,6 +812,17 @@ namespace Test1._1.Migrations
                     b.Navigation("CompanySubscraption");
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.EditAdvertisment", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
+                        .WithMany("EditHistory")
+                        .HasForeignKey("JobAdvertismentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("JobAdvertisment");
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.Company", "Company")
@@ -841,6 +905,8 @@ namespace Test1._1.Migrations
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("EditHistory");
 
                     b.Navigation("Questions");
                 });

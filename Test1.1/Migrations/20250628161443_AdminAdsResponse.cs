@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class ViewResponse : Migration
+    public partial class AdminAdsResponse : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -320,13 +320,13 @@ namespace Test1._1.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Jobdetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumEmployee = table.Column<int>(type: "int", nullable: false),
                     jobtitle = table.Column<string>(type: "VARCHAR(25)", maxLength: 25, nullable: false),
                     Job_time = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     governorate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     salary = table.Column<string>(type: "nvarchar(max)", precision: 15, scale: 2, nullable: false),
                     JobRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HasPendingEdits = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -439,6 +439,34 @@ namespace Test1._1.Migrations
                         column: x => x.JobAdvertismentId,
                         principalTable: "JobAdvertisments",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EditAdvertisments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EditDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Governorate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salary = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    JobAdvertismentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EditAdvertisments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EditAdvertisments_JobAdvertisments_JobAdvertismentId",
+                        column: x => x.JobAdvertismentId,
+                        principalTable: "JobAdvertisments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -578,6 +606,11 @@ namespace Test1._1.Migrations
                 column: "CompanySubscraptionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EditAdvertisments_JobAdvertismentId",
+                table: "EditAdvertisments",
+                column: "JobAdvertismentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobAdvertisments_CompanyId",
                 table: "JobAdvertisments",
                 column: "CompanyId");
@@ -617,6 +650,9 @@ namespace Test1._1.Migrations
 
             migrationBuilder.DropTable(
                 name: "CompanyTransactions");
+
+            migrationBuilder.DropTable(
+                name: "EditAdvertisments");
 
             migrationBuilder.DropTable(
                 name: "ApplicantAdvertisments");

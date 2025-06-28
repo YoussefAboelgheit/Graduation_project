@@ -1,15 +1,13 @@
-﻿@model List<Test1._1.Models.Entity.Company>
+﻿@model Test1._1.Models.ViewModels.AdminDashboardViewModel
+@using Test1._1.Models.Entity
+@using Microsoft.EntityFrameworkCore
+@inject AppDBContext _context
 @{
     ViewBag.Title = "Dashboard";
     Layout = null;
 }
 
-
 <link rel="stylesheet" href="~/css/styleAdmin.css" />
-
-
-
-<script src="~/js/indexAdmin.js"></script>
 
 
 <nav class="navbar">
@@ -20,7 +18,7 @@
     <div class="menu">
         <div class="menu-links">
             <a href="#nacc">New Company Account</a>
-            <a href="#Modify_ads">Modify ads</a>
+            <a href="#Pending_edits">Pending Edits</a>
             <a href="#Payment">Payment</a>
         </div>
     </div>
@@ -34,7 +32,7 @@
 <br>
 
 <!-- ***************************************************acc******************************************************************** -->
-<section class="company-requests" id="nacc">
+@*<section class="company-requests" id="nacc">
     @if (Model != null && Model.Any())
     {
         foreach (var company in Model)
@@ -78,7 +76,7 @@
     {
         <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
     }
-</section>
+</section>*@
 <!-- ***************************************************end acc******************************************************************** -->
 <br>
 <br>
@@ -97,135 +95,86 @@
 <br>
 
 <!-- ***************************************************ads******************************************************************** -->
-<section class="ad-comparisons" id="Modify_ads">
-    <div class="ad-comparison-box">
-        <div class="ad-box">
-            <div class="ad old-ad">
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
-                </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.cpmpany</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
-                        officiis, voluptate nobis corrupti consequatur
-                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="ad-box">
-            <div class="ad new-ad">
-                <div class="new-label">NEW</div>
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
-                </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.company</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
-                        ullam quaerat unde nam? Rem, cumque debitis!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="comparison-actions">
-            <button class="reject-btn">Reject</button>
-            <button class="accept-btn">Accept</button>
-        </div>
-    </div>
-</section>
+<section class="pending-edits" id="Pending_edits">
+    <h2>Pending Advertisement Edits</h2>
 
-<section class="ad-comparisons" id="Modify_ads">
-    <div class="ad-comparison-box">
-        <div class="ad-box">
-            <div class="ad old-ad">
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
-                </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.cpmpany</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
-                        officiis, voluptate nobis corrupti consequatur
-                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="ad-box">
-            <div class="ad new-ad">
-                <div class="new-label">NEW</div>
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
-                </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.company</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
-                        ullam quaerat unde nam? Rem, cumque debitis!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="comparison-actions">
-            <button class="reject-btn">Reject</button>
-            <button class="accept-btn">Accept</button>
-        </div>
-    </div>
-</section>
+    @if (Model.PendingEdits != null && Model.PendingEdits.Any())
+    {
+        foreach (var edit in Model.PendingEdits)
+        {
+            var company = await _context.Companies
+            .FirstOrDefaultAsync(c => c.Id == edit.JobAdvertisment.CompanyId);
 
-<section class="ad-comparisons" id="Modify_ads">
-    <div class="ad-comparison-box">
-        <div class="ad-box">
-            <div class="ad old-ad">
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="Old Ad" />
+            <div class="edit-comparison-box">
+                <div class="ad-box">
+                    <div class="ad old-ad">
+                        <div class="ad-image">
+                            @if (company != null && !string.IsNullOrEmpty(company.Logo))
+                            {
+                                <img src="~/@company.Logo" alt="Company Logo" />
+                            }
+                            else
+                            {
+                                <img src="~/pic/placeholder.jpg" alt="Default Logo" />
+                            }
+                        </div>
+                        <div class="ad-content">
+                            <h3 class="company-name">@(company?.UserName ?? "Unknown Company")</h3>
+                            <div class="ad-details">
+                                <p><strong>Job Title:</strong> @edit.JobAdvertisment.jobtitle</p>
+                                <p><strong>Salary:</strong> @edit.JobAdvertisment.salary</p>
+                                <p><strong>Location:</strong> @edit.JobAdvertisment.governorate</p>
+                                <p><strong>Job Time:</strong> @edit.JobAdvertisment.Job_time</p>
+                                <p><strong>Requirements:</strong> @edit.JobAdvertisment.JobRequirements</p>
+                                <p><strong>Description:</strong> @edit.JobAdvertisment.Jobdetail</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.cpmpany</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Sed earum ad dignissimos labore error repellat repudiandae voluptatum,
-                        officiis, voluptate nobis corrupti consequatur
-                        assumenda aspernatur voluptas pariatur tempora quae eum. Ullam!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="ad-box">
-            <div class="ad new-ad">
-                <div class="new-label">NEW</div>
-                <div class="ad-image">
-                    <img src="pic/فلسطين2 .jpg" alt="New Ad" />
-                </div>
-                <div class="ad-content">
-                    <h3 class="company-name">MZA.company</h3>
-                    <p class="ad-details">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quae, expedita esse est ipsa aspernatur vel? Veniam nemo quasi rerum dicta libero minus ea,
-                        ullam quaerat unde nam? Rem, cumque debitis!
-                    </p>
-                    <button class="details-btn">View More Details</button>
-                </div>
-            </div>
-        </div>
-        <div class="comparison-actions">
-            <button class="reject-btn">Reject</button>
-            <button class="accept-btn">Accept</button>
-        </div>
-    </div>
-</section>
 
+                <div class="ad-box">
+                    <div class="ad new-ad">
+                        <div class="new-label">New</div>
+                        <div class="ad-image">
+                            @if (company != null && !string.IsNullOrEmpty(company.Logo))
+                            {
+                                <img src="~/@company.Logo" alt="Company Logo" />
+                            }
+                            else
+                            {
+                                <img src="~/pic/placeholder.jpg" alt="Default Logo" />
+                            }
+                        </div>
+                        <div class="ad-content">
+                            <h3 class="company-name">@(company?.UserName ?? "Unknown Company")</h3>
+                            <div class="ad-details">
+                                <p><strong>Job Title:</strong> @edit.JobTitle</p>
+                                <p><strong>Salary:</strong> @edit.Salary</p>
+                                <p><strong>Location:</strong> @edit.Governorate</p>
+                                <p><strong>Job Time:</strong> @edit.JobTime</p>
+                                <p><strong>Requirements:</strong> @edit.JobRequirements</p>
+                                <p><strong>Description:</strong> @edit.JobDetail</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-actions">
+                    <form asp-action="ApproveEdit" asp-route-editId="@edit.Id" method="post" style="display:inline;">
+                        <button type="submit" class="accept-btn">Approve</button>
+                    </form>
+                    <form asp-action="RejectEdit" asp-route-editId="@edit.Id" method="post" style="display:inline;">
+                        <button type="submit" class="reject-btn">Reject</button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p style="text-align:center; padding:20px; color:gray;">No pending edits at the moment.</p>
+    }
+</section>
 <!-- ***************************************************end ads******************************************************************** -->
 <br>
 <br>

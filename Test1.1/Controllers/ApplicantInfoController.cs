@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Threading.Tasks;
 using Test1._1.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace Test1._1.Controllers
 {
@@ -11,11 +12,19 @@ namespace Test1._1.Controllers
     {
         private readonly AppDBContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public ApplicantInfoController(AppDBContext context, IWebHostEnvironment env)
+        public ApplicantInfoController(
+            AppDBContext context,
+            IWebHostEnvironment env,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index(string id)
@@ -180,6 +189,28 @@ namespace Test1._1.Controllers
                 if (hasChanges)
                 {
                     await _context.SaveChangesAsync();
+
+                    // 🔑 Update Identity user name if changed
+                    var identityUser = await _userManager.GetUserAsync(User);
+                    if (identityUser != null)
+                    {
+                        // Update Identity username if it's different
+                        if (identityUser.UserName != applicant.UserName)
+                        {
+                            identityUser.UserName = applicant.UserName;
+                        }
+
+                        // Optionally update Email in Identity too
+                        if (identityUser.Email != applicant.Email)
+                        {
+                            identityUser.Email = applicant.Email;
+                        }
+
+                        await _userManager.UpdateAsync(identityUser);
+
+                        // ✅ Refresh sign-in so @User.Identity.Name reflects new name
+                        await _signInManager.RefreshSignInAsync(identityUser);
+                    }
                 }
 
                 // Always redirect to Index after successful processing

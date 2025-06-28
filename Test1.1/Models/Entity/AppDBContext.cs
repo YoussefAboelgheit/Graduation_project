@@ -31,6 +31,8 @@ namespace Test1._1.Models.Entity
         public DbSet<CompanyPayment> CompanyPayments { get; set; }
         public DbSet<CompanyTransaction> CompanyTransactions { get; set; }
 
+        public DbSet<EditAdvertisment> EditAdvertisments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

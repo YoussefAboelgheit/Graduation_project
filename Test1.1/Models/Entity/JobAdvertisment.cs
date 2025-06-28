@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public string Jobdetail { get; set; }
-        public int NumEmployee { get; set; }
         public string jobtitle { get; set; }
         public string Job_time { get; set; }
         public string governorate { get; set; }
@@ -13,10 +12,14 @@
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+        // Add field to track if edits are pending
+        public bool HasPendingEdits { get; set; } = false;
+
         // Navigation properties
         public string CompanyId { get; set; }
         public Company Company { get; set; }
 
+        public ICollection<EditAdvertisment> EditHistory { get; set; } = new List<EditAdvertisment>();
         public ICollection<Question> Questions { get; set; } = new List<Question>();
         public ICollection<ApplicantAdvertisment> Applications { get; set; } = new List<ApplicantAdvertisment>();
     }

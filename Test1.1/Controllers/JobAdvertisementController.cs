@@ -149,12 +149,16 @@ namespace Test1._1.Controllers
             .Include(j => j.Questions)
             .Include(j => j.Applications.Where(a => !a.IsDeleted))
                 .ThenInclude(a => a.Applicant)
+            .Include(j => j.EditHistory)
             .FirstOrDefaultAsync(j => j.Id == id);
 
             if (jobAd == null)
             {
                 return NotFound();
             }
+
+            // Check if there are any approved edits
+            ViewBag.HasBeenEdited = jobAd.EditHistory?.Any(e => e.Status == "Approved") ?? false;
 
             return View(jobAd);
         }
@@ -386,6 +390,115 @@ namespace Test1._1.Controllers
             };
 
             return Json(result);
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var jobAd = await _context.JobAdvertisments
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            // Check if current user is the company owner
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (jobAd.CompanyId != currentUserId)
+            {
+                return Forbid();
+            }
+
+            // Check for pending edits
+            var hasPendingEdits = await _context.EditAdvertisments
+                .AnyAsync(e => e.JobAdvertismentId == id && e.Status == "Pending");
+
+            var model = new JobAdvertisementEditViewModel
+            {
+                Id = jobAd.Id,
+                FieldWork = jobAd.jobtitle,
+                JobDescription = jobAd.Jobdetail,
+                JobTime = jobAd.Job_time,
+                City = jobAd.governorate,
+                Salary = jobAd.salary,
+                Job_Requirements = jobAd.JobRequirements,
+                CompanyId = jobAd.CompanyId,
+                HasPendingEdits = hasPendingEdits
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(JobAdvertisementEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var jobAd = await _context.JobAdvertisments
+                .FirstOrDefaultAsync(j => j.Id == model.Id);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            // Check if current user is the company owner
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (jobAd.CompanyId != currentUserId)
+            {
+                return Forbid();
+            }
+
+            // Check for pending edits
+            var hasPendingEdits = await _context.EditAdvertisments
+                .AnyAsync(e => e.JobAdvertismentId == model.Id && e.Status == "Pending");
+
+            if (hasPendingEdits)
+            {
+                ModelState.AddModelError("", "You have pending edits awaiting admin approval. Please wait for approval before making further changes.");
+                model.HasPendingEdits = true;
+                return View(model);
+            }
+
+            try
+            {
+                // Create edit record with proposed changes (but don't update the original yet)
+                var editRecord = new EditAdvertisment
+                {
+                    JobAdvertismentId = jobAd.Id,
+                    EditorId = currentUserId,
+                    JobTitle = model.FieldWork, // Proposed new value
+                    JobDetail = model.JobDescription, // Proposed new value
+                    JobTime = model.JobTime, // Proposed new value
+                    Governorate = model.City, // Proposed new value
+                    Salary = model.Salary, // Proposed new value
+                    JobRequirements = model.Job_Requirements, // Proposed new value
+                    Status = "Pending",
+                    EditDate = DateTime.Now
+                };
+
+                // Mark that edits are pending
+                jobAd.HasPendingEdits = true;
+
+                _context.EditAdvertisments.Add(editRecord);
+                await _context.SaveChangesAsync();
+
+                TempData["EditSubmitted"] = "Your changes have been submitted for admin approval. The ad will be updated after approval.";
+                return RedirectToAction("Details", new { id = model.Id });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while saving your changes. Please try again.");
+                return View(model);
+            }
         }
 
     }

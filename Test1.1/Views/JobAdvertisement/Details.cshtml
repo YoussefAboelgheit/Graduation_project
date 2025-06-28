@@ -26,7 +26,13 @@
                 <img src="/@Model.Company.Logo" alt="@Model.Company.UserName Logo">
             </div>
             <div class="ad-details">
-                <h2><span>@Model.Company.UserName</span></h2>
+                <h2>
+                    <span>@Model.Company.UserName</span>
+                    @if (ViewBag.HasBeenEdited)
+                    {
+                        <span style="font-size: 0.6em; color: #aaa; margin-left: 10px; vertical-align: middle;">(Edited)</span>
+                    }
+                </h2>
                 <p><strong>Field of work:</strong> @Model.jobtitle</p>
                 <p><strong>Salary:</strong> @Model.salary</p>
                 <p><strong>City:</strong> @Model.governorate</p>
@@ -39,7 +45,7 @@
         @if (Model.Company.Id == currentUserId)
         {
             <div class="ad-button">
-                <button onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id })'">
+                <button onclick="location.href='@Url.Action("Edit", "JobAdvertisement", new { id = Model.Id })'">
                     Edit
                 </button>
             </div>

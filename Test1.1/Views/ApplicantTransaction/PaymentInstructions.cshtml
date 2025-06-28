@@ -81,8 +81,8 @@
             <p class="info">You selected the subscription: <strong>@ViewBag.SubType</strong></p>
             <p class="amount">Amount: @ViewBag.Amount EGP</p>
 
-            <form asp-action="GenerateCode" asp-controller="Transaction" method="post">
-                <input type="hidden" name="companyId" value="@ViewBag.CompanyId" />
+            <form asp-action="GenerateCode" asp-controller="ApplicantTransaction" method="post">
+                <input type="hidden" name="applicantId" value="@ViewBag.ApplicantId" />
                 <input type="hidden" name="subscriptionId" value="@ViewBag.SubscriptionId" />
                 <button type="submit" class="generate-btn">Generate Payment Code</button>
             </form>

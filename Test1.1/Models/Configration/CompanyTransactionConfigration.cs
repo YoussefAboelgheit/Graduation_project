@@ -37,7 +37,6 @@ namespace Test1._1.Models.Configration
 				   .HasForeignKey(x => x.CompanyId)
 				   .OnDelete(DeleteBehavior.NoAction);
 
-			// العلاقة مع ApplicantSubscrabtion
 			builder.HasOne(x => x.CompanySubscraption)
 				   .WithMany(s => s.CompanyTransactions)
 				   .HasForeignKey(x => x.CompanySubscraptionId)

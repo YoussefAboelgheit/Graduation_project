@@ -85,7 +85,50 @@
     </div>
 
     <!-- Payment Section -->
-    <h2 id="payment">Payment</h2>
+    <!-- ============================ Payment Section ============================ -->
+    <h2 id="payment">Available Subscriptions</h2>
+
+    @{
+        var subscriptions = ViewBag.ApplicantSubscraptions as List<Test1._1.Models.Entity.ApplicantSubscraption>;
+        var activeTransaction = ViewBag.ActiveTransaction as Test1._1.Models.Entity.ApplicantTransaction;
+    }
+
+    <div class="subscriptions-container">
+        @if (subscriptions != null && subscriptions.Any())
+        {
+            foreach (var sub in subscriptions)
+            {
+                var isActive = activeTransaction != null && activeTransaction.ApplicantSubscraptionId == sub.Id;
+                var cardStyle = isActive ? "background-color:#d4edda; border:2px solid #28a745;" : "";
+                var statusText = isActive
+                ? $"<p style='color:#155724; font-weight:bold;'>Active - Ends at: {activeTransaction.EndDate.ToShortDateString()}</p>"
+                : "";
+
+                <div class="subscription-card" style="@cardStyle">
+                    <h3>@sub.SubType</h3>
+                    <p><strong>Price:</strong> @sub.Price EGP</p>
+
+                    @Html.Raw(statusText)
+
+                    @if (!isActive)
+                    {
+                        <form asp-controller="ApplicantTransaction" asp-action="Select" method="post">
+                            <input type="hidden" name="subId" value="@sub.Id" />
+                            <input type="hidden" name="applicantId" value="@Model.Id" />
+                            <button type="submit" class="subscribe-btn">Subscribe</button>
+                        </form>
+
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p>No subscriptions available.</p>
+        }
+    </div>
+
+
 
     <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
 

@@ -24,9 +24,9 @@ namespace Test1._1.Models.Configration
 			builder.Property(x => x.CV)
 				.HasMaxLength(1500)
 				.IsRequired();
-			
+
             builder.ToTable("Applicants");
-			
-		}
+
+        }
 	}
 }

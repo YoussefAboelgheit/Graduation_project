@@ -1,5 +1,4 @@
-﻿// Controllers/TransactionController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Test1._1.Models;
 using Test1._1.Models.Entity;
 using System;
@@ -25,12 +24,28 @@ namespace Test1._1.Controllers
 			var sub = _context.CompanySubscraptions.FirstOrDefault(s => s.Id == subId);
 			if (sub == null) return RedirectToAction("Index", "CompanySubscraptions");
 
+			// إعادة التوجيه للعرض بطريقة آمنة
+			return RedirectToAction("PaymentInstructions", new
+			{
+				companyId = companyId,
+				subscriptionId = subId
+			});
+		}
+
+		[HttpGet]
+		public IActionResult PaymentInstructions(string companyId, int subscriptionId, string refCode = null)
+		{
+			var sub = _context.CompanySubscraptions.FirstOrDefault(s => s.Id == subscriptionId);
+			if (sub == null || string.IsNullOrEmpty(companyId))
+				return RedirectToAction("Index", "Home");
+
 			ViewBag.CompanyId = companyId;
-			ViewBag.SubscriptionId = subId;
+			ViewBag.SubscriptionId = subscriptionId;
 			ViewBag.SubType = sub.SubType;
 			ViewBag.Amount = sub.Price;
+			ViewBag.RefCode = refCode; // null لو أول مرة
 
-			return View("PaymentInstructions");
+			return View();
 		}
 
 		[HttpPost]
@@ -50,20 +65,32 @@ namespace Test1._1.Controllers
 				PaymentDate = DateTime.Now,
 				IsPaid = false,
 				StartDate = DateTime.Now,
-				EndDate = DateTime.Now.AddMonths(1),
+				EndDate = CalculateEndDate(sub.SubType),
 				IsActive = false
 			};
 
 			_context.CompanyTransactions.Add(transaction);
 			_context.SaveChanges();
 
-			ViewBag.RefCode = refCode;
-			ViewBag.Amount = sub.Price;
-			ViewBag.CompanyId = companyId;
-			ViewBag.SubType = sub.SubType;
+			// إعادة التوجيه باستخدام query string لتفادي إعادة إرسال البيانات
+			return RedirectToAction("PaymentInstructions", new
+			{
+				companyId = companyId,
+				subscriptionId = subscriptionId,
+				refCode = refCode
+			});
+		}
 
-			TempData["Message"] = "Payment code has been generated. Please complete your payment.";
-			return View("PaymentInstructions");
+		private DateTime CalculateEndDate(string subType)
+		{
+			switch (subType.ToLower())
+			{
+				case "daily": return DateTime.Now.AddDays(1);
+				case "weekly": return DateTime.Now.AddDays(7);
+				case "monthly": return DateTime.Now.AddMonths(1);
+				case "yearly": return DateTime.Now.AddYears(1);
+				default: return DateTime.Now.AddMonths(1); // fallback
+			}
 		}
 	}
 }

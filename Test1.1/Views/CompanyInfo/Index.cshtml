@@ -1,7 +1,16 @@
 ﻿@model Test1._1.Models.Entity.Company
+@inject Test1._1.Models.Entity.AppDBContext _context
+@using Microsoft.EntityFrameworkCore
+
+
 @{
     ViewData["Title"] = "Company Profile";
     Layout = null;
+    var subscriptions = ViewBag.CompanySubscraptions as List<Test1._1.Models.Entity.CompanySubscraption>;
+
+    var activeTransaction = _context.CompanyTransactions
+        .Include(t => t.CompanySubscraption)
+        .FirstOrDefault(t => t.CompanyId == Model.Id && t.IsPaid && t.IsActive);
 }
 
 <!DOCTYPE html>
@@ -9,24 +18,22 @@
 <head>
     <meta charset="UTF-8">
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
-
+    <link rel="stylesheet" href="~/css/styleCompanyProfile.css" />
 </head>
-<body>
 
+<body>
     <header class="navbar">
         <div class="navbar-left">
             <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
-            <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
-            <span class="site-name">Jobify</span>
+                <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
+                <span class="site-name">Jobify</span>
             </a>
         </div>
         <div class="navbar-right">
             <nav class="nav-links">
                 <a href="#JobPostings">Job Postings</a>
                 <a href="#Applications">Applications</a>
-                <a href="@Url.Action("Index", "CompanySubscraptions", new { companyId = Model.Id })">Subscriptions</a>
-
+                <a href="#Subscriptions">Subscriptions</a>
             </nav>
             <div class="user-info">
                 <img src="~/@Model.Logo" alt="Company Logo" class="user-photo" />
@@ -38,7 +45,6 @@
         </div>
     </header>
 
-    <!-- ========================= Profile Details ========================= -->
     <br />
     <br />
     <br />
@@ -54,11 +60,10 @@
             <p><strong>Email:</strong> @Model.Email</p><br />
             <p><strong>Phone:</strong> @Model.PhoneNumber</p><br />
             <p><strong>Address:</strong> @Model.address</p><br />
-            <p><strong>Description:</strong> @Model.Description</p><br /> 
+            <p><strong>Description:</strong> @Model.Description</p><br />
         </div>
     </div>
 
-    <!-- ============================ Job Postings ============================ -->
     <h2 id="JobPostings">Job Postings</h2>
     <div class="ads-container">
         @for (int i = 0; i < 3; i++)
@@ -77,14 +82,47 @@
         }
     </div>
 
-    <!-- ============================ Applications ============================ -->
     <h2 id="Applications">Applications Received</h2>
     <div class="applications-container">
-        <!-- Applications content will be loaded here -->
         <p>Manage applications from job seekers here.</p>
     </div>
 
-    <script src="~/js/indexCompanyInfo.js" asp-append-version="true"></script>
+    <!-- ============================ Payment Section ============================ -->
+    <h2 id="Subscriptions">Available Subscriptions</h2>
+    <div class="subscriptions-container">
+        @if (subscriptions != null && subscriptions.Any())
+        {
+            foreach (var sub in subscriptions)
+            {
+                var isActive = activeTransaction != null && activeTransaction.CompanySubscraptionId == sub.Id;
+                var cardStyle = isActive ? "background-color:#d4edda; border:2px solid #28a745;" : "";
+                var statusText = isActive
+                ? $"<p style='color:#155724; font-weight:bold;'>Active - Ends at: {activeTransaction.EndDate.ToShortDateString()}</p>"
+                : "";
 
+                <div class="subscription-card" style="@cardStyle">
+                    <h3>@sub.SubType</h3>
+                    <p><strong>Price:</strong> @sub.Price EGP</p>
+
+                    @Html.Raw(statusText)
+
+                    @if (!isActive)
+                    {
+                        <form asp-controller="CompanySubscraptions" asp-action="Subscribe" method="post">
+                            <input type="hidden" name="subId" value="@sub.Id" />
+                            <input type="hidden" name="companyId" value="@Model.Id" />
+                            <button type="submit" class="subscribe-btn">Subscribe</button>
+                        </form>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p>No subscriptions available.</p>
+        }
+    </div>
+
+    <script src="~/js/indexCompanyInfo.js" asp-append-version="true"></script>
 </body>
 </html>

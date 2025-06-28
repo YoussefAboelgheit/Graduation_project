@@ -1,0 +1,137 @@
+﻿@model Test1._1.Models.ViewModels.ApplicantProfileViewModel
+@{
+    ViewData["Title"] = "Applicant Profile";
+    Layout = null;
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
+                <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
+                <span class="site-name">Jobify</span>
+            </a>
+        </div>
+        <div class="navbar-right">
+            <nav class="nav-links">
+                <a href="#Advertisements">Advertisements</a>
+                <a href="#payment">Payment</a>
+            </nav>
+            <div class="user-info">
+                @if (Model.Applicant.Id == currentUserId)
+                {
+                    <img src="~/@Model.Applicant.Profile_image" alt="User Photo" class="user-photo" />
+                }
+                <span class="user-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
+                    @Model.Applicant.UserName @Model.Applicant.lastName
+                </span>
+            </div>
+            @if (Model.Applicant.Id == currentUserId)
+            {
+                <a href="@Url.Action("Edit", "ApplicantInfo", new { id = Model.Applicant.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            }
+        </div>
+    </header>
+
+    <!-- ========================= Profile Details ========================= -->
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="profile-container">
+        <div class="profile-image">
+            <img src="~/@Model.Applicant.Profile_image" alt="Applicant Photo" />
+        </div>
+        <div class="profile-details">
+            <p><strong>Name:</strong> @Model.Applicant.UserName @Model.Applicant.lastName</p><br />
+            <p><strong>Field of Work:</strong> @Model.Applicant.Field_work</p><br />
+            <p><strong>Years of Experience:</strong> @Model.Applicant.Years_experience</p><br />
+            <p><strong>Email:</strong> @Model.Applicant.Email</p><br />
+            <p><strong>Phone:</strong> @Model.Applicant.PhoneNumber</p><br />
+            <p><strong>Address:</strong> @Model.Applicant.address</p><br />
+            <p>
+                <strong>CV:</strong>
+                @if (string.IsNullOrEmpty(Model.Applicant.CV))
+                {
+                    <span>No CV uploaded</span>
+                }
+                else
+                {
+                    <a href="@Url.Action("ViewCV", "ApplicantInfo", new { id = Model.Applicant.Id })" target="_blank">View CV</a>
+                }
+            </p>
+        </div>
+    </div>
+
+    <!-- ============================ Suggestions ============================ -->
+    @if (Model.Applicant.Id == currentUserId)
+    {
+        <h2 id="Advertisements">Suggestions Ads</h2>
+        <div class="ads-container">
+            @if (Model.SuggestedAds != null && Model.SuggestedAds.Any())
+            {
+                @foreach (var ad in Model.SuggestedAds)
+                {
+                    <partial name="_CompanyAd" model="ad" />
+                }
+            }
+            else
+            {
+                <p style="text-align: center; color: #ccc; font-style: italic;">No suggestions available.</p>
+            }
+        </div>
+    }
+    <!-- ============================ Applied Advertisements ============================ -->
+    @if (Model.Applicant.Id == currentUserId)
+    {
+        <h2 id="Advertisements">Applied Advertisements</h2>
+        <div class="ads-container">
+            @if (Model.AppliedAdvertisements != null && Model.AppliedAdvertisements.Any())
+            {
+                @foreach (var application in Model.AppliedAdvertisements.Where(a => !a.IsDeleted))
+                {
+                    var jobAd = application.JobAdvertisment;
+                    <div class="ad">
+                        <div class="ad-image">
+                            @if (!string.IsNullOrEmpty(jobAd.Company?.Logo))
+                            {
+                                <a href="@Url.Action("Index", "CompanyInfo", new { id = jobAd.Company.Id })">
+                                    <img src="~/@jobAd.Company.Logo" alt="Company Logo" style="cursor: pointer;">
+                                </a>
+                            }
+                        </div>
+                        <div class="ad-content">
+                            <h3 class="company-name">@jobAd.Company?.UserName</h3>
+                            <p class="ad-details">
+                                <strong>@jobAd.jobtitle</strong><br>
+                                @jobAd.governorate - @jobAd.Job_time<br>
+                                Salary: @jobAd.salary
+                            </p>
+                            <a href="@Url.Action("Details", "JobAdvertisement", new { id = jobAd.Id })" class="details-btn">View Details</a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p style="text-align: center; color: #ccc; font-style: italic;">You haven't applied to any advertisements yet.</p>
+            }
+        </div>
+
+        <!-- ============================ Payment Section ============================ -->
+        <h2 id="payment">Payment</h2>
+        <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
+    }
+
+</body>
+</html>

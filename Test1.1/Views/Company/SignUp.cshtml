@@ -1,0 +1,60 @@
+﻿@model Test1._1.Models.ViewModels.CompanySignUpViewModel
+
+@{
+    ViewData["Title"] = "Company Sign Up";
+}
+
+<h2>Company Sign Up</h2>
+
+<form asp-action="SignUp" asp-controller="Company" method="post" enctype="multipart/form-data">
+    <div>
+        <label>First Name</label>
+        @*<input asp-for="Fname" class="form-control" required />*@
+    </div>
+
+    <div>
+        <label>Last Name</label>
+        @*<input asp-for="Lname" class="form-control" required />*@
+    </div>
+
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" type="password" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Phone</label>
+        <input asp-for="Phone" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" type="email" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Logo</label>
+        <input asp-for="Logo" type="file" class="form-control" />
+    </div>
+
+    <div>
+        <label>Field of Work</label>
+        <input asp-for="FiledWork" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Tax Card</label>
+        <input asp-for="TaxCard" class="form-control" required />
+    </div>
+
+    <div>
+        <label>Commercial Register</label>
+        <input asp-for="CommercialRegister" class="form-control" required />
+    </div>
+    <div>
+        <label>Description</label>
+        <textarea asp-for="Description" class="form-control" maxlength="1000"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>

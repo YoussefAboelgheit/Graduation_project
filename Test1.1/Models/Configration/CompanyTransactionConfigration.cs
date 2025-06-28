@@ -14,20 +14,20 @@ namespace Test1._1.Models.Configration
 			builder.HasOne(x=>x.Company)
 				   .WithMany(x=>x.CompanyTransactions)
 				   .HasForeignKey(x => x.CompanyId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 
 			// العلاقة مع ApplicantSubscrabtion
 			builder.HasOne(x => x.CompanySubscraption)
 				   .WithMany(s => s.CompanyTransactions)
 				   .HasForeignKey(x => x.CompanySubId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 			// العلاقة مع ApplicantPayment
 			builder.HasOne(x => x.CompanyPayment)
 				   .WithMany(p => p.CompanyTransactions)
 				   .HasForeignKey(x => x.CompanyPaymentId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 		}
 	}
 }

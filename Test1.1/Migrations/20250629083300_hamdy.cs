@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class edit : Migration
+    public partial class hamdy : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,22 +75,6 @@ namespace Test1._1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompanyPayments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReferenceCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyPayments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +270,6 @@ namespace Test1._1.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicantId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppSubsId = table.Column<int>(type: "int", nullable: false),
                     ApplicantSubscraptionId = table.Column<int>(type: "int", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -320,7 +303,6 @@ namespace Test1._1.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CompanySubsId = table.Column<int>(type: "int", nullable: false),
                     CompanySubscraptionId = table.Column<int>(type: "int", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -530,9 +512,6 @@ namespace Test1._1.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "CompanyPayments");
 
             migrationBuilder.DropTable(
                 name: "CompanyTransactions");

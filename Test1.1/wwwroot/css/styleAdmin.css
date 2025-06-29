@@ -1,4 +1,4 @@
-﻿body {
+body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -378,7 +378,7 @@ hr {
         background: #011d3b;
     }
 
-/* ✅ Confirm Subscriptions Section */
+/* ? Confirm Subscriptions Section */
 #ConfirmSubscriptions {
     padding: 40px 20px;
     background-color: #f9f9f9;
@@ -405,3 +405,9 @@ hr {
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+.empty-message {
+    margin-top: 50px;
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+}

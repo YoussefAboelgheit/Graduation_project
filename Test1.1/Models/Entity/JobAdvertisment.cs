@@ -13,6 +13,7 @@ namespace Test1._1.Models.Entity
         public string language { get; set; }
         public string Certificate { get; set; }
 
+        // list Requirments plus
         public string CompanyId { get; set; }
         public Company Company { get; set; }
 

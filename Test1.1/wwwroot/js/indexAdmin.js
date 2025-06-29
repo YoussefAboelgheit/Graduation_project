@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     companyRejectBtns.forEach((btn) => {
         btn.addEventListener('click', function () {
             alert('Company Rejected');
+
         });
     });
 
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         oldPriceEl.innerText = `$${price}`;
         subscriptionIdInput.value = id;
         newPriceInput.value = "";
+
         modal.style.display = "block";
     }
 
@@ -67,5 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target === modal) {
             modal.style.display = "none";
         }
+    currentBox.querySelector(".price").innerText = `$${parseFloat(newPrice).toFixed(2)}`;
+    closeModal();
     });
 });

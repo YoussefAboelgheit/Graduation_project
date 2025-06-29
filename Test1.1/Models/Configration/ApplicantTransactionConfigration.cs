@@ -41,6 +41,7 @@ namespace Test1._1.Models.Configration
 				   .WithMany(s => s.ApplicantTransactions)
 				   .HasForeignKey(x => x.ApplicantSubscraptionId)
 				   .OnDelete(DeleteBehavior.NoAction);
+
 		}
 	}
 }

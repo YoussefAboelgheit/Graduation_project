@@ -1,0 +1,67 @@
+﻿@model Test1._1.Models.ViewModels.CompanyViewModel
+
+<link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
+
+
+<div class="Admin_profile_container">
+    <div class="profile-image">
+        <img src="~/@Model.Logo" alt="Company Logo" />
+    </div>
+
+    <div class="profile-details">
+        <p><strong>Username:</strong> @Model.UserName</p><br />
+        <p><strong>Field of Work:</strong> @Model.FiledWork</p><br />
+@*         <p><strong>Number of Employees:</strong> @Model.CurrentNumEmployees</p><br /> *@
+        <p><strong>Description:</strong> @Model.Description</p><br />
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Company"))
+        {
+            <p>
+                <strong>Tax Card:</strong>
+                <a href='@Url.Content("~/" + Model.TaxCard.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
+            </p>
+
+            <br />
+            <p>
+                <strong>Commercial Register:</strong>
+                <a href='@Url.Content("~/" + Model.CommercialRegister.Replace("\\", "/"))' target="_blank" rel="noopener noreferrer">View PDF</a>
+            </p>
+
+            <br />
+        }
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="action-buttons">
+            @* <form asp-action="RejectCompany" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                <button type="submit" class="reject-btn">Reject</button>
+            </form> *@
+            <form asp-controller="Admin" asp-action="RejectForm" method="get" style="display:inline;">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="reject-btn">Reject</button>
+            </form>
+
+
+            <form asp-action="AcceptCompany" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                <button type="submit" class="accept-btn">Accept</button>
+            </form>
+        </div>
+    }
+</div>
+
+
+
+@* <div class="profile-container">
+    <div class="profile-image">
+        <img src="~/@Model.Logo" alt="Company Logo" />
+    </div>
+    <div class="profile-details">
+        <p><strong>Company Name:</strong> @Model.UserName</p><br />
+        <p><strong>Field of Work:</strong> @Model.FiledWork</p><br />
+        <p><strong>Email:</strong> @Model.Email</p><br />
+        <p><strong>Phone:</strong> @Model.PhoneNumber</p><br />
+        <p><strong>Address:</strong> @Model.address</p><br />
+        <p><strong>Description:</strong> @Model.Description</p><br />
+    </div>
+</div> *@

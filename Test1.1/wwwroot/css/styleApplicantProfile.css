@@ -325,3 +325,8 @@ body {
     margin-top: 10px;
 }
 
+.Admin_profile_container {
+    font-size: larger;
+    margin-left: 50px;
+    text-align: center;
+}

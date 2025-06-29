@@ -4,7 +4,7 @@ namespace Test1._1.Models.ViewModels
 {
 	public class AdminDashboardViewModel
 	{
-		public List<Company> Companies { get; set; } 
+		public List<CompanyViewModel> Companies { get; set; } 
 		public List<ApplicantSubscraption> ApplicantSubscraptions { get; set; }
 		public List<CompanySubscraption> CompanySubscraptions { get; set; }
 		public List<CompanyTransaction> PendingCompanyTransactions { get; set; }

@@ -3,24 +3,36 @@
 @{
     ViewBag.Title = "Dashboard";
     Layout = null;
+    var totalCompanies = Model.Companies.Count;
+    var maxToShow = 5;
+    var companiesToShow = Model.Companies.Take(maxToShow).ToList();
 }
 
+
 <link rel="stylesheet" href="~/css/styleAdmin.css" />
+
+
+
 <script src="~/js/indexAdmin.js"></script>
+
 
 <nav class="navbar">
     <div class="logo">
         <i class="fa-solid fa-font-awesome"></i>
-        <a href="#">Jobify</a>
+        <a href="#">jobify</a>
     </div>
     <div class="menu">
         <div class="menu-links">
-            <a href="#nacc">New Company Account</a>
-            <a href="#Modify_ads">Modify Ads</a>
-            <a href="#CompanySubscraptions">Company Subscriptions</a>
-            <a href="#ApplicantSubscraptions">Applicant Subscriptions</a>
-            <a href="#ConfirmSubscriptions">Confirm Subscriptions</a>
+            <a asp-controller="Admin" asp-action="CompaniesAccept">Companies Accept</a>
+            <a asp-controller="Admin" asp-action="CompaniesReject"> Companies Reject</a>
+            <a asp-controller="Admin" asp-action="CompaniesPending">Companies Pending</a>
+            <a href="#Modify_ads">Modify ads</a>
+            <a href="#Payment">Payment</a>
         </div>
+        <span class="welcome-text">Welcome, @User.Identity.Name</span>
+        <form asp-controller="Home" asp-action="Logout" method="post">
+            <button type="submit" class="btn">Logout</button>
+        </form>
     </div>
     <div class="menu-btn">
         <i class="fa-solid fa-bars"></i>
@@ -32,45 +44,38 @@
 <br>
 <br>
 
-@* <!-- Company Requests Section -->
-<section class="company-requests" id="nacc">
-    @if (Model.Companies != null && Model.Companies.Any())
-    {
-        foreach (var company in Model.Companies)
-        {
-            <div class="company-box">
-                <div class="company-info">
-                    <a href="#" class="company-link">
-                        <img src="~/@company.Logo" alt="Company Logo" class="company-logo" />
-                    </a>
 
-                    <div class="company-details">
-                        <p><strong>Username:</strong> @company.UserName</p>
-                        <p><strong>Field of Work:</strong> @company.FiledWork</p>
-                        <p><strong>Number of Employees:</strong> @company.CurrentNumEmployees</p>
-                        <p><strong>Description:</strong> @company.Description</p>
-                        <p><strong>Tax Card:</strong> <a href='@Url.Content("~/" + company.TaxCard.Replace("\\", "/"))' target="_blank">View PDF</a></p>
-                        <p><strong>Commercial Register:</strong> <a href='@Url.Content("~/" + company.CommercialRegister.Replace("\\", "/"))' target="_blank">View PDF</a></p>
-                    </div>
-                </div>
 
-                <div class="action-buttons">
-                    <form asp-action="RejectCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
-                        <button type="submit" class="reject-btn">Reject</button>
-                    </form>
-                    <form asp-action="AcceptCompany" asp-route-id="@company.Id" method="post" style="display:inline;">
-                        <button type="submit" class="accept-btn">Accept</button>
-                    </form>
-                </div>
-            </div>
-        }
-    }
-    else
-    {
-        <p style="text-align:center; padding:20px; color:gray;">No pending companies at the moment.</p>
-    }
-</section> *@
+<!-- ***************************************************acc******************************************************************** -->
 
+@foreach (var company in companiesToShow)
+{
+
+    <section class="company-requests" id="nacc">
+        <div class="company-box">
+        <a asp-controller="Admin" asp-action="CompanyCheckout" asp-route-id="@company.Id" class="company-link">
+                <img src="@Url.Content("~/" + company.Logo)" alt="Company Logo" class="company-logo" />
+        </a>
+
+            <a asp-controller="Admin" asp-action="CompanyCheckout" asp-route-id="@company.Id" class="company-link company-name">
+                
+            @company.UserName
+        </a>
+        </div>
+    </section>
+}
+@if (totalCompanies > maxToShow)
+{
+    <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+        <form asp-controller="Admin" asp-action="CompaniesPending" method="get">
+            <button type="submit" class="btn btn-primary details-btn">Show More</button>
+        </form>
+    </div>
+}
+
+
+
+<!-- ***************************************************end acc******************************************************************** -->
 <br>
 <br>
 <br>
@@ -295,4 +300,8 @@
     </div>
 </div>
 
+<section id="Payment">
+</section>
+
 <script src="~/js/indexAdmin.js"></script>
+

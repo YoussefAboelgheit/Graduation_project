@@ -47,7 +47,7 @@ position: relative;
     gap: 20px;
     border-right: 1px solid #999999;
     padding-inline: 24px;
-    
+    font-size: 18px;
 }
 .menu-links a {
     font-weight: 500;
@@ -98,10 +98,11 @@ position: relative;
 
 }
 
-.welcome-text{
+.welcome-text {
     color: white;
     font-size: larger;
     padding: 5px 10px;
+    font-size: 20px;
 }
 
 .menu-btn {

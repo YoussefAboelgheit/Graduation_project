@@ -103,11 +103,11 @@ namespace Test1._1.Controllers
         public async Task<IActionResult> Form(int id, bool viewMode = false, string applicantId = null)
         {
             var jobAd = await _context.JobAdvertisments
-                .Include(j => j.Company)
-                .Include(j => j.Questions)
-                .Include(j => j.Applications)
-                    .ThenInclude(a => a.Answers)
-                .FirstOrDefaultAsync(j => j.Id == id);
+            .Include(j => j.Company)
+            .Include(j => j.Questions)
+            .Include(j => j.Applications)
+                .ThenInclude(a => a.Answers)
+            .FirstOrDefaultAsync(j => j.Id == id);
 
             if (jobAd == null)
             {

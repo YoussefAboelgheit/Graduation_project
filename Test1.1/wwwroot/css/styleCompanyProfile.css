@@ -1,15 +1,16 @@
+/* ========================= Global Styles ========================= */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-  /* =========================  Navbar Styles ========================= */
+/* ========================= Navbar ========================= */
 .navbar {
     display: flex;
     width: 99%;
     justify-content: space-between;
-    align-items: center;          
+    align-items: center;
     background-color: #162447;
     color: #fff;
     padding: 10px 20px;
@@ -19,7 +20,7 @@ body {
 
 .navbar-left {
     display: flex;
-    align-items: center;         
+    align-items: center;
 }
 
 .logo {
@@ -38,7 +39,7 @@ body {
 
 .navbar-right {
     display: flex;
-    align-items: center;       
+    align-items: center;
 }
 
 .nav-links a {
@@ -48,8 +49,8 @@ body {
 }
 
 .company-name {
-    font-size: 1.2em;
-    margin-right: 20px;
+    /*font-size: 1.2em;*/
+    margin-right: 10px;
 }
 
 .company-info {
@@ -74,18 +75,20 @@ body {
     border: none;
     border-radius: 5px;
     border: 2px solid white;
-    transition: 0.3s;
-    margin-right: 20px;
+    transition: 0.2s;
+    margin-right: 0px;
     font-size: larger;
+    transition: 0.3s;
     text-decoration: none;
 }
 
-.edit-btn:hover {
-    background: #ff6363;
-}
-  /* =========================  Modal Styles ========================= */
+    .edit-btn:hover {
+        background: #ff6363;
+    }
+
+/* ========================= Modal ========================= */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -114,10 +117,10 @@ body {
     cursor: pointer;
 }
 
-.close-btn:hover,
-.close-btn:focus {
-    color: black;
-}
+    .close-btn:hover,
+    .close-btn:focus {
+        color: black;
+    }
 
   /* Form Styles in Modal */
 #editCompanyForm label {
@@ -150,12 +153,13 @@ body {
     transition: 0.3s;
 }
 .sub:hover{
-    background: #ff6363;
-}
+        background: #ff6363;
+    }
   /* =========================  Company Details Section Styles ========================= */
 .profile-container {
     display: flex;
     padding: 20px;
+    margin-top: 100px;
 }
 
 .profile-image {
@@ -164,10 +168,10 @@ body {
     padding-right: 20px;
 }
 
-.profile-image img {
-    width: 100%;
-    border-radius: 5px;
-}
+    .profile-image img {
+        width: 100%;
+        border-radius: 5px;
+    }
 
 .profile-details {
     flex: 1;
@@ -177,9 +181,9 @@ body {
     margin-top: 0;
 }
 
-.profile-details p {
-    margin: 8px 0;
-}
+    .profile-details p {
+        margin: 8px 0;
+    }
 
 .profile-details textarea {
     width: 100%;
@@ -255,14 +259,134 @@ table tbody tr:nth-child(odd) {
     background:
     rgb(97 102 120 / 4%);
 }
+/* ===========================================Suggested Applicant================================================== */
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+h1 {
+    font-size: 50px;
+    text-align: center;
+    color: #e43f5a;
+    margin: 20px 0 30px;
+}
+
+
+.applicant {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    max-width: 1315px;
+    margin: 0 auto;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1 / 1;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+    .card img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s;
+    }
+
+    .card p {
+        margin-top: 130px;
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+.info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    background: rgba(65, 64, 64, 0.5);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f9f9f9;
+}
+
+.role {
+    font-size: 16px;
+    font-weight: 400;
+    color: #e9e7e7;
+}
+
+.card:hover img {
+    top: 20px;
+    left: 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.card:hover .info {
+    left: 50%;
+    top: 30px;
+    height: 50px;
+    transform: translateX(-50%);
+    color: #000;
+}
+
+.card:hover p {
+    animation: fadeUp 0.5s forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
     /* ===========================================old advertisements================================================== */
-    .ads-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 20px; 
-        padding: 20px;
+.ads-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
         box-sizing: border-box;
     }
     
@@ -272,61 +396,63 @@ table tbody tr:nth-child(odd) {
         color: #e43f5a;
         font-size: 40px;
         position: relative;
-        }
-    
-    .ad {
-        display: flex;
-        flex-direction: row;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: #fff;
-        min-height: 150px;
-    }
-    
-    .ad-image {
-        flex: 0 0 30%; 
-    }
+}
+
+.ad {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    min-height: 150px;
+}
+
+.ad-image {
+    flex: 0 0 30%;
+}
+
     .ad-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-    
-    .ad-content {
-        flex: 1;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .company-name {
-        margin: 0;
-        font-size: 1.2rem;
-        text-align: center;
-    }
-    
-    .ad-details {
-        margin: 10px 0;
-        font-size: 0.9rem;
-        color: #555;
-    }
-    
-    .details-btn {
-        align-self: flex-start;
-        padding: 8px 16px;
-        background-color: #007BFF;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+
+.ad-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.company-name {
+    margin: 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.ad-details {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.details-btn {
+    align-self: flex-start;
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
     .details-btn:hover {
         background-color: #0056b3;
     }
-    
+
     .Create_New_Advertisements{
         display: block;
         margin: auto;
@@ -337,25 +463,83 @@ table tbody tr:nth-child(odd) {
         font-weight: bolder;
         border: black 2px solid;
         border-radius: 6px;
-    }
-    
+}
+
     .Create_New_Advertisements:hover {
     background-color: #e43f5a;
     color: white;
     transition: 0.3s;}
 
-/*<!-- Move this to the <head > section -->
-.button-wrapper {
-    display: flex;
-    align-items: center;
-    height: 100px;
+/* ========================= Subscriptions ========================= */
+#Subscriptions {
+    text-align: center;
+    margin: 80px 0 30px;
+    color: #e43f5a;
+    font-size: 32px;
 }
 
-.Create_New_Advertisements {
-    display: inline-block;
-    text-decoration: none;
-    text-align: center;
-    line-height: normal;
-}*/
+.subscriptions-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 20px 40px;
+}
 
-    /* ===========================================payment==================================================  */
+.subscription-card {
+    flex: 0 0 22%; /*  ﬁ—Ì»« 4 ﬂ—Ê  ›Ì ’› */
+    min-width: 230px;
+    max-width: 280px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .subscription-card h3 {
+        margin: 10px 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .subscription-card p {
+        font-size: 18px;
+        margin: 10px 0 20px;
+    }
+
+.subscribe-btn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .subscribe-btn:hover {
+        background-color: #0056b3;
+    }
+
+.subscription-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* ‘ﬂ· «·ﬂ«—  ⁄‰œ «· ›⁄Ì· ›ﬁÿ */
+.subscription-card.active-sub {
+    background-color: #d4edda; /* √Œ÷— ›« Õ */
+    border: 2px solid #28a745; /* ÕœÊœ Œ÷—«¡ */
+}
+
+/* ‰’ «· «—ÌŒ */
+.subscription-card .status-text {
+    color: #155724;
+    font-weight: bold;
+    margin-top: 10px;
+}

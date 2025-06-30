@@ -35,13 +35,16 @@ namespace Test1._1.Controllers
 
 
 
-        public IActionResult Index()
+
+
+        public async Task<IActionResult> Index()
         {
-            var applicants = _context.Applicants
+            // كل المستخدمين
+            var generalApplicants = _context.Applicants
                 .Take(5)
                 .Select(a => new ApplicantCardHomeViewModel
                 {
-                    Id = a.Id, // Add this line
+                    Id = a.Id,
                     Name = a.UserName,
                     LastName = a.lastName,
                     FieldWork = a.Field_work,
@@ -49,35 +52,120 @@ namespace Test1._1.Controllers
                 })
                 .ToList();
 
-            var companies = _context.Companies
-        .Include(c => c.JobAdvertisments)
-        .SelectMany(c => c.JobAdvertisments.Select(ad => new CompanyAdvHomeViewModel
-        {
-            AdvertisementId = ad.Id,
-            CompanyId = c.Id,
-            CompanyName = c.UserName,
-            CompanyDescription = c.Description,
-            LogoPath = c.Logo,
+            var generalCompanies = _context.Companies
+                .Include(c => c.JobAdvertisments)
+                .SelectMany(c => c.JobAdvertisments.Select(ad => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = ad.Id,
+                    CompanyId = c.Id,
+                    CompanyName = c.UserName,
+                    CompanyDescription = c.Description,
+                    LogoPath = c.Logo,
+                    JobTitle = ad.jobtitle,
+                    Salary = ad.salary.ToString(),
+                    Location = ad.governorate,
+                    JobTime = ad.Job_time,
+                    CreatedDate = ad.CreatedDate
+                }))
+                .OrderByDescending(ad => ad.CreatedDate)
+                .ToList();
 
-            // Map advertisement details
-            JobTitle = ad.jobtitle,           
-            Salary = ad.salary.ToString(),    
-            Location = ad.governorate,       
-            JobTime = ad.Job_time,           
-            CreatedDate = ad.CreatedDate
-        }))
-        .OrderByDescending(ad => ad.CreatedDate)
-        .ToList();
+            List<CompanyAdvHomeViewModel> applicantSuggestions = new();
+            List<ApplicantCardHomeViewModel> companySuggestions = new();
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                if (User.IsInRole("Applicant"))
+                {
+                    var applicant = await _context.Applicants.FirstOrDefaultAsync(a => a.Id == user.Id);
+
+                    var allJobs = _context.JobAdvertisments
+                        .Include(j => j.Company)
+                        .ToList();
+
+                    applicantSuggestions = allJobs
+                        .Select(j => new
+                        {
+                            Job = j,
+                            Score =
+                                (j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                                (j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0) +
+                                (j.governorate == applicant.address ? 15 : 0) +
+                                (j.Job_time == "Full Time" ? 5 : 0) +
+                                GetSalaryValue(j.salary) / 1000 +
+                                (int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2
+                        })
+                        .OrderByDescending(j => j.Score)
+                        .Take(8)
+                        .Select(j => new CompanyAdvHomeViewModel
+                        {
+                            AdvertisementId = j.Job.Id,
+                            CompanyId = j.Job.CompanyId,
+                            CompanyName = j.Job.Company.UserName,
+                            CompanyDescription = j.Job.Company.Description,
+                            LogoPath = j.Job.Company.Logo,
+                            JobTitle = j.Job.jobtitle,
+                            Salary = j.Job.salary,
+                            Location = j.Job.governorate,
+                            JobTime = j.Job.Job_time,
+                            CreatedDate = j.Job.CreatedDate
+                        })
+                        .ToList();
+                }
+                else if (User.IsInRole("Company"))
+                {
+                    var company = await _context.Companies
+                        .Include(c => c.JobAdvertisments)
+                        .FirstOrDefaultAsync(c => c.Id == user.Id);
+
+                    var recentJobTitles = company.JobAdvertisments
+                        .OrderByDescending(j => j.CreatedDate)
+                        .Take(5)
+                        .Select(j => j.jobtitle)
+                        .ToList();
+
+                    var allApplicants = _context.Applicants.ToList();
+
+                    companySuggestions = allApplicants
+                        .Select(app => new
+                        {
+                            Applicant = app,
+                            Score =
+                                recentJobTitles.Sum(title =>
+                                    (title.Equals(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                                    (title.Contains(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0)
+                                )
+                                + app.Years_experience
+                                + (app.address == company.address ? 10 : 0)
+                        })
+                        .OrderByDescending(a => a.Score)
+                        .Take(8)
+                        .Select(a => new ApplicantCardHomeViewModel
+                        {
+                            Id = a.Applicant.Id,
+                            Name = a.Applicant.UserName,
+                            LastName = a.Applicant.lastName,
+                            FieldWork = a.Applicant.Field_work,
+                            ImagePath = a.Applicant.Profile_image
+                        })
+                        .ToList();
+                }
+            }
 
             var viewModel = new HomeViewModel
             {
-                Applicants = applicants,
-                Companies = companies
+                Applicants = generalApplicants,
+                Companies = generalCompanies,
+                ApplicantSuggestions = applicantSuggestions,
+                CompanySuggestions = companySuggestions
             };
 
             return View(viewModel);
         }
-		[HttpGet]
+
+        [HttpGet]
 		public IActionResult FilterApplicants(string governorate, string experience, string job)
 		{
 			var query = _context.Applicants.AsQueryable();
@@ -233,6 +321,8 @@ namespace Test1._1.Controllers
 
         // Add this method to your HomeController.cs
 
+        // Add this method to your HomeController.cs
+
         [HttpPost]
         public async Task<IActionResult> CheckEmailExists([FromBody] string email)
         {
@@ -297,20 +387,7 @@ namespace Test1._1.Controllers
                     //❌ If any file validation fails, return view with errors
                     if (!ModelState.IsValid)
                     {
-                        return View("SignUp", new SignUpViewModel
-                        {
-                            UserName = model.UserName,
-                            Email = model.Email,
-                            Password = model.Password,
-                            ConfirmPassword = model.ConfirmPassword,
-                            Phone = model.Phone,
-                            FiledWork = model.FiledWork,
-                            Address = model.Address,
-                            Logo = model.Logo,
-                            TaxCard = model.TaxCard,
-                            CommercialRegister = model.CommercialRegister,
-                            Description = model.Description
-                        });
+                        return View("SignUp", model);
                     }
 
                     // ✅ Ensure uploads folder exists
@@ -400,8 +477,6 @@ namespace Test1._1.Controllers
                 Description = model.Description
             });
         }
-
-
 
 
 
@@ -581,7 +656,14 @@ namespace Test1._1.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
+                    else
+                    {
                     return RedirectToAction("Index", "Home");
+                }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid password.");
@@ -598,6 +680,22 @@ namespace Test1._1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        private int GetSalaryValue(string salaryRange)
+        {
+            return salaryRange switch
+            {
+                "2000 - 4000" => 3000,
+                "4000 - 6000" => 5000,
+                "6000 - 8000" => 7000,
+                "8000 - 10000" => 9000,
+                "More than 10000" => 11000,
+                "More than 15000" => 16000,
+                "More than 20000" => 21000,
+                _ => 0
+            };
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -605,4 +703,3 @@ namespace Test1._1.Controllers
         }
     }
 }
-

@@ -3,37 +3,88 @@ using Test1._1.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Threading.Tasks;
+using Test1._1.Models.Entity;
 using Test1._1.Models.ViewModels;
+using System;
 
 namespace Test1._1.Controllers
 {
-    public class CompanyInfoController : Controller
-    {
-        private readonly AppDBContext _context;
-        private readonly IWebHostEnvironment _env;
+	public class CompanyInfoController : Controller
+	{
+		private readonly AppDBContext _context;
+		private readonly IWebHostEnvironment _env;
 
-        public CompanyInfoController(AppDBContext context, IWebHostEnvironment env)
-        {
-            _context = context;
-            _env = env;
-        }
+		public CompanyInfoController(AppDBContext context, IWebHostEnvironment env)
+		{
+			_context = context;
+			_env = env;
+		}
 
-        public IActionResult Index(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return RedirectToAction("ErrorPage");
+        public async Task<IActionResult> Index(string id)
+		{
+			if (string.IsNullOrEmpty(id))
+				return RedirectToAction("ErrorPage");
 
-            var company = _context.Companies
-                .Include(c => c.JobAdvertisments) // Include job advertisements
-                .FirstOrDefault(c => c.Id == id);
+            var company = await _context.Companies
+                .Include(c => c.JobAdvertisments)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (company == null)
-                return NotFound();
+			if (company == null)
+				return NotFound();
 
-            return View(company);
-        }
+			// جلب الاشتراكات
+			var subs = _context.CompanySubscraptions.ToList();
+			ViewBag.CompanySubscraptions = subs;
 
-        [HttpPost]
+            var recentJobTitles = company.JobAdvertisments
+                .OrderByDescending(j => j.CreatedDate)
+                .Take(5)
+                .Select(j => j.jobtitle)
+                .ToList();
+			// جلب الاشتراك المفعّل الحالي
+			var activeTransaction = _context.CompanyTransactions
+				.Include(t => t.CompanySubscraption)
+				.FirstOrDefault(t => t.CompanyId == company.Id && t.IsPaid && t.IsActive);
+
+			ViewBag.ActiveTransaction = activeTransaction;
+            var allApplicants = _context.Applicants.ToList();
+
+            var suggestedApplicants = allApplicants
+                .Select(app => new
+                {
+                    Applicant = app,
+                    Score =
+                        recentJobTitles.Sum(title =>
+                            (title.Equals(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                            (title.Contains(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0)
+                        )
+                        + app.Years_experience
+                        + (app.address == company.address ? 10 : 0)
+                })
+                .OrderByDescending(a => a.Score)
+                .Take(8)
+                .Select(a => new ApplicantCardHomeViewModel
+                {
+                    Id = a.Applicant.Id,
+                    Name = a.Applicant.UserName,
+                    LastName = a.Applicant.lastName,
+                    FieldWork = a.Applicant.Field_work,
+                    ImagePath = a.Applicant.Profile_image
+                })
+                .ToList();
+
+            var viewModel = new CompanyProfileViewModel
+            {
+                Company = company,
+                JobAdvertisments = company.JobAdvertisments.ToList(),
+                SuggestedApplicants = suggestedApplicants
+            };
+
+            return View(viewModel);
+		}
+
+
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CompanyEditViewModel model)
         {
@@ -175,7 +226,7 @@ namespace Test1._1.Controllers
                         hasChanges = true;
                     }
                     else
-                    {
+		{
                         ModelState.AddModelError("CommercialRegisterFile", result.ErrorMessage);
                         return View(model);
                     }
@@ -199,7 +250,7 @@ namespace Test1._1.Controllers
 
         [HttpGet]
         public IActionResult Edit(string id)
-        {
+			{
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
@@ -230,14 +281,14 @@ namespace Test1._1.Controllers
             };
 
             return View(model);
-        }
+		}
 
         private async Task<(bool Success, string FilePath, string ErrorMessage)> HandleFileUpload(
             IFormFile file, string folder, string[] allowedExtensions)
         {
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
             if (!allowedExtensions.Contains(fileExtension))
-            {
+		{
                 return (false, null, $"Invalid file type. Allowed types: {string.Join(", ", allowedExtensions)}");
             }
 
@@ -264,48 +315,48 @@ namespace Test1._1.Controllers
             {
                 System.IO.File.Delete(fullPath);
             }
-        }
+		}
 
-        [HttpGet]
-        public IActionResult DownloadTaxCard(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return NotFound();
+		[HttpGet]
+		public IActionResult DownloadTaxCard(string id)
+		{
+			if (string.IsNullOrEmpty(id))
+				return NotFound();
 
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
-            if (company == null || string.IsNullOrEmpty(company.TaxCard))
-                return NotFound("Company or Tax Card not found.");
+			var company = _context.Companies.FirstOrDefault(c => c.Id == id);
+			if (company == null || string.IsNullOrEmpty(company.TaxCard))
+				return NotFound("Company or Tax Card not found.");
 
-            return DownloadFile(company.TaxCard, "TaxCard");
-        }
+			return DownloadFile(company.TaxCard, "TaxCard");
+		}
 
-        [HttpGet]
-        public IActionResult DownloadCommercialRegister(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return NotFound();
+		[HttpGet]
+		public IActionResult DownloadCommercialRegister(string id)
+		{
+			if (string.IsNullOrEmpty(id))
+				return NotFound();
 
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
-            if (company == null || string.IsNullOrEmpty(company.CommercialRegister))
-                return NotFound("Company or Commercial Register not found.");
+			var company = _context.Companies.FirstOrDefault(c => c.Id == id);
+			if (company == null || string.IsNullOrEmpty(company.CommercialRegister))
+				return NotFound("Company or Commercial Register not found.");
 
-            return DownloadFile(company.CommercialRegister, "CommercialRegister");
-        }
+			return DownloadFile(company.CommercialRegister, "CommercialRegister");
+		}
 
-        private IActionResult DownloadFile(string relativePath, string fileType)
-        {
-            var normalizedPath = relativePath.StartsWith("/") ? relativePath.Substring(1) : relativePath;
-            var fullPath = Path.Combine(_env.WebRootPath, normalizedPath);
+		private IActionResult DownloadFile(string relativePath, string fileType)
+		{
+			var normalizedPath = relativePath.StartsWith("/") ? relativePath.Substring(1) : relativePath;
+			var fullPath = Path.Combine(_env.WebRootPath, normalizedPath);
 
-            if (!System.IO.File.Exists(fullPath))
-                return NotFound($"{fileType} file not found on the server.");
+			if (!System.IO.File.Exists(fullPath))
+				return NotFound($"{fileType} file not found on the server.");
 
-            var fileBytes = System.IO.File.ReadAllBytes(fullPath);
-            var contentType = "application/pdf";
-            var fileName = Path.GetFileName(fullPath);
+			var fileBytes = System.IO.File.ReadAllBytes(fullPath);
+			var contentType = "application/pdf";
+			var fileName = Path.GetFileName(fullPath);
 
-            return File(fileBytes, contentType, fileName);
-        }
+			return File(fileBytes, contentType, fileName);
+		}
 
         public IActionResult ListCompanies()
         {
@@ -315,5 +366,62 @@ namespace Test1._1.Controllers
 
             return Json(companies);
         }
+
+
+        [HttpPost]
+        public IActionResult Subscribe(int subId, string companyId)
+        {
+            if (string.IsNullOrEmpty(companyId))
+                return RedirectToAction("Index", "Home");
+
+            var subscription = _context.CompanySubscraptions.FirstOrDefault(s => s.Id == subId);
+            if (subscription == null)
+                return RedirectToAction("Index", new { id = companyId });
+
+            string refCode = "JOB-" + new Random().Next(1000, 9999);
+
+            var transaction = new CompanyTransaction
+            {
+                CompanyId = companyId,
+                CompanySubscraptionId = subId,
+                Amount = subscription.Price,
+                ReferenceCode = refCode,
+                PaymentDate = DateTime.Now,
+                IsPaid = false,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1),
+                IsActive = false
+            };
+
+            _context.CompanyTransactions.Add(transaction);
+            _context.SaveChanges();
+
+            TempData["RefCode"] = refCode;
+            TempData["Amount"] = subscription.Price.ToString();
+            TempData["CompanyId"] = companyId;
+            TempData.Keep("CompanyId");
+
+            return RedirectToAction("PaymentInstructions");
+        }
+
+        public IActionResult PaymentInstructions()
+        {
+            var refCode = TempData["RefCode"]?.ToString();
+            var amountStr = TempData["Amount"]?.ToString();
+            var companyId = TempData["CompanyId"]?.ToString();
+
+            if (string.IsNullOrEmpty(refCode) || string.IsNullOrEmpty(amountStr))
+                return RedirectToAction("Index", "Home");
+
+            if (!decimal.TryParse(amountStr, out decimal amount))
+                return RedirectToAction("Index", "Home");
+
+            ViewBag.RefCode = refCode;
+            ViewBag.Amount = amount;
+            ViewBag.CompanyId = companyId;
+
+            return View();
+        }
+
     }
 }

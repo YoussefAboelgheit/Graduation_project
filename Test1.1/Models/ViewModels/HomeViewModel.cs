@@ -4,5 +4,9 @@
     {
         public List<ApplicantCardHomeViewModel> Applicants { get; set; }
         public List<CompanyAdvHomeViewModel> Companies { get; set; }
+
+        // جديد
+        public List<CompanyAdvHomeViewModel> ApplicantSuggestions { get; set; }
+        public List<ApplicantCardHomeViewModel> CompanySuggestions { get; set; }
     }
 }

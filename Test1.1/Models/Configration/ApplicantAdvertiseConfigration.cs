@@ -8,34 +8,30 @@ namespace Test1._1.Models.Configration
     {
         public void Configure(EntityTypeBuilder<ApplicantAdvertisment> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.HasKey(aa => aa.Id);
+            builder.Property(aa => aa.Id).UseIdentityColumn();
 
-            builder.Property(x => x.SubmissionDate)
+            builder.Property(aa => aa.SubmissionDate)
                 .HasColumnType("DATETIME")
                 .IsRequired();
 
-            builder.Property(x => x.JobAdvertismentId)
+            builder.Property(aa => aa.Status)
+                .HasColumnType("VARCHAR")
+                .HasMaxLength(20)
                 .IsRequired();
 
-            // Relationship with Applicant
-            builder.HasOne(x => x.Applicant)
-                   .WithMany(x => x.ApplicantAdvertisments)
-                   .HasForeignKey(x => x.ApplicantId)
-                   .OnDelete(DeleteBehavior.NoAction);
+            // Configure relationships
+            builder.HasOne(aa => aa.Applicant)
+                .WithMany(a => a.ApplicantAdvertisments)
+                .HasForeignKey(aa => aa.ApplicantId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Relationship with JobAdvertisment
-            builder.HasOne(x => x.JobAdvertisment)
-                   .WithMany(x => x.Applications)
-                   .HasForeignKey(x => x.JobAdvertismentId)
-                   .OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(aa => aa.JobAdvertisment)
+                .WithMany(ja => ja.Applications)
+                .HasForeignKey(aa => aa.JobAdvertismentId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Composite unique index to prevent duplicate applications
-            builder.HasIndex(x => new { x.ApplicantId, x.JobAdvertismentId })
-                   .IsUnique()
-                   .HasDatabaseName("IX_ApplicantAdvertisment_Unique");
-
-            builder.ToTable("ApplicantAdvertisments");
+            builder.ToTable("ApplicantAdvertisements");
         }
     }
 }

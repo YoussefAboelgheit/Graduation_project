@@ -259,3 +259,81 @@ body {
     background-color: #0056b3;
 }
 
+#Subscriptions {
+    text-align: center;
+    margin: 80px 0 30px;
+    color: #e43f5a;
+    font-size: 32px;
+}
+
+.subscriptions-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 20px 40px;
+}
+
+.subscription-card {
+    flex: 0 0 22%; /*  ﬁ—Ì»« 4 ﬂ—Ê  ›Ì ’› */
+    min-width: 230px;
+    max-width: 280px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .subscription-card h3 {
+        margin: 10px 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .subscription-card p {
+        font-size: 18px;
+        margin: 10px 0 20px;
+    }
+
+.subscribe-btn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .subscribe-btn:hover {
+        background-color: #0056b3;
+    }
+
+.subscription-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* ‘ﬂ· «·ﬂ«—  ⁄‰œ «· ›⁄Ì· ›ﬁÿ */
+.subscription-card.active-sub {
+    background-color: #d4edda; /* √Œ÷— ›« Õ */
+    border: 2px solid #28a745; /* ÕœÊœ Œ÷—«¡ */
+}
+
+/* ‰’ «· «—ÌŒ */
+.subscription-card .status-text {
+    color: #155724;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.Admin_profile_container {
+    font-size: larger;
+    margin-left: 50px;
+    text-align: center;
+}

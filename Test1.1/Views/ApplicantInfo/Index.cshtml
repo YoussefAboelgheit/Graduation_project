@@ -1,8 +1,10 @@
-﻿@model Test1._1.Models.Entity.Applicant
+﻿@model Test1._1.Models.ViewModels.ApplicantProfileViewModel
 @{
     ViewData["Title"] = "Applicant Profile";
     Layout = null;
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var subscriptions = ViewBag.ApplicantSubscraptions as List<Test1._1.Models.Entity.ApplicantSubscraption>;
+    var activeTransaction = ViewBag.ActiveTransaction as Test1._1.Models.Entity.ApplicantTransaction;
 }
 
 <!DOCTYPE html>
@@ -11,15 +13,13 @@
     <meta charset="UTF-8">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/styleApplicantProfile.css" />
-
 </head>
 <body>
-
     <header class="navbar">
         <div class="navbar-left">
             <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
-            <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
-            <span class="site-name">Jobify</span>
+                <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
+                <span class="site-name">Jobify</span>
             </a>
         </div>
         <div class="navbar-right">
@@ -28,63 +28,74 @@
                 <a href="#payment">Payment</a>
             </nav>
             <div class="user-info">
-                @if (Model.Id == currentUserId)
+                @if (Model.Applicant.Id == currentUserId)
                 {
-                    <img src="~/@Model.Profile_image" alt="User Photo" class="user-photo" />
+                    <img src="~/@Model.Applicant.Profile_image" alt="User Photo" class="user-photo" />
                 }
                 <span class="user-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
-                    @Model.UserName @Model.lastName
+                    @Model.Applicant.UserName @Model.Applicant.lastName
                 </span>
             </div>
-            @if (Model.Id == currentUserId)
+            @if (Model.Applicant.Id == currentUserId)
             {
-                <a href="@Url.Action("Edit", "ApplicantInfo", new { id = Model.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+                <a href="@Url.Action("Edit", "ApplicantInfo", new { id = Model.Applicant.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
             }
         </div>
     </header>
 
-    <!-- ========================= Profile Details ========================= -->
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+    <!-- Profile Details -->
     <div class="profile-container">
         <div class="profile-image">
-            <img src="~/@Model.Profile_image" alt="Applicant Photo" />
+            <img src="~/@Model.Applicant.Profile_image" alt="Applicant Photo" />
         </div>
         <div class="profile-details">
-            <p><strong>Name:</strong> @Model.UserName @Model.lastName</p><br />
-            <p><strong>Field of Work:</strong> @Model.Field_work</p><br />
-            <p><strong>Years of Experience:</strong> @Model.Years_experience</p><br />
-            <p><strong>Email:</strong> @Model.Email</p><br />
-            <p><strong>Phone:</strong> @Model.PhoneNumber</p><br />
-            <p><strong>Address:</strong> @Model.address</p><br />
+            <p><strong>Name:</strong> @Model.Applicant.UserName @Model.Applicant.lastName</p><br />
+            <p><strong>Field of Work:</strong> @Model.Applicant.Field_work</p><br />
+            <p><strong>Years of Experience:</strong> @Model.Applicant.Years_experience</p><br />
+            <p><strong>Email:</strong> @Model.Applicant.Email</p><br />
+            <p><strong>Phone:</strong> @Model.Applicant.PhoneNumber</p><br />
+            <p><strong>Address:</strong> @Model.Applicant.address</p><br />
             <p>
                 <strong>CV:</strong>
-                @if (string.IsNullOrEmpty(Model.CV))
+                @if (string.IsNullOrEmpty(Model.Applicant.CV))
                 {
                     <span>No CV uploaded</span>
                 }
                 else
                 {
-                    <a href="@Url.Action("ViewCV", "ApplicantInfo", new { id = Model.Id })" target="_blank">View CV</a>
+                    <a href="@Url.Action("ViewCV", "ApplicantInfo", new { id = Model.Applicant.Id })" target="_blank">View CV</a>
                 }
             </p>
         </div>
     </div>
 
-    <!-- ============================ Advertisements ============================ -->
-    @if (Model.Id == currentUserId)
+    <!-- Suggestions -->
+    @if (Model.Applicant.Id == currentUserId)
     {
+        <h2 id="Advertisements">Suggestions Ads</h2>
+        <div class="ads-container">
+            @if (Model.SuggestedAds != null && Model.SuggestedAds.Any())
+            {
+                @foreach (var ad in Model.SuggestedAds)
+                {
+                    <partial name="_CompanyAd" model="ad" />
+                }
+            }
+            else
+            {
+                <p style="text-align: center; color: #ccc; font-style: italic;">No suggestions available.</p>
+            }
+        </div>
+
+        <!-- Applied Advertisements -->
         <h2 id="Advertisements">Applied Advertisements</h2>
         <div class="ads-container">
-        @if (Model.ApplicantAdvertisments != null && Model.ApplicantAdvertisments.Any())
-        {
-            @foreach (var application in Model.ApplicantAdvertisments.Where(a => !a.IsDeleted))
+            @if (Model.AppliedAdvertisements != null && Model.AppliedAdvertisements.Any())
             {
-                var jobAd = application.JobAdvertisment;
-                <div class="ad">
+                @foreach (var application in Model.AppliedAdvertisements.Where(a => !a.IsDeleted))
+                {
+                    var jobAd = application.JobAdvertisment;
+                    <div class="ad">
                         <div class="ad-image">
                             @if (!string.IsNullOrEmpty(jobAd.Company?.Logo))
                             {
@@ -93,29 +104,59 @@
                                 </a>
                             }
                         </div>
-                    <div class="ad-content">
-                        <h3 class="company-name">@jobAd.Company?.UserName</h3>
-                        <p class="ad-details">
-                            <strong>@jobAd.jobtitle</strong><br>
-                            @jobAd.governorate - @jobAd.Job_time<br>
-                            Salary: @jobAd.salary
-                        </p>
-                        <a href="@Url.Action("Details", "JobAdvertisement", new { id = jobAd.Id })" class="details-btn">View Details</a>
+                        <div class="ad-content">
+                            <h3 class="company-name">@jobAd.Company?.UserName</h3>
+                            <p class="ad-details">
+                                <strong>@jobAd.jobtitle</strong><br>
+                                @jobAd.governorate - @jobAd.Job_time<br>
+                                Salary: @jobAd.salary
+                            </p>
+                            <a href="@Url.Action("Details", "JobAdvertisement", new { id = jobAd.Id })" class="details-btn">View Details</a>
+                        </div>
                     </div>
-                </div>
+                }
             }
-        }
-        else
-        {
+            else
+            {
                 <p style="text-align: center; color: #ccc; font-style: italic;">You haven't applied to any advertisements yet.</p>
-        }
+            }
         </div>
 
         <!-- Payment Section -->
-        <h2 id="payment">Payment</h2>
+        <h2 id="payment">Available Subscriptions</h2>
+        <div class="subscriptions-container">
+            @if (subscriptions != null && subscriptions.Any())
+            {
+                foreach (var sub in subscriptions)
+                {
+                    var isActive = activeTransaction != null && activeTransaction.ApplicantSubscraptionId == sub.Id;
+                    var cardStyle = isActive ? "background-color:#d4edda; border:2px solid #28a745;" : "";
+                    var statusText = isActive
+                    ? $"<p style='color:#155724; font-weight:bold;'>Active - Ends at: {activeTransaction.EndDate.ToShortDateString()}</p>"
+                    : "";
 
-        <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
-
+                    <div class="subscription-card" style="@cardStyle">
+                        <h3>@sub.SubType</h3>
+                        <p><strong>Price:</strong> @sub.Price EGP</p>
+                        @Html.Raw(statusText)
+                        @if (!isActive)
+                        {
+                            <form asp-controller="ApplicantTransaction" asp-action="Select" method="post">
+                                <input type="hidden" name="subId" value="@sub.Id" />
+                                <input type="hidden" name="applicantId" value="@Model.Applicant.Id" />
+                                <button type="submit" class="subscribe-btn">Subscribe</button>
+                            </form>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No subscriptions available.</p>
+            }
+        </div>
     }
+
+    <script src="~/js/indexApplicantInfo.js" asp-append-version="true"></script>
 </body>
 </html>

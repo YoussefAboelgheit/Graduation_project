@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@model Test1._1.Models.ViewModels.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
     Layout = null;
@@ -43,19 +44,28 @@
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 <span class="welcome-text">
-                    @{
-                        string typeOfUser = "ApplicantInfo";
-                    }
-                    @if (User.IsInRole("Company"))
+                    @if (User.IsInRole("Admin"))
                     {
-                        typeOfUser = "CompanyInfo";
+                        <a asp-controller= "Admin"
+                           asp-action="Dashboard"
+                           style="color: inherit; text-decoration: none;">
+                            Welcome, @User.Identity.Name
+                        </a>
                     }
-                    <a asp-controller="@typeOfUser"
-                       asp-action="Index"
-                       asp-route-id="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)"
-                       style="color: inherit; text-decoration: none;">
-                    Welcome, @User.Identity.Name
-                    </a>
+                    else
+                    {
+                        string typeOfUser = "CompanyInfo";
+                        if (User.IsInRole("Applicant"))
+                        {
+                            typeOfUser = "ApplicantInfo";
+                        }
+                        <a asp-controller="@typeOfUser"
+                           asp-action="Index"
+                           asp-route-id="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)"
+                           style="color: inherit; text-decoration: none;">
+                        Welcome, @User.Identity.Name
+                        </a>
+                    }
                 </span>
                 <form asp-controller="Home" asp-action="Logout" method="post">
                     <button type="submit" class="sign_up">Log out</button>
@@ -119,9 +129,36 @@
             <span>Others</span>
         </a>
     </div>
+    <!-- ---------------------------suggestions------------------------------------------ -->
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        @if (User.IsInRole("Company") && Model.CompanySuggestions != null && Model.CompanySuggestions.Any())
+        {
+            <h2 id="Sections">
+                Suggested Applicants
+            </h2>
+            <div class="applicant" id="Applicants">
+                @foreach (var applicant in Model.CompanySuggestions)
+                {
+                    <partial name="_ApplicantCard" model="applicant" />
+                }
+            </div>
+        }
+        else if (User.IsInRole("Applicant") && Model.ApplicantSuggestions != null && Model.ApplicantSuggestions.Any())
+        {
+            <h2 id="Sections">
+                Suggested Job Ads
+            </h2>
+            <div class="ads-container">
+                @foreach (var company in Model.ApplicantSuggestions)
+                {
+                    <partial name="_CompanyAd" model="company" />
+                }
+            </div>
+        }
+    }
 
-
-
+    
     <!-- ---------------------------APPPPPPPPPPPPPPPPPPPPPPPP------------------------------------------ -->
   <div class="filter-container">
       <div class="filter-header">

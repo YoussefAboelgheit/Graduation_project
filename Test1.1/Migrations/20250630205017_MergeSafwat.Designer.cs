@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250630073317_TryTimeAdv")]
-    partial class TryTimeAdv
+    [Migration("20250630205017_MergeSafwat")]
+    partial class MergeSafwat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

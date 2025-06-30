@@ -1,0 +1,368 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    Layout = null;
+}
+@model Test1._1.Models.ViewModels.SearchPageViewModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobify Search Page</title>
+    <link rel="stylesheet" href="~/css/SearchPage_style.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-A7f4X+FjOZ3D4TTVzboVxMd+4aYQbxnXghA3eJu2h5EZ1Dp5F8pA6X+lUnZ6og1j7sYBdV3OwFkX5z+I+eRV1Q==" crossorigin="anonymous" referrerpolicy="no-referrer" /> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav>
+    <ul>
+        <li>
+            <a href="/Home/Index">Jobify</a>
+        </li>
+        <li>
+            <input id="searchInput" class="se" type="search" placeholder="Search">
+            <button id="searchButton" class="btn_se" type="submit">Search</button>
+            <div id="suggestions" class="suggestion-box"></div>
+        </li>
+    </ul>
+</nav>
+
+<div class="filter-container">
+    <div class="filter-header">
+        <span class="section-title">Filters</span>
+        <div class="filters">
+
+            <!-- NEW TYPE FILTER -->
+            <div class="filter-item">
+                <label for="filter-type">Filter For:</label>
+                <select id="filter-type">
+                    <option value="">Select Type</option>
+                    <option value="applicant">Applicants</option>
+                    <option value="company">Companies</option>
+                    <option value="ads">Advertisements</option>
+                </select>
+            </div>
+
+            <!-- SHARED FILTERS -->
+            <div class="filter-item">
+                <label for="city">City:</label>
+                <select id="city">
+                    <option value="">Select City</option>
+                    <option>Alexandria</option>
+                    <option>Assiut</option>
+                    <option>Aswan</option>
+                    <option>Beheira</option>
+                    <option>Beni Suef</option>
+                    <option>Cairo</option>
+                    <option>Dakahlia</option>
+                    <option>Damietta</option>
+                    <option>Fayoum</option>
+                    <option>Gharbia</option>
+                    <option>Giza</option>
+                    <option>Ismailia</option>
+                    <option>Kafr El Sheikh</option>
+                    <option>Luxor</option>
+                    <option>Matrouh</option>
+                    <option>Minya</option>
+                    <option>Monufia</option>
+                    <option>New Valley</option>
+                    <option>North Sinai</option>
+                    <option>Port Said</option>
+                    <option>Qalyubia</option>
+                    <option>Qena</option>
+                    <option>Red Sea</option>
+                    <option>Sharqia</option>
+                    <option>Sohag</option>
+                    <option>South Sinai</option>
+                    <option>Suez</option>
+                </select>
+            </div>
+
+            <!-- APPLICANT FILTERS -->
+          
+
+            <div class="filter-item">
+                <label for="experience">Experience (Years):</label>
+                <select id="experience">
+                    <option value="">Select Experience</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>&gt;10</option>
+                    <option>&gt;15</option>
+                    <option>&gt;20</option>
+                </select>
+            </div>
+
+            <!-- JOB FIELD -->
+            <div class="filter-item">
+                <label for="job">Job:</label>
+                <select id="job">
+                    <option value="">Select Job</option>
+                    <option>AI Engineer</option>
+                    <option>AR/VR Developer</option>
+                    <option>Back‑End Developer</option>
+                    <option>Blockchain Developer</option>
+                    <option>Cloud Engineer</option>
+                    <option>Cybersecurity Specialist</option>
+                    <option>Data Analyst</option>
+                    <option>Data Scientist</option>
+                    <option>Database Administrator</option>
+                    <option>DevOps Engineer</option>
+                    <option>Embedded Systems Engineer</option>
+                    <option>Front‑End Developer</option>
+                    <option>Full Stack Developer</option>
+                    <option>Game Developer</option>
+                    <option>IT Project Manager</option>
+                    <option>IT Support Specialist</option>
+                    <option>Machine Learning Engineer</option>
+                    <option>Mobile App Developer</option>
+                    <option>Network Engineer</option>
+                    <option>QA/Test Engineer</option>
+                    <option>Software Engineer</option>
+                    <option>System Administrator</option>
+                    <option>Technical Writer</option>
+                    <option>UI/UX Designer</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <!-- ADS FILTERS -->
+            <div class="filter-item">
+                <label for="salary">Salary:</label>
+                <select id="salary">
+                    <option value="">Select Salary Range</option>
+                    <option value="2000-4000">2000 - 4000</option>
+                    <option value="4000-6000">4000 - 6000</option>
+                    <option value="6000-8000">6000 - 8000</option>
+                    <option value="8000-10000">8000 - 10000</option>
+                    <option value=">10000">More than 10000</option>
+                    <option value=">15000">More than 15000</option>
+                    <option value=">20000">More than 20000</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label for="work-type">Work Type:</label>
+                <select id="work-type">
+                    <option value="">Select Work Type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                </select>
+            </div>
+
+            <button class="aa" id="apply-filters">Apply</button>
+        </div>
+    </div>
+</div>
+<!-- RESULTS SECTION -->
+<div class="results-wrapper">
+
+    <!-- APPLICANTS SECTION -->
+    <section id="applicants-section">
+        <h2 class="section-heading">Applicants</h2>
+        <div class="applicant">
+            @foreach (var applicant in Model.Applicants)
+            {
+                <partial name="_ApplicantCard" model="applicant" />
+            }
+        </div>
+    </section>
+
+    <!-- ADS SECTION -->
+    <section id="ads-section">
+        <h2 class="section-heading">Advertisements</h2>
+        <div class="ads-container">
+            @foreach (var ad in Model.Ads)
+            {
+                <partial name="_CompanyAd" model="ad" />
+            }
+        </div>
+    </section>
+
+    <!-- COMPANIES SECTION -->
+    <section id="companies-section">
+        <h2 class="section-heading">Companies</h2>
+        <div class="companies-container">
+            @if (Model.Companies.Any())
+            {
+                @foreach (var company in Model.Companies)
+                {
+                    <partial name="_CompanyCard" model="company" />
+                }
+            }
+           
+        </div>
+    </section>
+
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const filterTypeSelect = document.getElementById("filter-type");
+    const citySelect = document.getElementById("city");
+    const experienceSelect = document.getElementById("experience");
+    const jobSelect = document.getElementById("job");
+    const salarySelect = document.getElementById("salary");
+    const workTypeSelect = document.getElementById("work-type");
+    const applyBtn = document.getElementById("apply-filters");
+
+    applyBtn.addEventListener("click", function () {
+        const filterFor = filterTypeSelect?.value || "";
+        const city = citySelect?.value || "";
+        const experience = experienceSelect?.value || "";
+        const job = jobSelect?.value || "";
+        const salary = salarySelect?.value || "";
+        const workType = workTypeSelect?.value || "";
+
+        const queryParams = new URLSearchParams();
+
+        // ✅ Preserve 'q' from current URL
+        const currentParams = new URLSearchParams(window.location.search);
+        const q = currentParams.get("q");
+        if (q) queryParams.append("q", q);
+
+        // ✅ Add filters
+        if (filterFor) queryParams.append("filterFor", filterFor);
+        if (city) queryParams.append("city", city);
+        if (experience) queryParams.append("experience", experience);
+        if (job) queryParams.append("job", job);
+        if (salary) queryParams.append("salary", salary);
+        if (workType) queryParams.append("workType", workType);
+
+        // ✅ Redirect with filters + original search term
+        window.location.href = `/Search/Index?${queryParams.toString()}`;
+    });
+      const input = document.getElementById('searchInput');
+    const button = document.getElementById('searchButton');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    if (input && button && suggestionsBox) {
+        // Handle live suggestions
+        input.addEventListener('input', () => {
+            const query = input.value.trim();
+            if (query.length < 1) {
+                suggestionsBox.innerHTML = '';
+                suggestionsBox.style.display = 'none';
+                return;
+            }
+
+            fetch(`/Home/Suggestions?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsBox.innerHTML = '';
+                    suggestionsBox.style.display = 'block';
+
+                    const getIconHtml = (source) => {
+                        switch (source) {
+                            case "applicant": return '<i class="fas fa-user" title="Applicant"></i>';
+                            case "ad": return '<i class="fas fa-bullhorn" title="Job Advertisement"></i>';
+                            case "company": return '<i class="fas fa-building" title="Company"></i>';
+                            default: return '<i class="fas fa-question-circle"></i>';
+                        }
+                    };
+
+                    const buildSection = (title, items) => {
+                        if (!items || items.length === 0) return '';
+                        let html = `<div class="suggestion-header">${title}</div>`;
+                        for (const item of items) {
+                            const icon = getIconHtml(item.source);
+                            html += `
+                            <div class="suggestion-item" data-type="${item.type}" data-id="${item.id}" data-source="${item.source}">
+                                ${icon}
+                                <div style="display: inline-block; margin-left: 10px;">
+                                    <div><strong>${item.label}</strong></div>
+                                    ${item.sub ? `<div style="font-size: 0.85em; color: #666;">${item.sub}</div>` : ''}
+                                </div>
+                            </div>`;
+                        }
+                        return html;
+                    };
+
+                    const html =
+                        buildSection('Field of Work', data.fieldOfWork) +
+                        buildSection('City', data.city) +
+                        buildSection('Username', data.username);
+
+                    suggestionsBox.innerHTML = html;
+
+                    document.querySelectorAll('.suggestion-item').forEach(div => {
+                        div.addEventListener('click', () => {
+                            const type = div.dataset.type;
+                            const id = div.dataset.id;
+                            const source = div.dataset.source;
+
+                            if (type === "applicantField" || type === "applicantCity" || (type === "user" && source === "applicant")) {
+                                window.location.href = `/ApplicantInfo/Index/${id}`;
+                            } else if (type === "adField" || type === "adCity") {
+                                window.location.href = `/JobAdvertisement/Details/${id}`;
+                            } else if (type === "user" && source === "company") {
+                                window.location.href = `/CompanyInfo/Index/${id}`;
+                            } else {
+                                alert("Unknown item type.");
+                            }
+                        });
+                    });
+                })
+                .catch(() => {
+                    suggestionsBox.innerHTML = '';
+                    suggestionsBox.style.display = 'none';
+                });
+        });
+
+        // Pressing Enter triggers Search
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = input.value.trim();
+                if (query.length > 0) {
+                    window.location.href = `/Search/Index?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+        // Clicking the Search button
+        button.addEventListener('click', () => {
+            const query = input.value.trim();
+            if (query.length > 0) {
+                window.location.href = `/Search/Index?q=${encodeURIComponent(query)}`;
+            }
+        });
+
+        // Hide on blur
+        input.addEventListener('blur', () => {
+            setTimeout(() => {
+                suggestionsBox.style.display = 'none';
+                suggestionsBox.innerHTML = '';
+            }, 150);
+        });
+
+        // Optional: hide suggestions if clicking outside
+        document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
+
+
+
+
+    
+</body>
+</html>
+

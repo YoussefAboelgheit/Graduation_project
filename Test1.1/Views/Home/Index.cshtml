@@ -37,7 +37,7 @@
         </div>
         <div class="menu">
             <div class="menu-links">
-                <a href="#ssssearch">Search</a>
+                <a href="/Search/Index">Search</a>
                 <a href="#Sections">Sections</a>
                 <a href="#Applicants">Applicants</a>
                 <a href="#Advertisements">Advertisements</a>
@@ -87,13 +87,13 @@
 
 
     <!-- -----------------------search------------------------------ -->
+  
     <div class="search" id="ssssearch">
-        <div class="box">
-            <input type="text" name=" " id="" placeholder="Search...">
-            <a href="">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </a>
-        </div>
+       <div class="box">
+          <input type="text" id="searchInput" placeholder="Search...">
+          <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+          <div id="suggestions" class="suggestion-box"></div>
+       </div>
     </div>
     <!-- ------------------------------------التقسيمه--------------------------------- -->
     <h2 id="Sections"> Sections</h2>
@@ -349,7 +349,15 @@
                         <option value=">20000">More than 20000</option>
                     </select>
                 </div>
-                <button class="aa">Apply</button>
+                <div class="filter-item">
+                   <label for="work-type">Work Type:</label>
+                   <select id="work-type">
+                       <option value="">Select Work Type</option>
+                       <option value="Full-time">Full-time</option>
+                       <option value="Part-time">Part-time</option>
+                   </select>
+                </div>
+                <button class="aa">apply</button>
             </div>
         </div>
     </div>

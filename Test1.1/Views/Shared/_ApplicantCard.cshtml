@@ -3,7 +3,9 @@
 
 <a href="@Url.Action("Index", "ApplicantInfo", new { id = Model.Id })" class="card-link">
     <div class="card">
-        <img src="~/@Model.ImagePath" alt="" />
+     
+        <img src="~/@Model.ImagePath" asp-append-version="true" alt=""/>
+
         <div class="info">
             <span class="name">@Model.Name</span>
             <span class="role">@Model.LastName</span>

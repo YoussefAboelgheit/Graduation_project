@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Test1._1.Models.ViewModels
+@model CompanyViewModel
+
+<a href="@Url.Action("Index", "CompanyInfo", new { id = Model.Id })" class="card-link">
+    <div class="card">
+        <img src="~/@Model.Logo" alt="@Model.UserName Logo" />
+        <div class="info">
+            <span class="name">@Model.UserName</span>
+            <span class="role">@Model.FiledWork</span>
+        </div>
+        <p>@Model.Description</p>
+    </div>
+</a>

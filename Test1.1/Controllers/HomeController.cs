@@ -1,14 +1,15 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
-using System.Text;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using Test1._1.Models;
 using Test1._1.Models.Entity;
 using Test1._1.Models.ViewModels;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Identity;
 
 namespace Test1._1.Controllers
 {
@@ -274,17 +275,14 @@ namespace Test1._1.Controllers
 
 		
 		[HttpGet]
-		public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		public IActionResult FilterAdvertisements(string governorate, string job, string workType, string salary)
 		{
-            var query = _context.JobAdvertisments
-                .Include(ad => ad.Company)
-                .Where(ad => ad.IsActive &&
-                !ad.IsManuallyDeactivated &&
-                ad.ExpiryDate > DateTime.Now)
-                .AsQueryable();
+			var query = _context.JobAdvertisments
+				.Include(ad => ad.Company)
+				.AsQueryable();
 
-            // Filter by governorate (city)
-            if (!string.IsNullOrEmpty(governorate))
+			// Filter by governorate (city)
+			if (!string.IsNullOrEmpty(governorate))
 				query = query.Where(ad => ad.governorate == governorate);
 
 			// Filter by job title
@@ -308,6 +306,12 @@ namespace Test1._1.Controllers
 				{
 					query = query.Where(ad => ad.jobtitle == job);
 				}
+			}
+
+			// Filter by work type
+			if (!string.IsNullOrEmpty(workType))
+			{
+				query = query.Where(ad => ad.Job_time == workType);
 			}
 
 			// Filter by salary directly in the database query for exact matching
@@ -338,6 +342,108 @@ namespace Test1._1.Controllers
 
 			return PartialView("_CompanyAdList", advertisements);
 		}
+		
+		
+		[HttpGet]
+		public async Task<IActionResult> Suggestions(string q)
+		{
+			if (string.IsNullOrWhiteSpace(q))
+			{
+				return Json(new
+				{
+					fieldOfWork = new List<object>(),
+					city = new List<object>(),
+					username = new List<object>()
+				});
+			}
+
+			var lower = q.ToLower();
+
+			// Get Applicant and Ad field of work
+			var fieldOfWorkApplicants = await _context.Applicants
+				.Where(a => a.Field_work.ToLower().Contains(lower))
+				.Select(a => new
+				{
+					label = a.Field_work,
+					sub = a.address,
+					type = "applicantField",
+					id = a.Id.ToString(),
+					source = "applicant"
+				})
+				.Take(5)
+				.ToListAsync();
+
+			var fieldOfWorkAds = await _context.JobAdvertisments
+				.Where(ad => ad.jobtitle.ToLower().Contains(lower))
+				.Select(ad => new
+				{
+					label = ad.jobtitle,
+					sub = ad.governorate,
+					type = "adField",
+					id = ad.Id.ToString(),
+					source = "ad"
+				})
+				.Take(5)
+				.ToListAsync();
+
+			// Get Applicant and Ad cities
+			var applicantCities = await _context.Applicants
+				.Where(a => a.address.ToLower().Contains(lower))
+				.Select(a => new
+				{
+					label = a.address,
+					sub = a.Field_work,
+					type = "applicantCity",
+					id = a.Id.ToString(),
+					source = "applicant"
+				})
+				.Take(5)
+				.ToListAsync();
+
+			var adCities = await _context.JobAdvertisments
+				.Where(ad => ad.governorate.ToLower().Contains(lower))
+				.Select(ad => new
+				{
+					label = ad.governorate,
+					sub = ad.jobtitle,
+					type = "adCity",
+					id = ad.Id.ToString(),
+					source = "ad"
+				})
+				.Take(5)
+				.ToListAsync();
+
+			// Get Usernames: separate companies vs applicants
+			var applicantIds = await _context.Applicants.Select(a => a.Id).ToListAsync();
+			var companyIds = await _context.Companies.Select(c => c.Id).ToListAsync();
+
+			var usernames = await _context.Users
+				.Where(u => u.UserName.ToLower().Contains(lower))
+				.Select(u => new
+				{
+					label = u.UserName,
+					sub = "",
+					type = "user",
+					id = u.Id.ToString(),
+					source = applicantIds.Contains(u.Id) ? "applicant" :
+							 companyIds.Contains(u.Id) ? "company" : "unknown"
+				})
+				.Take(10)
+				.ToListAsync();
+
+			return Json(new
+			{ئ
+				fieldOfWork = fieldOfWorkApplicants.Concat(fieldOfWorkAds),
+				city = applicantCities.Concat(adCities),
+				username = usernames
+			});
+		}
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Threading.Tasks;
 using Test1._1.Models.ViewModels;
+using System.Security.Claims;
 
 namespace Test1._1.Controllers
 {
@@ -23,12 +24,108 @@ namespace Test1._1.Controllers
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction("ErrorPage");
 
-            var applicant = _context.Applicants.FirstOrDefault(a => a.Id == id);
+            var applicant = _context.Applicants
+                .Include(a => a.ApplicantAdvertisments)
+                    .ThenInclude(aa => aa.JobAdvertisment)
+                        .ThenInclude(ja => ja.Company)
+                .FirstOrDefault(a => a.Id == id);
+
             if (applicant == null)
                 return NotFound();
 
-            return View(applicant);
+            // suggestions logic (نفس اللي استخدمناه في الـ HomeController أو أي مكان مشابه)
+            var allJobs = _context.JobAdvertisments
+                .Include(j => j.Company)
+                .ToList();
+
+            var suggestedAds = allJobs
+                .Select(j => new
+                {
+                    Job = j,
+                    Score =
+                        (j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                        (j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0) +
+                        (j.governorate == applicant.address ? 15 : 0) +
+                        (j.Job_time == "Full Time" ? 5 : 0) +
+                        GetSalaryValue(j.salary) / 1000 +
+                        (int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2
+                })
+                .OrderByDescending(j => j.Score)
+                .Take(8)
+                .Select(j => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = j.Job.Id,
+                    CompanyId = j.Job.CompanyId,
+                    CompanyName = j.Job.Company.UserName,
+                    CompanyDescription = j.Job.Company.Description,
+                    LogoPath = j.Job.Company.Logo,
+                    JobTitle = j.Job.jobtitle,
+                    Salary = j.Job.salary,
+                    Location = j.Job.governorate,
+                    JobTime = j.Job.Job_time,
+                    CreatedDate = j.Job.CreatedDate
+                })
+                .ToList();
+
+            var viewModel = new ApplicantProfileViewModel
+            {
+                Applicant = applicant,
+                SuggestedAds = suggestedAds,
+                AppliedAdvertisements = applicant.ApplicantAdvertisments.ToList()
+            };
+
+            return View(viewModel);
         }
+
+
+        public async Task<IActionResult> AllSuggestions()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("ErrorPage");
+
+            var applicant = await _context.Applicants.FirstOrDefaultAsync(a => a.Id == userId);
+
+            if (applicant == null)
+                return NotFound();
+
+            var allJobs = await _context.JobAdvertisments
+                .Include(j => j.Company)
+                .ToListAsync();
+
+            List<CompanyAdvHomeViewModel> suggestions = allJobs
+                .Select(j => new
+                {
+                    Job = j,
+                    Score =
+                        j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 :
+                        j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0
+                        + (j.governorate == applicant.address ? 15 : 0)
+                        + (j.Job_time == "Full Time" ? 5 : 0)
+                        + GetSalaryValue(j.salary) / 1000
+                        + (int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2
+                })
+                .OrderByDescending(j => j.Score)
+                .Select(j => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = j.Job.Id,
+                    CompanyId = j.Job.CompanyId,
+                    CompanyName = j.Job.Company.UserName,
+                    CompanyDescription = j.Job.Company.Description,
+                    LogoPath = j.Job.Company.Logo,
+                    JobTitle = j.Job.jobtitle,
+                    Salary = j.Job.salary,
+                    Location = j.Job.governorate,
+                    JobTime = j.Job.Job_time,
+                    CreatedDate = j.Job.CreatedDate
+                })
+                .ToList();
+
+            return View(suggestions);
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -297,5 +394,20 @@ namespace Test1._1.Controllers
 
             return Json(applicants);
         }
+        private int GetSalaryValue(string salaryRange)
+        {
+            return salaryRange switch
+            {
+                "2000 - 4000" => 3000,
+                "4000 - 6000" => 5000,
+                "6000 - 8000" => 7000,
+                "8000 - 10000" => 9000,
+                "More than 10000" => 11000,
+                "More than 15000" => 16000,
+                "More than 20000" => 21000,
+                _ => 0
+            };
+        }
+
     }
 }

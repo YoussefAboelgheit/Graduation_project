@@ -1,75 +1,86 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // ----------- Companies ------------
+document.addEventListener('DOMContentLoaded', function () {
+
     const companyRejectBtns = document.querySelectorAll('.company-box .reject-btn');
     const companyAcceptBtns = document.querySelectorAll('.company-box .accept-btn');
 
     companyRejectBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            alert('Company Rejected');
+    btn.addEventListener('click', function () {
+        alert('Company Rejected');
 
-        });
+    });
     });
 
     companyAcceptBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            alert('Company Accepted');
-        });
+    btn.addEventListener('click', function () {
+        alert('Company Accepted');
+    });
     });
 
-    // ----------- Ad Comparisons ------------
+
     const comparisonRejectBtns = document.querySelectorAll('.comparison-actions .reject-btn');
     const comparisonAcceptBtns = document.querySelectorAll('.comparison-actions .accept-btn');
 
     comparisonRejectBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            alert('Ad Comparison Rejected');
-        });
+    btn.addEventListener('click', function () {
+        alert('Ad Comparison Rejected');
+    });
     });
 
     comparisonAcceptBtns.forEach((btn) => {
-        btn.addEventListener('click', function () {
-            alert('Ad Comparison Accepted');
-        });
+    btn.addEventListener('click', function () {
+        alert('Ad Comparison Accepted');
     });
+    });
+});
+// **********************payment***********************
+document.addEventListener("DOMContentLoaded", function() {
+  const modal = document.getElementById("edit-modal");
+  const editButtons = document.querySelectorAll(".edit-btn");
+  const closeButton = document.querySelector(".close-button");
+  const subscriptionNameEl = document.getElementById("subscription-name");
+  const oldPriceEl = document.querySelector(".old-price");
+  const newPriceInput = document.getElementById("new-price-input");
+  const confirmButton = document.getElementById("confirm-edit-btn");
 
-    // ----------- Subscription Edit Modal ------------
-    const modal = document.getElementById("edit-modal");
-    const editButtons = document.querySelectorAll(".edit-btn");
-    const closeButton = document.querySelector(".close-button");
+  let currentBox = null;
 
-    const subscriptionNameEl = document.getElementById("subscription-name");
-    const oldPriceEl = document.querySelector(".old-price");
-    const newPriceInput = document.getElementById("new-price-input");
-    const subscriptionIdInput = document.getElementById("subscription-id");
+  function openModal(box) {
+    currentBox = box;
+    const name = box.querySelector("h3").innerText;
+    const priceText = box.querySelector(".price").innerText;
 
-    // ÝÊÍ ÇáãæÏÇá æÊÚÈÆÉ ÇáÈíÇäÇÊ
-    function openModal(id, name, price) {
-        subscriptionNameEl.innerText = name;
-        oldPriceEl.innerText = `$${price}`;
-        subscriptionIdInput.value = id;
-        newPriceInput.value = "";
+    subscriptionNameEl.innerText = name;
+    oldPriceEl.innerText = priceText;
+    newPriceInput.value = "";
 
-        modal.style.display = "block";
+    modal.style.display = "block";
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+    currentBox = null;
+  }
+
+  editButtons.forEach(btn => {
+    btn.addEventListener("click", function() {
+      const box = this.closest(".subscription-box");
+      openModal(box);
+    });
+  });
+
+  closeButton.addEventListener("click", closeModal);
+
+  window.addEventListener("click", function(e) {
+    if (e.target === modal) closeModal();
+  });
+
+  confirmButton.addEventListener("click", function() {
+    const newPrice = newPriceInput.value.trim();
+    if (!newPrice || isNaN(newPrice)) {
+      alert("Please enter a valid number.");
+      return;
     }
-
-    editButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const id = this.getAttribute("data-id");
-            const name = this.getAttribute("data-subscription-name");
-            const price = this.getAttribute("data-old-price");
-            openModal(id, name, price);
-        });
-    });
-
-    closeButton.addEventListener("click", function () {
-        modal.style.display = "none";
-    });
-
-    window.addEventListener("click", function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
     currentBox.querySelector(".price").innerText = `$${parseFloat(newPrice).toFixed(2)}`;
     closeModal();
-    });
+  });
 });

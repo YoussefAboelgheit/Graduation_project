@@ -11,35 +11,22 @@ namespace Test1._1.Models.Configration
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Id).UseIdentityColumn();
 
-			builder.Property(x => x.PaymentDate)
-				.HasColumnType("DATETIME")
-				.IsRequired();
-
-			builder.Property(x => x.StartDate)
-				.HasColumnType("DATETIME")
-				.IsRequired();
-
-			builder.Property(x => x.EndDate)
-				.HasColumnType("DATETIME")
-				.IsRequired();
-
-			builder.Property(x => x.Amount)
-				.HasPrecision(18, 2)
-				.IsRequired();
-
-			builder.Property(x => x.ReferenceCode)
-				.HasColumnType("VARCHAR")
-				.HasMaxLength(1000)
-				.IsRequired();
-
+			// العلاقة مع Applicant
 			builder.HasOne(x => x.Applicant)
 				   .WithMany(a => a.ApplicantTranactions)
 				   .HasForeignKey(x => x.ApplicantId)
 				   .OnDelete(DeleteBehavior.NoAction);
 
-			builder.HasOne(x => x.ApplicantSubscraption)
-				   .WithMany(s => s.ApplicantTransactions)
-				   .HasForeignKey(x => x.ApplicantSubscraptionId)
+			// العلاقة مع ApplicantSubscrabtion
+			builder.HasOne(x => x.ApplicantSubscrabtion)
+				   .WithMany(s => s.ApplicantTrasactions)
+				   .HasForeignKey(x => x.AppSubscrabtionId)
+				   .OnDelete(DeleteBehavior.NoAction);
+
+			// العلاقة مع ApplicantPayment
+			builder.HasOne(x => x.ApplicantPayment)
+				   .WithMany(p => p.ApplicantTransactions)
+				   .HasForeignKey(x => x.AppPaymentId)
 				   .OnDelete(DeleteBehavior.NoAction);
 
 		}

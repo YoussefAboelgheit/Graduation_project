@@ -198,34 +198,21 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("JobAdvertismentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("DATETIME");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("JobAdvertismentId");
+
+                    b.HasIndex("ApplicantId", "JobAdvertismentId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ApplicantAdvertisment_Unique");
 
                     b.ToTable("ApplicantAdvertisments", (string)null);
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantSubscraption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SubType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicantSubscraptions");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
@@ -236,14 +223,22 @@ namespace Test1._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("AppPaymentId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ApplicantId")
-                        .IsRequired()
+                    b.Property<int>("AppSubscrabtionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplicantId1")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ApplicantSubscraptionId")
+                    b.Property<int>("ApplicantPaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApplicantSubscrabtionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -252,24 +247,16 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReferenceCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicantId");
+                    b.HasIndex("ApplicantId1");
 
-                    b.HasIndex("ApplicantSubscraptionId");
+                    b.HasIndex("ApplicantPaymentId");
+
+                    b.HasIndex("ApplicantSubscrabtionId");
 
                     b.ToTable("ApplicantTransactions");
                 });
@@ -348,26 +335,6 @@ namespace Test1._1.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscraption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SubType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompanySubscraptions");
-                });
-
             modelBuilder.Entity("Test1._1.Models.Entity.CompanyTransaction", b =>
                 {
                     b.Property<int>("Id")
@@ -376,12 +343,17 @@ namespace Test1._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CompanyId")
-                        .IsRequired()
+                    b.Property<string>("CompanyId1")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CompanyPaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanySubId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CompanySubscraptionId")
                         .HasColumnType("int");
@@ -392,22 +364,14 @@ namespace Test1._1.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReferenceCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyId1");
+
+                    b.HasIndex("CompanyPaymentId");
 
                     b.HasIndex("CompanySubscraptionId");
 
@@ -422,16 +386,20 @@ namespace Test1._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Certificate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CompanyId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<TimeOnly>("Job_time")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JobRequirements")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Job_time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Jobdetail")
                         .IsRequired()
@@ -449,19 +417,40 @@ namespace Test1._1.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<string>("language")
+                    b.Property<string>("salary")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("salary")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
                     b.ToTable("JobAdvertisments", (string)null);
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payments");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.Question", b =>
@@ -491,6 +480,31 @@ namespace Test1._1.Migrations
                     b.HasIndex("JobAdvertismentId");
 
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.Subscraption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("NumAllowed")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SubType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscraptions");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.Admin", b =>
@@ -571,6 +585,34 @@ namespace Test1._1.Migrations
                     b.ToTable("Companies", (string)null);
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.Payment");
+
+                    b.ToTable("ApplicantPayments");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanyPayment", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.Payment");
+
+                    b.ToTable("CompanyPayments");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantSubscrabtion", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.Subscraption");
+
+                    b.ToTable("ApplicantSubscrabtions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscrabtion", b =>
+                {
+                    b.HasBaseType("Test1._1.Models.Entity.Subscraption");
+
+                    b.ToTable("CompanySubscraptions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -646,46 +688,66 @@ namespace Test1._1.Migrations
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantAdvertisments")
                         .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Test1._1.Models.Entity.JobAdvertisment", "JobAdvertisment")
+                        .WithMany("Applications")
+                        .HasForeignKey("JobAdvertismentId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Applicant");
+
+                    b.Navigation("JobAdvertisment");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantTransaction", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.Applicant", "Applicant")
                         .WithMany("ApplicantTranactions")
-                        .HasForeignKey("ApplicantId")
+                        .HasForeignKey("ApplicantId1");
+
+                    b.HasOne("Test1._1.Models.Entity.ApplicantPayment", "ApplicantPayment")
+                        .WithMany("ApplicantTransactions")
+                        .HasForeignKey("ApplicantPaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Test1._1.Models.Entity.ApplicantSubscraption", "ApplicantSubscraption")
-                        .WithMany("ApplicantTransactions")
-                        .HasForeignKey("ApplicantSubscraptionId")
+                    b.HasOne("Test1._1.Models.Entity.ApplicantSubscrabtion", "ApplicantSubscrabtion")
+                        .WithMany("ApplicantTrasactions")
+                        .HasForeignKey("ApplicantSubscrabtionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Applicant");
 
-                    b.Navigation("ApplicantSubscraption");
+                    b.Navigation("ApplicantPayment");
+
+                    b.Navigation("ApplicantSubscrabtion");
                 });
 
             modelBuilder.Entity("Test1._1.Models.Entity.CompanyTransaction", b =>
                 {
                     b.HasOne("Test1._1.Models.Entity.Company", "Company")
                         .WithMany("CompanyTransactions")
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("CompanyId1");
+
+                    b.HasOne("Test1._1.Models.Entity.CompanyPayment", "CompanyPayment")
+                        .WithMany("CompanyTransactions")
+                        .HasForeignKey("CompanyPaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Test1._1.Models.Entity.CompanySubscraption", "CompanySubscraption")
+                    b.HasOne("Test1._1.Models.Entity.CompanySubscrabtion", "CompanySubscraption")
                         .WithMany("CompanyTransactions")
                         .HasForeignKey("CompanySubscraptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("CompanyPayment");
 
                     b.Navigation("CompanySubscraption");
                 });
@@ -728,23 +790,51 @@ namespace Test1._1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.Payment", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.ApplicantPayment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanyPayment", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.Payment", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.CompanyPayment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantSubscrabtion", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.Subscraption", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.ApplicantSubscrabtion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscrabtion", b =>
+                {
+                    b.HasOne("Test1._1.Models.Entity.Subscraption", null)
+                        .WithOne()
+                        .HasForeignKey("Test1._1.Models.Entity.CompanySubscrabtion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Test1._1.Models.Entity.ApplicantAdvertisment", b =>
                 {
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantSubscraption", b =>
-                {
-                    b.Navigation("ApplicantTransactions");
-                });
-
-            modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscraption", b =>
-                {
-                    b.Navigation("CompanyTransactions");
-                });
-
             modelBuilder.Entity("Test1._1.Models.Entity.JobAdvertisment", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Questions");
                 });
 
@@ -765,6 +855,26 @@ namespace Test1._1.Migrations
                     b.Navigation("CompanyTransactions");
 
                     b.Navigation("JobAdvertisments");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantPayment", b =>
+                {
+                    b.Navigation("ApplicantTransactions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanyPayment", b =>
+                {
+                    b.Navigation("CompanyTransactions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.ApplicantSubscrabtion", b =>
+                {
+                    b.Navigation("ApplicantTrasactions");
+                });
+
+            modelBuilder.Entity("Test1._1.Models.Entity.CompanySubscrabtion", b =>
+                {
+                    b.Navigation("CompanyTransactions");
                 });
 #pragma warning restore 612, 618
         }

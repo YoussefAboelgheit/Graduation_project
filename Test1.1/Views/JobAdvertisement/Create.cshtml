@@ -1,0 +1,484 @@
+﻿@model Test1._1.Models.ViewModels.JobAdvertisementViewModel
+@{
+    ViewData["Title"] = "Create Job Advertisement";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create Job Advertisement</title>
+    <link rel="stylesheet" href="~/css/styleform.css">
+    <style>
+        /* Custom validation styles */
+        .field-error {
+            border: 2px solid #dc3545 !important;
+            background-color: #f8d7da !important;
+        }
+
+        .error-message {
+            color: white;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .validation-summary {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <form asp-action="Create" asp-controller="JobAdvertisement" method="post" novalidate>
+        <input type="hidden" asp-for="CompanyId" />
+
+        <div class="container" id="form-1">
+            <h2>Job Advertisement Form</h2>
+
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="FieldWork">Field of Work:</label>
+                <select asp-for="FieldWork" id="fieldwork-select">
+                    <option value="">Select Field of Work</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="Front‑End Developer">Front‑End Developer</option>
+                    <option value="Back‑End Developer">Back‑End Developer</option>
+                    <option value="Full Stack Developer">Full Stack Developer</option>
+                    <option value="Mobile App Developer">Mobile App Developer</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="QA/Test Engineer">QA/Test Engineer</option>
+                    <option value="UI/UX Designer">UI/UX Designer</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                    <option value="Cybersecurity Specialist">Cybersecurity Specialist</option>
+                    <option value="Cloud Engineer">Cloud Engineer</option>
+                    <option value="Game Developer">Game Developer</option>
+                    <option value="IT Support Specialist">IT Support Specialist</option>
+                    <option value="System Administrator">System Administrator</option>
+                    <option value="Network Engineer">Network Engineer</option>
+                    <option value="Embedded Systems Engineer">Embedded Systems Engineer</option>
+                    <option value="AI Engineer">AI Engineer</option>
+                    <option value="Blockchain Developer">Blockchain Developer</option>
+                    <option value="Technical Writer">Technical Writer</option>
+                    <option value="IT Project Manager">IT Project Manager</option>
+                    <option value="Database Administrator">Database Administrator</option>
+                    <option value="AR/VR Developer">AR/VR Developer</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="FieldWork" class="field-validation-error"></span>
+                <span class="error-message" id="fieldwork-error" style="display: none;">Please specify field of work</span>
+
+                <input type="text"
+                       id="FieldWorkOther"
+                       name="FieldWorkOther"
+                       class="form-control mt-2"
+                       placeholder="Please specify your field of work"
+                       style="display: none;" />
+                <span class="error-message" id="fieldwork-other-error" style="display: none;">Please specify your field of work</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Salary">Salary:</label>
+                <select asp-for="Salary" id="salary-select">
+                    <option value="">Select Salary Range</option>
+                    <option value="2000-4000">2000 - 4000</option>
+                    <option value="4000-6000">4000 - 6000</option>
+                    <option value="6000-8000">6000 - 8000</option>
+                    <option value="8000-10000">8000 - 10000</option>
+                    <option value=">10000">More than 10000</option>
+                    <option value=">15000">More than 15000</option>
+                    <option value=">20000">More than 20000</option>
+                </select>
+                <span asp-validation-for="Salary" class="field-validation-error"></span>
+                <span class="error-message" id="salary-error" style="display: none;">Please select a salary range</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City">City:</label>
+                <select asp-for="City" id="city-select">
+                    <option value="">Select City</option>
+                    <option value="Alexandria">Alexandria</option>
+                    <option value="Assiut">Assiut</option>
+                    <option value="Aswan">Aswan</option>
+                    <option value="Beheira">Beheira</option>
+                    <option value="Beni Suef">Beni Suef</option>
+                    <option value="Cairo">Cairo</option>
+                    <option value="Dakahlia">Dakahlia</option>
+                    <option value="Damietta">Damietta</option>
+                    <option value="Fayoum">Fayoum</option>
+                    <option value="Gharbia">Gharbia</option>
+                    <option value="Giza">Giza</option>
+                    <option value="Ismailia">Ismailia</option>
+                    <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                    <option value="Luxor">Luxor</option>
+                    <option value="Matrouh">Matrouh</option>
+                    <option value="Minya">Minya</option>
+                    <option value="Monufia">Monufia</option>
+                    <option value="New Valley">New Valley</option>
+                    <option value="North Sinai">North Sinai</option>
+                    <option value="Port Said">Port Said</option>
+                    <option value="Qalyubia">Qalyubia</option>
+                    <option value="Qena">Qena</option>
+                    <option value="Red Sea">Red Sea</option>
+                    <option value="Sharqia">Sharqia</option>
+                    <option value="Sohag">Sohag</option>
+                    <option value="South Sinai">South Sinai</option>
+                    <option value="Suez">Suez</option>
+                </select>
+                <span asp-validation-for="City" class="field-validation-error"></span>
+                <span class="error-message" id="city-error" style="display: none;">Please select a city</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobTime">Job Time:</label>
+                <select asp-for="JobTime" id="jobtime-select">
+                    <option value="">Select Job Time</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                </select>
+                <span asp-validation-for="JobTime" class="field-validation-error"></span>
+                <span class="error-message" id="jobtime-error" style="display: none;">Please select job time</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Job_Requirements">Job Requirements:</label>
+                <textarea asp-for="Job_Requirements" id="jobreq-textarea" placeholder="Enter job requirements"></textarea>
+                <span asp-validation-for="Job_Requirements" class="field-validation-error"></span>
+                <span class="error-message" id="jobreq-error" style="display: none;">Please fill out job requirements</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobDescription">Job Description:</label>
+                <textarea asp-for="JobDescription" id="jobdesc-textarea" placeholder="Enter job description"></textarea>
+                <span asp-validation-for="JobDescription" class="field-validation-error"></span>
+                <span class="error-message" id="jobdesc-error" style="display: none;">Please fill out job description</span>
+            </div>
+
+            <!-- Hidden container for question inputs - they will be added here by JavaScript -->
+            <div id="hidden-questions-container"></div>
+        </div>
+
+        <div class="form-container" id="form-2" style="display: none;">
+            <h2>Company Questions</h2>
+            <div class="questions"></div>
+            <button type="submit" id="done-btn">Publish Advertisement</button>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" id="prev-btn" style="display: none;">Previous</button>
+            <button type="button" id="next-btn">Next</button>
+        </div>
+    </form>
+
+    <button type="button" id="add-question-btn" aria-label="Add Question" style="display: none;">+</button>
+
+    <script>
+        // Custom validation function
+        function validateField(fieldId, errorId, fieldName) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(errorId);
+
+            if (!field.value.trim()) {
+                field.classList.add('field-error');
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                field.classList.remove('field-error');
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Clear error when user starts typing/selecting
+        function clearErrorOnInput(fieldId, errorId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(errorId);
+
+            field.addEventListener('input', function () {
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                    errorElement.style.display = 'none';
+                }
+            });
+
+            field.addEventListener('change', function () {
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                    errorElement.style.display = 'none';
+                }
+            });
+        }
+
+        // Function to update hidden input when question text changes
+        function updateHiddenInput(visibleInput) {
+            const hiddenId = visibleInput.getAttribute('data-hidden-id');
+            const hiddenInput = document.getElementById(hiddenId);
+            if (hiddenInput) {
+                hiddenInput.value = visibleInput.value;
+            }
+        }
+
+        // Remove question function
+        function removeQuestion(button) {
+            const questionItem = button.closest('.question');
+            const questionInput = questionItem.querySelector('.question-input');
+            const hiddenId = questionInput.getAttribute('data-hidden-id');
+
+            // Remove the corresponding hidden input
+            const hiddenInput = document.getElementById(hiddenId);
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+
+            // Remove the visible question
+            questionItem.remove();
+
+            // Re-index remaining questions
+            reindexQuestions();
+        }
+
+        function reindexQuestions() {
+            const questionInputs = document.querySelectorAll('.question-input');
+            const hiddenContainer = document.getElementById('hidden-questions-container');
+
+            // Remove all existing hidden inputs for questions
+            const existingHiddenInputs = hiddenContainer.querySelectorAll('input[name^="CustomQuestions"]');
+            existingHiddenInputs.forEach(input => input.remove());
+
+            // Update the global question count to reflect current number of questions
+            questionCount = questionInputs.length;
+
+            // Recreate hidden inputs with correct indexing
+            questionInputs.forEach((input, index) => {
+                // Update visible input attributes
+                const label = input.closest('.question').querySelector('label');
+                label.textContent = `Question ${index + 1}`;
+                label.setAttribute('for', `question_${index + 1}`);
+                input.id = `question_${index + 1}`;
+
+                // Create new hidden input with correct index
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = `CustomQuestions[${index}]`;
+                hiddenInput.id = `hidden_question_${index + 1}`;
+                hiddenInput.value = input.value;
+                hiddenContainer.appendChild(hiddenInput);
+
+                // Update data attribute
+                input.setAttribute('data-hidden-id', `hidden_question_${index + 1}`);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form1 = document.getElementById('form-1');
+            const form2 = document.getElementById('form-2');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const addQuestionBtn = document.getElementById('add-question-btn');
+            const questionsContainer = document.querySelector('.questions');
+            const doneBtn = document.getElementById('done-btn');
+            const hiddenContainer = document.getElementById('hidden-questions-container');
+            const fieldworkSelect = document.getElementById('fieldwork-select');
+            const fieldworkOtherInput = document.getElementById('FieldWorkOther');
+            const fieldworkOtherError = document.getElementById('fieldwork-other-error');
+
+            let questionCount = 0;
+
+            // Field of Work "Other" option handling
+            fieldworkSelect.addEventListener('change', function () {
+                if (this.value === 'Other') {
+                    fieldworkOtherInput.style.display = 'block';
+                    fieldworkOtherInput.required = true;
+                } else {
+                    fieldworkOtherInput.style.display = 'none';
+                    fieldworkOtherInput.required = false;
+                    fieldworkOtherInput.value = '';
+                    fieldworkOtherError.style.display = 'none';
+                    fieldworkOtherInput.classList.remove('field-error');
+                }
+            });
+
+            // Validation for the "Other" field
+            function validateFieldWorkOther() {
+                if (fieldworkSelect.value === 'Other' && !fieldworkOtherInput.value.trim()) {
+                    fieldworkOtherInput.classList.add('field-error');
+                    fieldworkOtherError.style.display = 'block';
+                    return false;
+                }
+                return true;
+            }
+
+            // Clear error when user starts typing in "Other" field
+            fieldworkOtherInput.addEventListener('input', function () {
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                    fieldworkOtherError.style.display = 'none';
+                }
+            });
+
+            // Setup error clearing for all fields
+            clearErrorOnInput('fieldwork-select', 'fieldwork-error');
+            clearErrorOnInput('salary-select', 'salary-error');
+            clearErrorOnInput('city-select', 'city-error');
+            clearErrorOnInput('jobtime-select', 'jobtime-error');
+            clearErrorOnInput('jobreq-textarea', 'jobreq-error');
+            clearErrorOnInput('jobdesc-textarea', 'jobdesc-error');
+
+            // Navigation between forms
+            nextBtn.addEventListener('click', function () {
+                // Validate form 1 before proceeding
+                let isValid = true;
+
+                // Validate each field individually
+                if (!validateField('fieldwork-select', 'fieldwork-error', 'Field of Work')) isValid = false;
+                if (!validateFieldWorkOther()) isValid = false;
+                if (!validateField('salary-select', 'salary-error', 'Salary')) isValid = false;
+                if (!validateField('city-select', 'city-error', 'City')) isValid = false;
+                if (!validateField('jobtime-select', 'jobtime-error', 'Job Time')) isValid = false;
+                if (!validateField('jobreq-textarea', 'jobreq-error', 'Job Requirements')) isValid = false;
+                if (!validateField('jobdesc-textarea', 'jobdesc-error', 'Job Description')) isValid = false;
+
+                if (isValid) {
+                    form1.style.display = 'none';
+                    form2.style.display = 'block';
+                    nextBtn.style.display = 'none';
+                    prevBtn.style.display = 'inline-block';
+                    addQuestionBtn.style.display = 'block';
+                }
+            });
+
+            prevBtn.addEventListener('click', function () {
+                form2.style.display = 'none';
+                form1.style.display = 'block';
+                nextBtn.style.display = 'inline-block';
+                prevBtn.style.display = 'none';
+                addQuestionBtn.style.display = 'none';
+            });
+
+            // Add question functionality
+            addQuestionBtn.addEventListener('click', function () {
+                questionCount++;
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                // Create the question input as a hidden input in form-1 and visible input in form-2
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = `CustomQuestions[${questionCount - 1}]`;
+                hiddenInput.id = `hidden_question_${questionCount}`;
+                hiddenInput.value = '';
+                hiddenContainer.appendChild(hiddenInput);
+
+                const label = document.createElement('label');
+                label.setAttribute('for', `question_${questionCount}`);
+                label.textContent = `Question ${questionCount}`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `question_${questionCount}`;
+                input.placeholder = 'Enter your question here';
+                input.className = 'question-input';
+                input.setAttribute('data-hidden-id', `hidden_question_${questionCount}`);
+                input.addEventListener('input', function () {
+                    updateHiddenInput(this);
+                });
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.classList.add('remove-question-btn');
+                removeBtn.textContent = '×';
+                removeBtn.addEventListener('click', function () {
+                    removeQuestion(this);
+                });
+
+                questionDiv.appendChild(label);
+                questionDiv.appendChild(input);
+                questionDiv.appendChild(removeBtn);
+                questionsContainer.appendChild(questionDiv);
+
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                input.focus();
+
+                // Reindex after adding to ensure proper numbering
+                reindexQuestions();
+            });
+
+            // Form submission handler
+            doneBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // First, handle the "Other" field if selected
+                if (fieldworkSelect.value === 'Other') {
+                    const customValue = fieldworkOtherInput.value.trim();
+
+                    if (!customValue) {
+                        fieldworkOtherInput.classList.add('field-error');
+                        fieldworkOtherError.style.display = 'block';
+                        fieldworkOtherInput.focus();
+                        return;
+                    }
+
+                    // Create a hidden input to store the custom value
+                    const hiddenFieldWorkInput = document.createElement('input');
+                    hiddenFieldWorkInput.type = 'hidden';
+                    hiddenFieldWorkInput.name = 'FieldWork';
+                    hiddenFieldWorkInput.value = customValue;
+                    document.querySelector('form').appendChild(hiddenFieldWorkInput);
+
+                    // Disable the original select to prevent it from being submitted
+                    fieldworkSelect.disabled = true;
+                }
+
+                // First, reindex all questions to ensure proper sequential naming
+                reindexQuestions();
+
+                // Final update of all hidden inputs before submission
+                const questionInputs = document.querySelectorAll('.question-input');
+                questionInputs.forEach((input) => {
+                    updateHiddenInput(input);
+                });
+
+                // Filter out empty questions to create a compact array
+                const hiddenInputs = document.querySelectorAll('input[name^="CustomQuestions"]');
+                const nonEmptyQuestions = [];
+
+                hiddenInputs.forEach((input) => {
+                    if (input.value.trim() !== '') {
+                        nonEmptyQuestions.push(input.value.trim());
+                    }
+                });
+
+                // Remove all existing hidden inputs
+                hiddenInputs.forEach(input => input.remove());
+
+                // Create new hidden inputs with sequential indexing for non-empty questions only
+                nonEmptyQuestions.forEach((questionValue, index) => {
+                    const newHiddenInput = document.createElement('input');
+                    newHiddenInput.type = 'hidden';
+                    newHiddenInput.name = `CustomQuestions[${index}]`;
+                    newHiddenInput.value = questionValue;
+                    hiddenContainer.appendChild(newHiddenInput);
+                });
+
+                // Debug: Log what we're submitting
+                console.log('Submitting questions:');
+                nonEmptyQuestions.forEach((question, index) => {
+                    console.log(`Question ${index}: ${question}`);
+                });
+
+                // Submit the form
+                document.querySelector('form').submit();
+            });
+        });
+    </script>
+</body>
+</html>

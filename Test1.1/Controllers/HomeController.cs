@@ -35,13 +35,16 @@ namespace Test1._1.Controllers
 
 
 
-        public IActionResult Index()
+
+
+        public async Task<IActionResult> Index()
         {
-            var applicants = _context.Applicants
-                .Take(5)
+            // كل المستخدمين
+            var generalApplicants = _context.Applicants
+                .Take(8)
                 .Select(a => new ApplicantCardHomeViewModel
                 {
-                    Id = a.Id, // Add this line
+                    Id = a.Id,
                     Name = a.UserName,
                     LastName = a.lastName,
                     FieldWork = a.Field_work,
@@ -49,27 +52,388 @@ namespace Test1._1.Controllers
                 })
                 .ToList();
 
-            var companies = _context.Companies
-                .Take(3)
-                .Select(c => new CompanyAdvHomeViewModel
+            var generalCompanies = _context.Companies
+                .Include(c => c.JobAdvertisments)
+                .SelectMany(c => c.JobAdvertisments.Select(ad => new CompanyAdvHomeViewModel
                 {
+                    AdvertisementId = ad.Id,
+                    CompanyId = c.Id,
                     CompanyName = c.UserName,
-                    Description = c.Description,
-                    LogoPath = c.Logo
-                })
+                    CompanyDescription = c.Description,
+                    LogoPath = c.Logo,
+                    
+
+                    JobTitle = ad.jobtitle,
+                    Salary = ad.salary.ToString(),
+                    Location = ad.governorate,
+                    JobTime = ad.Job_time,
+                    CreatedDate = ad.CreatedDate
+                }))
+                .OrderByDescending(ad => ad.CreatedDate)
                 .ToList();
+
+            List<CompanyAdvHomeViewModel> applicantSuggestions = new();
+            List<ApplicantCardHomeViewModel> companySuggestions = new();
+
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                if (User.IsInRole("Applicant"))
+                {
+                    var applicant = await _context.Applicants.FirstOrDefaultAsync(a => a.Id == user.Id);
+
+                    var allJobs = _context.JobAdvertisments
+                        .Include(j => j.Company)
+                        .ToList();
+
+                    applicantSuggestions = allJobs
+                        .Select(j => new
+                        {
+                            Job = j,
+                            Score =
+                                (j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                                (j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0) +
+                                (j.governorate == applicant.address ? 15 : 0) +
+                                (j.Job_time == "Full Time" ? 5 : 0) +
+                                GetSalaryValue(j.salary) / 1000 +
+                                (int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2
+                        })
+                        .OrderByDescending(j => j.Score)
+                        .Take(9)
+                        .Select(j => new CompanyAdvHomeViewModel
+                        {
+                            AdvertisementId = j.Job.Id,
+                            CompanyId = j.Job.CompanyId,
+                            CompanyName = j.Job.Company.UserName,
+                            CompanyDescription = j.Job.Company.Description,
+                            LogoPath = j.Job.Company.Logo,
+                            JobTitle = j.Job.jobtitle,
+                            Salary = j.Job.salary,
+                            Location = j.Job.governorate,
+                            JobTime = j.Job.Job_time,
+                            CreatedDate = j.Job.CreatedDate
+                        })
+                        .ToList();
+                }
+                else if (User.IsInRole("Company"))
+                {
+                    var company = await _context.Companies
+                        .Include(c => c.JobAdvertisments)
+                        .FirstOrDefaultAsync(c => c.Id == user.Id);
+
+                    var recentJobTitles = company.JobAdvertisments
+                        .OrderByDescending(j => j.CreatedDate)
+                        .Take(5)
+                        .Select(j => j.jobtitle)
+                        .ToList();
+
+                    var allApplicants = _context.Applicants.ToList();
+
+                    companySuggestions = allApplicants
+                        .Select(app => new
+                        {
+                            Applicant = app,
+                            Score =
+                                recentJobTitles.Sum(title =>
+                                    (title.Equals(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                                    (title.Contains(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0)
+                                )
+                                + app.Years_experience
+                                + (app.address == company.address ? 10 : 0)
+                        })
+                        .OrderByDescending(a => a.Score)
+                        .Take(8)
+                        .Select(a => new ApplicantCardHomeViewModel
+                        {
+                            Id = a.Applicant.Id,
+                            Name = a.Applicant.UserName,
+                            LastName = a.Applicant.lastName,
+                            FieldWork = a.Applicant.Field_work,
+                            ImagePath = a.Applicant.Profile_image
+                        })
+                        .ToList();
+                }
+            }
 
             var viewModel = new HomeViewModel
             {
-                Applicants = applicants,    
-                Companies = companies
+                Applicants = generalApplicants,
+                Companies = generalCompanies,
+                ApplicantSuggestions = applicantSuggestions,
+                CompanySuggestions = companySuggestions
             };
 
             return View(viewModel);
         }
 
+        [HttpGet]
+		public IActionResult FilterApplicants(string governorate, string experience, string job)
+		{
+			var query = _context.Applicants.AsQueryable();
 
-        public IActionResult Privacy()
+			if (!string.IsNullOrEmpty(governorate))
+				query = query.Where(a => a.address == governorate);
+
+			if (!string.IsNullOrEmpty(experience))
+			{
+				if (experience.StartsWith(">"))
+				{
+					if (int.TryParse(experience.Substring(1), out int years))
+					{
+						query = query.Where(a => a.Years_experience > years);
+					}
+				}
+				else if (int.TryParse(experience, out int exactYears))
+				{
+					query = query.Where(a => a.Years_experience == exactYears);
+				}
+			}
+
+			if (!string.IsNullOrEmpty(job))
+			{
+				if (job == "Other")
+				{
+					// Known job options from the dropdown
+					var knownJobs = new List<string>
+		{
+			"AI Engineer",
+			"AR/VR Developer",
+			"Back‑End Developer",
+			"Blockchain Developer",
+			"Cloud Engineer",
+			"Cybersecurity Specialist",
+			"Data Analyst",
+			"Data Scientist",
+			"Database Administrator",
+			"DevOps Engineer",
+			"Embedded Systems Engineer",
+			"Front‑End Developer",
+			"Full Stack Developer",
+			"Game Developer",
+			"IT Project Manager",
+			"IT Support Specialist",
+			"Machine Learning Engineer",
+			"Mobile App Developer",
+			"Network Engineer",
+			"QA/Test Engineer",
+			"Software Engineer",
+			"System Administrator",
+			"Technical Writer",
+			"UI/UX Designer"
+		};
+
+					// Get only applicants whose Field_work is not in the known jobs
+					query = query.Where(a => !knownJobs.Contains(a.Field_work));
+				}
+				else
+				{
+					// Regular job match
+					query = query.Where(a => a.Field_work == job);
+				}
+			}
+
+			var applicants = query
+				.Select(a => new ApplicantCardHomeViewModel
+				{
+					Id = a.Id,
+					Name = a.UserName,
+					LastName = a.lastName,
+					FieldWork = a.Field_work,
+					ImagePath = a.Profile_image
+				})
+				.ToList();
+
+			return PartialView("_ApplicantList", applicants);
+		}
+
+
+
+
+		[HttpGet]
+		public IActionResult FilterAdvertisements(string governorate, string job, string salary)
+		{
+			var query = _context.JobAdvertisments
+				.Include(ad => ad.Company)
+				.AsQueryable();
+
+			// Filter by governorate (city)
+			if (!string.IsNullOrEmpty(governorate))
+				query = query.Where(ad => ad.governorate == governorate);
+
+			// Filter by job title
+			if (!string.IsNullOrEmpty(job))
+			{
+				if (job == "Others")
+				{
+					var knownJobs = new List<string>
+			{
+				"AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+				"Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+				"Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+				"Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+				"IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+				"Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+				"Technical Writer", "UI/UX Designer"
+			};
+					query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+				}
+				else
+				{
+					query = query.Where(ad => ad.jobtitle == job);
+				}
+			}
+
+			// Filter by salary directly in the database query for exact matching
+			if (!string.IsNullOrEmpty(salary))
+			{
+				query = query.Where(ad => ad.salary == salary);
+			}
+
+			// Get the filtered results
+			var advertisements = query
+				.OrderByDescending(ad => ad.CreatedDate)
+				.Select(ad => new CompanyAdvHomeViewModel
+				{
+					AdvertisementId = ad.Id,
+					CompanyId = ad.CompanyId,
+					CompanyName = ad.Company.UserName,
+					CompanyDescription = ad.Company.Description,
+					LogoPath = ad.Company.Logo,
+					JobTitle = ad.jobtitle,
+					Salary = ad.salary,
+					Location = ad.governorate,
+					JobTime = ad.Job_time,
+					CreatedDate = ad.CreatedDate,
+					JobDescription = ad.Jobdetail,
+					Requirements = ad.JobRequirements
+				})
+				.ToList();
+
+			return PartialView("_CompanyAdList", advertisements);
+		}
+
+        [HttpGet]
+        public IActionResult AllApplicants(string governorate, string experience, string job)
+        {
+            var query = _context.Applicants.AsQueryable();
+
+            if (!string.IsNullOrEmpty(governorate))
+                query = query.Where(a => a.address == governorate);
+
+            if (!string.IsNullOrEmpty(experience))
+            {
+                if (experience.StartsWith(">"))
+                {
+                    if (int.TryParse(experience.Substring(1), out int years))
+                    {
+                        query = query.Where(a => a.Years_experience > years);
+                    }
+                }
+                else if (int.TryParse(experience, out int exactYears))
+                {
+                    query = query.Where(a => a.Years_experience == exactYears);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(job))
+            {
+                if (job == "Other")
+                {
+                    var knownJobs = new List<string>
+                    {
+                        "AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+                        "Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+                        "Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+                        "Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+                        "IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+                        "Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+                        "Technical Writer", "UI/UX Designer"
+                    };
+                    query = query.Where(a => !knownJobs.Contains(a.Field_work));
+                }
+                else
+                {
+                    query = query.Where(a => a.Field_work == job);
+                }
+            }
+
+            var applicants = query
+                .Select(a => new ApplicantCardHomeViewModel
+                {
+                    Id = a.Id,
+                    Name = a.UserName,
+                    LastName = a.lastName,
+                    FieldWork = a.Field_work,
+                    ImagePath = a.Profile_image
+                })
+                .ToList();
+
+            return View("AllApplicants", applicants);
+        }
+
+        [HttpGet]
+        public IActionResult AllAdvertisements(string governorate, string job, string salary)
+        {
+            var query = _context.JobAdvertisments
+                .Include(ad => ad.Company)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(governorate))
+                query = query.Where(ad => ad.governorate == governorate);
+
+            if (!string.IsNullOrEmpty(job))
+            {
+                if (job == "Others")
+                {
+                    var knownJobs = new List<string>
+                    {
+                        "AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+                        "Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+                        "Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+                        "Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+                        "IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+                        "Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+                        "Technical Writer", "UI/UX Designer"
+                    };
+                    query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+                }
+                else
+                {
+                    query = query.Where(ad => ad.jobtitle == job);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(salary))
+            {
+                query = query.Where(ad => ad.salary == salary);
+            }
+
+            var advertisements = query
+                .OrderByDescending(ad => ad.CreatedDate)
+                .Select(ad => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = ad.Id,
+                    CompanyId = ad.CompanyId,
+                    CompanyName = ad.Company.UserName,
+                    CompanyDescription = ad.Company.Description,
+                    LogoPath = ad.Company.Logo,
+                    JobTitle = ad.jobtitle,
+                    Salary = ad.salary,
+                    Location = ad.governorate,
+                    JobTime = ad.Job_time,
+                    CreatedDate = ad.CreatedDate,
+                    JobDescription = ad.Jobdetail,
+                    Requirements = ad.JobRequirements
+                })
+                .ToList();
+            ViewBag.header = "All Advertisements";
+            return View("AllAdvertisements", advertisements);
+        }
+
+
+
+		public IActionResult Privacy()
         {
             return View();
         }
@@ -424,14 +788,7 @@ namespace Test1._1.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (await _userManager.IsInRoleAsync(user, "Admin"))
-                    {
-                        return RedirectToAction("Dashboard", "Admin");
-                    }
-                    else
-                    {
                     return RedirectToAction("Index", "Home");
-                }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid password.");
@@ -439,7 +796,6 @@ namespace Test1._1.Controllers
 
             return View("SignIn", model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -449,10 +805,81 @@ namespace Test1._1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        private int GetSalaryValue(string salaryRange)
+        {
+            return salaryRange switch
+            {
+                "2000 - 4000" => 3000,
+                "4000 - 6000" => 5000,
+                "6000 - 8000" => 7000,
+                "8000 - 10000" => 9000,
+                "More than 10000" => 11000,
+                "More than 15000" => 16000,
+                "More than 20000" => 21000,
+                _ => 0
+            };
+        }
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Sections(string job)
+        {
+            var query = _context.JobAdvertisments
+                .Include(ad => ad.Company)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(job))
+            {
+                if (job == "Others")
+                {
+                    var knownJobs = new List<string>
+            {
+                "AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+                "Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+                "Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+                "Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+                "IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+                "Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+                "Technical Writer", "UI/UX Designer"
+            };
+                    query = query.Where(ad => !knownJobs.Contains(ad.jobtitle));
+                }
+                else
+                {
+                    query = query.Where(ad => ad.jobtitle == job);
+                }
+            }
+
+            // Get the filtered results
+            var advertisements = query
+                .OrderByDescending(ad => ad.CreatedDate)
+                .Select(ad => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = ad.Id,
+                    CompanyId = ad.CompanyId,
+                    CompanyName = ad.Company.UserName,
+                    CompanyDescription = ad.Company.Description,
+                    LogoPath = ad.Company.Logo,
+                    JobTitle = ad.jobtitle,
+                    Salary = ad.salary,
+                    Location = ad.governorate,
+                    JobTime = ad.Job_time,
+                    CreatedDate = ad.CreatedDate,
+                    JobDescription = ad.Jobdetail,
+                    Requirements = ad.JobRequirements
+                })
+                .ToList();
+            ViewBag.header = "All " + job + " Advertisements";
+            return View("AllAdvertisements", advertisements);
+        }
+
+      
     }
 }
+

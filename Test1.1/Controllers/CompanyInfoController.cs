@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Threading.Tasks;
 using Test1._1.Models.ViewModels;
+using System.Security.Claims;
 
 namespace Test1._1.Controllers
 {
@@ -18,17 +19,109 @@ namespace Test1._1.Controllers
             _env = env;
         }
 
-        public IActionResult Index(string id)
+        public async Task<IActionResult> Index(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction("ErrorPage");
 
-            var company = _context.Companies.FirstOrDefault(c => c.Id == id);
+            var company = await _context.Companies
+                .Include(c => c.JobAdvertisments)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
             if (company == null)
                 return NotFound();
 
-            return View(company);
+
+            var recentJobTitles = company.JobAdvertisments
+                .OrderByDescending(j => j.CreatedDate)
+                .Take(5)
+                .Select(j => j.jobtitle)
+                .ToList();
+
+            var allApplicants = _context.Applicants.ToList();
+
+            var suggestedApplicants = allApplicants
+                .Select(app => new
+                {
+                    Applicant = app,
+                    Score =
+                        recentJobTitles.Sum(title =>
+                            (title.Equals(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                            (title.Contains(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0)
+                        )
+                        + app.Years_experience
+                        + (app.address == company.address ? 10 : 0)
+                })
+                .OrderByDescending(a => a.Score)
+                .Take(8)
+                .Select(a => new ApplicantCardHomeViewModel
+                {
+                    Id = a.Applicant.Id,
+                    Name = a.Applicant.UserName,
+                    LastName = a.Applicant.lastName,
+                    FieldWork = a.Applicant.Field_work,
+                    ImagePath = a.Applicant.Profile_image
+                })
+                .ToList();
+
+            var viewModel = new CompanyProfileViewModel
+            {
+                Company = company,
+                JobAdvertisments = company.JobAdvertisments.ToList(),
+                SuggestedApplicants = suggestedApplicants
+            };
+
+            return View(viewModel);
         }
+        
+        public async Task<IActionResult> AllSuggestions()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("ErrorPage");
+
+            var company = await _context.Companies
+                .Include(c => c.JobAdvertisments)
+                .FirstOrDefaultAsync(c => c.Id == userId);
+
+            if (company == null)
+                return NotFound();
+
+            var recentJobTitles = company.JobAdvertisments
+                .OrderByDescending(j => j.CreatedDate)
+                .Take(5)
+                .Select(j => j.jobtitle)
+                .ToList();
+
+            var allApplicants = await _context.Applicants.ToListAsync();
+
+            List<ApplicantCardHomeViewModel> suggestions = allApplicants
+                .Select(app => new
+                {
+                    Applicant = app,
+                    Score =
+                        recentJobTitles.Sum(title =>
+                            title.Equals(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 :
+                            title.Contains(app.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0
+                        )
+                        + app.Years_experience
+                        + (app.address == company.address ? 10 : 0)
+                })
+                .OrderByDescending(a => a.Score)
+                .Select(a => new ApplicantCardHomeViewModel
+                {
+                    Id = a.Applicant.Id,
+                    Name = a.Applicant.UserName,
+                    LastName = a.Applicant.lastName,
+                    FieldWork = a.Applicant.Field_work,
+                    ImagePath = a.Applicant.Profile_image
+                })
+                .ToList();
+
+            return View(suggestions);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

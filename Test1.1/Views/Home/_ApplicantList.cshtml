@@ -1,0 +1,25 @@
+﻿@using Test1._1.Models.ViewModels
+@model List<ApplicantCardHomeViewModel>
+@{
+    var applicantsToShow = Model?.Take(8).ToList() ?? new List<ApplicantCardHomeViewModel>();
+
+}
+@foreach (var applicant in applicantsToShow)
+{
+        <partial name="_ApplicantCard" model="applicant" />
+}
+>
+@if ((Model?.Count ?? 0) > 8)
+{
+    <div>
+
+    </div>
+    <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+        <form asp-controller="Home" asp-action="AllApplicants" method="get" class="show-more-applicants-form">
+            <input type="hidden" name="governorate" />
+            <input type="hidden" name="experience" />
+            <input type="hidden" name="job" />
+            <button type="submit" class="btn btn-primary details-btn">Show More</button>
+        </form>
+    </div>
+}

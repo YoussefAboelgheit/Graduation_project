@@ -75,30 +75,30 @@
                         <label asp-for="Field_work" class="form-label">Field of Work</label>
                         <select asp-for="Field_work" id="FieldWorkSelect" class="form-control scrollable">
                             <option value="">Select Field of Work</option>
-                            <option>Software Engineer</option>
-                            <option>Front‑End Developer</option>
+                            <option>AI Engineer</option>
+                            <option>AR/VR Developer</option>
                             <option>Back‑End Developer</option>
-                            <option>Full Stack Developer</option>
-                            <option>Mobile App Developer</option>
-                            <option>DevOps Engineer</option>
-                            <option>QA/Test Engineer</option>
-                            <option>UI/UX Designer</option>
+                            <option>Blockchain Developer</option>
+                            <option>Cloud Engineer</option>
+                            <option>Cybersecurity Specialist</option>
                             <option>Data Analyst</option>
                             <option>Data Scientist</option>
-                            <option>Machine Learning Engineer</option>
-                            <option>Cybersecurity Specialist</option>
-                            <option>Cloud Engineer</option>
-                            <option>Game Developer</option>
-                            <option>IT Support Specialist</option>
-                            <option>System Administrator</option>
-                            <option>Network Engineer</option>
-                            <option>Embedded Systems Engineer</option>
-                            <option>AI Engineer</option>
-                            <option>Blockchain Developer</option>
-                            <option>Technical Writer</option>
-                            <option>IT Project Manager</option>
                             <option>Database Administrator</option>
-                            <option>AR/VR Developer</option>
+                            <option>DevOps Engineer</option>
+                            <option>Embedded Systems Engineer</option>
+                            <option>Front‑End Developer</option>
+                            <option>Full Stack Developer</option>
+                            <option>Game Developer</option>
+                            <option>IT Project Manager</option>
+                            <option>IT Support Specialist</option>
+                            <option>Machine Learning Engineer</option>
+                            <option>Mobile App Developer</option>
+                            <option>Network Engineer</option>
+                            <option>QA/Test Engineer</option>
+                            <option>Software Engineer</option>
+                            <option>System Administrator</option>
+                            <option>Technical Writer</option>
+                            <option>UI/UX Designer</option>
                             <option>Other</option>
                         </select>
                         <span asp-validation-for="Field_work" class="text-danger"></span>
@@ -119,9 +119,37 @@
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="address" class="form-label">Address</label>
-                        <input asp-for="address" class="form-control" placeholder="Leave blank to keep unchanged" />
-                        <span asp-validation-for="address" class="text-danger"></span>
+                        <label asp-for="address">City:</label>
+                        <select asp-for="address" id="AddressSelect" class="form-control scrollable" required>
+                            <br>
+                            <option value="Alexandria">Alexandria</option>
+                            <option value="Assiut">Assiut</option>
+                            <option value="Aswan">Aswan</option>
+                            <option value="Beheira">Beheira</option>
+                            <option value="Beni Suef">Beni Suef</option>
+                            <option value="Cairo">Cairo</option>
+                            <option value="Dakahlia">Dakahlia</option>
+                            <option value="Damietta">Damietta</option>
+                            <option value="Fayoum">Fayoum</option>
+                            <option value="Gharbia">Gharbia</option>
+                            <option value="Giza">Giza</option>
+                            <option value="Ismailia">Ismailia</option>
+                            <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                            <option value="Luxor">Luxor</option>
+                            <option value="Matrouh">Matrouh</option>
+                            <option value="Minya">Minya</option>
+                            <option value="Monufia">Monufia</option>
+                            <option value="New Valley">New Valley</option>
+                            <option value="North Sinai">North Sinai</option>
+                            <option value="Port Said">Port Said</option>
+                            <option value="Qalyubia">Qalyubia</option>
+                            <option value="Qena">Qena</option>
+                            <option value="Red Sea">Red Sea</option>
+                            <option value="Sharqia">Sharqia</option>
+                            <option value="Sohag">Sohag</option>
+                            <option value="South Sinai">South Sinai</option>
+                            <option value="Suez">Suez</option>
+                        </select>
                     </div>
                 </div>
 

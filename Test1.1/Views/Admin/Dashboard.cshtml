@@ -48,7 +48,9 @@
 
 
 <!-- ***************************************************acc******************************************************************** -->
-
+<h2 style="text-align: center; color: #162447; font-size: 28px; margin-bottom: 30px; font-weight: bold;">
+        Companies Pending
+    </h2>
 @foreach (var company in companiesToShow)
 {
 
@@ -95,7 +97,7 @@
 
 <!-- ***************************************************ads******************************************************************** -->
 <section class="Pending_ads" id="Pending_ads">
-    <h2 style="text-align: center; color: #162447; font-size: 24px; margin-bottom: 30px; font-weight: bold;">Pending Advertisement Edits</h2>
+    <h2 style="text-align: center; color: #162447; font-size: 28px; margin-bottom: 30px; font-weight: bold;">Pending Advertisement Edits</h2>
 
     @if (Model.PendingEdits != null && Model.PendingEdits.Any())
     {
@@ -193,41 +195,49 @@
 <br>
 <!-- ***************************************************payment******************************************************************** -->
 <!-- Company Subscriptions Section -->
-<section class="subscription-container" id="CompanySubscraptions">
-    @foreach (var item in Model.CompanySubscraptions)
-    {
-        <div class="subscription-box">
-            <h3>@item.SubType</h3>
-            <p class="price">EGP @item.Price</p>
-
-            <button class="edit-btn"
-                    data-id="@item.Id"
-                    data-subscription-name="@item.SubType"
-                    data-old-price="@item.Price">
-                Edit
-            </button>
-        </div>
-    }
+<!-- Company Subscriptions Section -->
+<section id="CompanySubscraptions">
+    <h2 style="text-align: center; color: #162447; font-size: 28px; margin-bottom: 30px; font-weight: bold;">
+        Company subscription
+    </h2>
+    <div class="subscription-container">
+        @foreach (var item in Model.CompanySubscraptions)
+        {
+            <div class="subscription-box">
+                <h3>@item.SubType</h3>
+                <p class="price">EGP @item.Price</p>
+                <button class="edit-btn"
+                        data-id="@item.Id"
+                        data-subscription-name="@item.SubType"
+                        data-old-price="@item.Price">
+                    Edit
+                </button>
+            </div>
+        }
+    </div>
 </section>
 
 <!-- Applicant Subscriptions Section -->
-<section class="subscription-container" id="ApplicantSubscraptions">
-    @foreach (var item in Model.ApplicantSubscraptions)
-    {
-        <div class="subscription-box">
-            <h3>@item.SubType</h3>
-            <p class="price">EGP @item.Price</p>
-
-            <button class="edit-btn"
-                    data-id="@item.Id"
-                    data-subscription-name="@item.SubType"
-                    data-old-price="@item.Price">
-                Edit
-            </button>
-        </div>
-    }
+<section id="ApplicantSubscraptions">
+    <h2 style="text-align: center; color: #162447; font-size: 28px; margin-bottom: 30px; font-weight: bold;">
+        Applicant subscription
+    </h2>
+    <div class="subscription-container">
+        @foreach (var item in Model.ApplicantSubscraptions)
+        {
+            <div class="subscription-box">
+                <h3>@item.SubType</h3>
+                <p class="price">EGP @item.Price</p>
+                <button class="edit-btn"
+                        data-id="@item.Id"
+                        data-subscription-name="@item.SubType"
+                        data-old-price="@item.Price">
+                    Edit
+                </button>
+            </div>
+        }
+    </div>
 </section>
-
 
 <<!-- Confirm Subscriptions Section -->
 <section id="ConfirmSubscriptions">

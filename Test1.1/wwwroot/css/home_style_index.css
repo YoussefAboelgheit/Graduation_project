@@ -340,8 +340,8 @@ h1 {
 /* ***********************advs**************************** */
 .ads-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px; 
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -515,3 +515,45 @@ footer p{
 }
 
 /* ****************************************************************************************************** */
+.inactive-ad {
+    opacity: 0.7;
+    background-color: #fff;
+    border: 1px dashed #ccc;
+}
+
+.inactive-label {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.close-ad-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #dc3545;
+    cursor: pointer;
+    z-index: 2;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.8);
+}
+
+    .close-ad-btn:hover {
+        background-color: #dc3545;
+        color: white;
+    }

@@ -39,6 +39,28 @@ namespace Test1._1.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            var activeAds = _context.JobAdvertisments
+       .Include(j => j.Company)
+       .Where(j => j.IsActive &&
+                  !j.IsManuallyDeactivated &&
+                  j.ExpiryDate > DateTime.Now)
+       .OrderByDescending(j => j.CreatedDate)
+       .Select(ad => new CompanyAdvHomeViewModel
+       {
+           AdvertisementId = ad.Id,
+           CompanyId = ad.CompanyId,
+           CompanyName = ad.Company.UserName,
+           CompanyDescription = ad.Company.Description,
+           LogoPath = ad.Company.Logo,
+           JobTitle = ad.jobtitle,
+           Salary = ad.salary,
+           Location = ad.governorate,
+           JobTime = ad.Job_time,
+           CreatedDate = ad.CreatedDate
+       })
+       .ToList();
+
             // كل المستخدمين
             var generalApplicants = _context.Applicants
                 .Take(5)
@@ -83,6 +105,9 @@ namespace Test1._1.Controllers
 
                     var allJobs = _context.JobAdvertisments
                         .Include(j => j.Company)
+                        .Where(j => j.IsActive &&
+                                   !j.IsManuallyDeactivated &&
+                                   j.ExpiryDate > DateTime.Now)
                         .ToList();
 
                     applicantSuggestions = allJobs
@@ -157,9 +182,9 @@ namespace Test1._1.Controllers
             var viewModel = new HomeViewModel
             {
                 Applicants = generalApplicants,
-                Companies = generalCompanies,
                 ApplicantSuggestions = applicantSuggestions,
-                CompanySuggestions = companySuggestions
+                CompanySuggestions = companySuggestions,
+                Companies = activeAds
             };
 
             return View(viewModel);
@@ -251,12 +276,15 @@ namespace Test1._1.Controllers
 		[HttpGet]
 		public IActionResult FilterAdvertisements(string governorate, string job, string salary)
 		{
-			var query = _context.JobAdvertisments
-				.Include(ad => ad.Company)
-				.AsQueryable();
+            var query = _context.JobAdvertisments
+                .Include(ad => ad.Company)
+                .Where(ad => ad.IsActive &&
+                !ad.IsManuallyDeactivated &&
+                ad.ExpiryDate > DateTime.Now)
+                .AsQueryable();
 
-			// Filter by governorate (city)
-			if (!string.IsNullOrEmpty(governorate))
+            // Filter by governorate (city)
+            if (!string.IsNullOrEmpty(governorate))
 				query = query.Where(ad => ad.governorate == governorate);
 
 			// Filter by job title

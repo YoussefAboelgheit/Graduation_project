@@ -42,7 +42,7 @@
                 <p><strong>Posted Date:</strong> @Model.CreatedDate.ToString("MMM dd, yyyy")</p>
             </div>
         </div>
-        @if (Model.Company.Id == currentUserId)
+        @if (Model.Company.Id == currentUserId && Model.IsActive)
         {
             <div class="ad-button">
                 <button onclick="location.href='@Url.Action("Edit", "JobAdvertisement", new { id = Model.Id })'">
@@ -78,6 +78,10 @@
                             Apply Now
                         </button>
                     }
+                }
+                else if (Model.Company.Id == currentUserId && !Model.IsActive)
+                {
+
                 }
                 else
                 {

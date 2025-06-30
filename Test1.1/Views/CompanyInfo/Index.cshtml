@@ -119,10 +119,27 @@
     <h2 id="old_advs">Published Advertisements</h2>
     <div class="ads-container">
         @if (Model.JobAdvertisments != null && Model.JobAdvertisments.Any())
+        {
+            // Show all ads for the company owner, only active ads for others
+            var adsToShow = Model.JobAdvertisments
+            .Where(ad => (User.Identity.IsAuthenticated && Model.Company.Id == currentUserId) ||
+            (ad.IsActive && !ad.IsManuallyDeactivated && ad.ExpiryDate > DateTime.Now))
+            .OrderByDescending(a => a.CreatedDate);
+
+            foreach (var ad in adsToShow)
             {
-            @foreach (var ad in Model.JobAdvertisments.OrderByDescending(a => a.CreatedDate))
+                var isOwner = User.Identity.IsAuthenticated && Model.Company.Id == currentUserId;
+                var isActive = ad.IsActive && !ad.IsManuallyDeactivated && ad.ExpiryDate > DateTime.Now;
+
+                <div class="ad @(isOwner && !isActive ? "inactive-ad" : "")">
+                    @if (isOwner && isActive)
                     {
-                <div class="ad">
+                        <form asp-controller="JobAdvertisement" asp-action="Deactivate" asp-route-id="@ad.Id"
+                              onsubmit="return confirm('Are you sure you want to deactivate this advertisement?');">
+                            <button type="submit" class="close-ad-btn" title="Deactivate Ad">&times;</button>
+                        </form>
+                    }
+
                     <div class="ad-image">
                         <img src="~/@Model.Company.Logo" alt="@Model.Company.UserName Logo">
                     </div>
@@ -133,6 +150,11 @@
                             <strong>Salary:</strong> @ad.salary EGP<br>
                             <strong>Location:</strong> @ad.governorate<br>
                             <strong>Time:</strong> @ad.Job_time<br>
+                            @if (isOwner && !isActive)
+                            {
+                                <strong>Status:</strong> <span style="color:red;">Inactive</span>
+                                <br>
+                            }
                         </p>
                         <a href="@Url.Action("Details", "JobAdvertisement", new { id = ad.Id })" class="details-btn">
                             View More Details
@@ -143,17 +165,20 @@
         }
         else
         {
-            <p style="text-align: center; color: #ccc; font-style: italic;">No advertisements published yet.</p>
+            <p style="text-align: center; color: #ccc; font-style: italic;">
+                @(User.Identity.IsAuthenticated && Model.Company.Id == currentUserId ?
+                    "No advertisements published yet." : "No active advertisements available.")
+            </p>
         }
     </div>
-
     <!-- ==================== Create New Advertisement Button ==================== -->
     @if (Model.Company.Id == currentUserId)
     {
+        <br />
         <div class="button-wrapper">
             <a href="@Url.Action("Create", "JobAdvertisement", new { companyId = Model.Company.Id })"
                class="Create_New_Advertisements"
-               style="display: inline-block; text-decoration: none; text-align: center; line-height: normal;">
+               style="display: inline-block; none; text-align: center; line-height: normal;">
                 Create New Advertisements
             </a>
         </div>

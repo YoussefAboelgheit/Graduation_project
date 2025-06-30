@@ -24,11 +24,10 @@ namespace Test1._1.Controllers
             _smtpSettings = smtpOptions.Value;
 		}
 
-		public IActionResult Dashboard()
-
-		{
-			var pendingCompanies = _context.Companies
-				.Where(c => c.status == "Pending")
+        public IActionResult Dashboard()
+        {
+            var pendingCompanies = _context.Companies
+                .Where(c => c.status == "Pending")
                 .Select(c => new CompanyViewModel
                 {
                     Id = c.Id,
@@ -40,15 +39,15 @@ namespace Test1._1.Controllers
                     TaxCard = c.TaxCard,
                     CommercialRegister = c.CommercialRegister
                 })
-				.ToList();
+                .ToList();
 
             var companySubscriptions = _context.CompanySubscraptions.ToList();
             var applicantSubscriptions = _context.ApplicantSubscraptions.ToList();
             var pendingCompanyTransactions = _context.CompanyTransactions
-                            .Include(t => t.Company)
-                            .Include(t => t.CompanySubscraption)
-                            .Where(t => !t.IsPaid || !t.IsActive)
-                            .ToList();
+                .Include(t => t.Company)
+                .Include(t => t.CompanySubscraption)
+                .Where(t => !t.IsPaid || !t.IsActive)
+                .ToList();
 
             var pendingApplicantTransactions = _context.ApplicantTransactions
                 .Include(t => t.Applicant)
@@ -56,9 +55,13 @@ namespace Test1._1.Controllers
                 .Where(t => !t.IsPaid || !t.IsActive)
                 .ToList();
 
+            // Only show pending edits for active advertisements
             var pendingEdits = _context.EditAdvertisments
                 .Include(e => e.JobAdvertisment)
-                .Where(e => e.Status == "Pending")
+                .Where(e => e.Status == "Pending" &&
+                           e.JobAdvertisment.IsActive &&
+                           !e.JobAdvertisment.IsManuallyDeactivated &&
+                           e.JobAdvertisment.ExpiryDate > DateTime.Now)
                 .ToList();
 
             var viewModel = new AdminDashboardViewModel
@@ -71,9 +74,7 @@ namespace Test1._1.Controllers
                 PendingEdits = pendingEdits
             };
 
-
             return View(viewModel);
-
         }
         [HttpGet]
         public IActionResult CompanyDetails(string id) 

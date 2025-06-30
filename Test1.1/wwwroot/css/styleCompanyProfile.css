@@ -109,18 +109,27 @@ body {
     position: relative;
 }
 
-.close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+.close-ad-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    color: red;
+    border: none;
+    border-radius: 50%;
+    font-size: 25px;
     font-weight: bold;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
 }
 
-    .close-btn:hover,
-    .close-btn:focus {
-        color: black;
-    }
+    
 
   /* Form Styles in Modal */
 #editCompanyForm label {
@@ -406,6 +415,7 @@ h1 {
     overflow: hidden;
     background-color: #fff;
     min-height: 150px;
+    position: relative;
 }
 
 .ad-image {
@@ -453,20 +463,46 @@ h1 {
         background-color: #0056b3;
     }
 
-    .Create_New_Advertisements{
-        display: block;
-        margin: auto;
-        padding: 15px 100px;
-        font-size: larger;
-        background-color: #ff6363;
+.inactive-ad {
+    opacity: 0.7;
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px dashed #ccc;
+    position: relative;
+}
+
+    .inactive-ad::after {
+        content: "Inactive";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #dc3545;
         color: white;
-        font-weight: bolder;
-        border: black 2px solid;
-        border-radius: 6px;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .inactive-ad .ad-details {
+        color: #6c757d; /* Gray text color */
+    }
+
+
+.Create_New_Advertisements{
+    display: block;
+    margin: auto;
+    padding: 15px 100px;
+    font-size: larger;
+    background-color: blue;
+    color: white;
+    font-weight: bolder;
+    border: black 2px solid;
+    border-radius: 6px;
+    text-decoration: none;
 }
 
     .Create_New_Advertisements:hover {
-    background-color: #e43f5a;
+    background-color: darkblue;
     color: white;
     transition: 0.3s;}
 

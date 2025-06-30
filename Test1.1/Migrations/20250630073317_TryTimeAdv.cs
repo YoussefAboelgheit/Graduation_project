@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test1._1.Migrations
 {
     /// <inheritdoc />
-    public partial class MergeAmr_Hamdy : Migration
+    public partial class TryTimeAdv : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -319,7 +319,10 @@ namespace Test1._1.Migrations
                     JobRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HasPendingEdits = table.Column<bool>(type: "bit", nullable: false),
-                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsManuallyDeactivated = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

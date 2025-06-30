@@ -412,6 +412,12 @@ namespace Test1._1.Controllers
                 return Forbid();
             }
 
+            // Check if job ad is active
+            if (!jobAd.IsActive)
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
             // Check for pending edits
             var hasPendingEdits = await _context.EditAdvertisments
                 .AnyAsync(e => e.JobAdvertismentId == id && e.Status == "Pending");
@@ -499,6 +505,33 @@ namespace Test1._1.Controllers
                 ModelState.AddModelError("", "An error occurred while saving your changes. Please try again.");
                 return View(model);
             }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            var jobAd = await _context.JobAdvertisments
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (jobAd == null)
+            {
+                return NotFound();
+            }
+
+            // Check if current user is the company owner
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (jobAd.CompanyId != currentUserId)
+            {
+                return Forbid();
+            }
+
+            jobAd.IsActive = false;
+            jobAd.IsManuallyDeactivated = true;
+            await _context.SaveChangesAsync();
+
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
     }

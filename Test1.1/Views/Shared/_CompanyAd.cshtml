@@ -2,10 +2,20 @@
 @model CompanyAdvHomeViewModel
 
 <div class="ad">
+    @if (Model.IsCompanyOwner && Model.IsActive)
+    {
+        <div class="ad-actions">
+            <form asp-controller="JobAdvertisement" asp-action="Deactivate" asp-route-id="@Model.AdvertisementId" 
+                  onsubmit="return confirm('Are you sure you want to deactivate this advertisement?');">
+                <button type="submit" class="close-ad-btn" title="Deactivate Ad">&times;</button>
+            </form>
+        </div>
+    }
+    
     <div class="ad-image">
         <a href="@Url.Action("Index", "CompanyInfo", new { id = Model.CompanyId })">
-        <img src="~/@Model.LogoPath" alt="@Model.CompanyName Logo">
-        <a/>
+            <img src="~/@Model.LogoPath" alt="@Model.CompanyName Logo">
+        </a>
     </div>
     <div class="ad-content">
         <h3 class="company-name">@Model.CompanyName</h3>

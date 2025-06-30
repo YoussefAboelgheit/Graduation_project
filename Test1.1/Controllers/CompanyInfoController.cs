@@ -226,7 +226,7 @@ namespace Test1._1.Controllers
                         hasChanges = true;
                     }
                     else
-		{
+		            {
                         ModelState.AddModelError("CommercialRegisterFile", result.ErrorMessage);
                         return View(model);
                     }

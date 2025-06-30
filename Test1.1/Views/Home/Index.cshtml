@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@using Test1._1.Models.Entity 
+@using Test1._1.Models.ViewModels  
 @model Test1._1.Models.ViewModels.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
@@ -356,18 +358,12 @@
     <!-- ********************************************************************************************************** -->
 
     <div class="ads-container">
-        @{
-            int counter = 0;
-        }
-        @foreach (var company in Model.Companies)
+        @if (Model.Companies != null && Model.Companies.Any())
         {
-            counter++;
-            if (counter > 9)
+            @foreach (var company in Model.Companies.Take(9))
             {
-                break;
+                <partial name="_CompanyAd" model="company" />
             }
-            <partial name="_CompanyAd" model="company" />
-
         }
     </div>
 

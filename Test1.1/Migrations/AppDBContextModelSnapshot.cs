@@ -498,7 +498,16 @@ namespace Test1._1.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("HasPendingEdits")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsManuallyDeactivated")
                         .HasColumnType("bit");
 
                     b.Property<string>("JobRequirements")

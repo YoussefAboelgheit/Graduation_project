@@ -41,45 +41,54 @@ namespace Test1._1.Controllers
             if (applicant == null)
                 return NotFound();
 
-            // suggestions logic
-            var allJobs = _context.JobAdvertisments
+            // Get active job advertisements for suggestions (keep this filtering for suggestions)
+            var activeJobs = _context.JobAdvertisments
                 .Include(j => j.Company)
+                .Where(j => j.IsActive &&
+                           !j.IsManuallyDeactivated &&
+                           j.ExpiryDate > DateTime.Now)
                 .ToList();
 
-            var suggestedAds = allJobs
-				.Select(j => new
-				{
-					Job = j,
-					Score =
-						(j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
-						(j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0) +
-						(j.governorate == applicant.address ? 15 : 0) +
-						(j.Job_time == "Full Time" ? 5 : 0) +
-						(GetSalaryValue(j.salary) / 1000) +
-						((int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2)
-				})
-				.OrderByDescending(j => j.Score)
-				.Take(8)
-				.Select(j => new CompanyAdvHomeViewModel
-				{
-					AdvertisementId = j.Job.Id,
-					CompanyId = j.Job.CompanyId,
-					CompanyName = j.Job.Company.UserName,
-					CompanyDescription = j.Job.Company.Description,
-					LogoPath = j.Job.Company.Logo,
-					JobTitle = j.Job.jobtitle,
-					Salary = j.Job.salary,
-					Location = j.Job.governorate,
-					JobTime = j.Job.Job_time,
-					CreatedDate = j.Job.CreatedDate
-				})
-				.ToList();
+            // Calculate suggestions from active jobs only (keep this as is)
+            var suggestedAds = activeJobs
+                .Select(j => new
+                {
+                    Job = j,
+                    Score =
+                        (j.jobtitle.Equals(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 50 : 0) +
+                        (j.jobtitle.Contains(applicant.Field_work, StringComparison.OrdinalIgnoreCase) ? 20 : 0) +
+                        (j.governorate == applicant.address ? 15 : 0) +
+                        (j.Job_time == "Full Time" ? 5 : 0) +
+                        (GetSalaryValue(j.salary) / 1000) +
+                        ((int)(DateTime.Now - j.CreatedDate).TotalDays * -1 / 2)
+                })
+                .OrderByDescending(j => j.Score)
+                .Take(8)
+                .Select(j => new CompanyAdvHomeViewModel
+                {
+                    AdvertisementId = j.Job.Id,
+                    CompanyId = j.Job.CompanyId,
+                    CompanyName = j.Job.Company.UserName,
+                    CompanyDescription = j.Job.Company.Description,
+                    LogoPath = j.Job.Company.Logo,
+                    JobTitle = j.Job.jobtitle,
+                    Salary = j.Job.salary,
+                    Location = j.Job.governorate,
+                    JobTime = j.Job.Job_time,
+                    CreatedDate = j.Job.CreatedDate
+                })
+                .ToList();
+
+            // Remove the active advertisement filtering for applied advertisements
+            var appliedAdvertisements = applicant.ApplicantAdvertisments
+                .Where(aa => !aa.IsDeleted) // Only keep this filter
+                .ToList();
 
             var viewModel = new ApplicantProfileViewModel
             {
                 Applicant = applicant,
                 SuggestedAds = suggestedAds,
-                AppliedAdvertisements = applicant.ApplicantAdvertisments.ToList()
+                AppliedAdvertisements = appliedAdvertisements
             };
 
             // Get all available subscriptions

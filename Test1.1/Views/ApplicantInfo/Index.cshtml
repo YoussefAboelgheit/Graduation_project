@@ -95,7 +95,10 @@
                 @foreach (var application in Model.AppliedAdvertisements.Where(a => !a.IsDeleted))
                 {
                     var jobAd = application.JobAdvertisment;
-                    <div class="ad">
+                    var isActive = jobAd.IsActive && !jobAd.IsManuallyDeactivated && jobAd.ExpiryDate > DateTime.Now;
+                    var adStyle = !isActive ? "background-color: #f8f9fa; opacity: 0.8;" : "";
+
+                    <div class="ad" style="@adStyle">
                         <div class="ad-image">
                             @if (!string.IsNullOrEmpty(jobAd.Company?.Logo))
                             {
@@ -107,9 +110,10 @@
                         <div class="ad-content">
                             <h3 class="company-name">@jobAd.Company?.UserName</h3>
                             <p class="ad-details">
-                                <strong>@jobAd.jobtitle</strong><br>
-                                @jobAd.governorate - @jobAd.Job_time<br>
-                                Salary: @jobAd.salary
+                                <strong>Field of work:</strong> @jobAd.jobtitle <br />
+                                <strong>Salary:</strong> @jobAd.salary EGP<br>
+                                <strong>Location:</strong> @jobAd.governorate<br>
+                                <strong>Time:</strong> @jobAd.Job_time<br>
                             </p>
                             <a href="@Url.Action("Details", "JobAdvertisement", new { id = jobAd.Id })" class="details-btn">View Details</a>
                         </div>

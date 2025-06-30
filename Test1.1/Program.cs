@@ -23,6 +23,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
 .AddEntityFrameworkStores<AppDBContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddHostedService<AdvertisementCleanupService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

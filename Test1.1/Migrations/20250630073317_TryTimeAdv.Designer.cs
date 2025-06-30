@@ -12,8 +12,8 @@ using Test1._1.Models.Entity;
 namespace Test1._1.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250629174506_MergeAmr_Hamdy")]
-    partial class MergeAmr_Hamdy
+    [Migration("20250630073317_TryTimeAdv")]
+    partial class TryTimeAdv
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -501,7 +501,16 @@ namespace Test1._1.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("HasPendingEdits")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsManuallyDeactivated")
                         .HasColumnType("bit");
 
                     b.Property<string>("JobRequirements")

@@ -18,6 +18,9 @@
         // Navigation properties
         public string CompanyId { get; set; }
         public Company Company { get; set; }
+        public DateTime ExpiryDate { get; set; } = DateTime.Now.AddMinutes(60);
+        public bool IsActive { get; set; } = true;
+        public bool IsManuallyDeactivated { get; set; } = false;
 
         public ICollection<EditAdvertisment> EditHistory { get; set; } = new List<EditAdvertisment>();
         public ICollection<Question> Questions { get; set; } = new List<Question>();

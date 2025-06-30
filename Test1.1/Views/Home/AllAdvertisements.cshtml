@@ -1,0 +1,47 @@
+@model List<Test1._1.Models.ViewModels.CompanyAdvHomeViewModel>
+@{
+    ViewData["Title"] = "All Advertisements";
+    Layout = null;
+}
+<link rel="stylesheet" href="~/css/styleApplicantProfile.css">
+<header class="navbar">
+    <div class="navbar-left">
+        <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
+            <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo" />
+            <span class="site-name">Jobify</span>
+        </a>
+    </div>
+    <div class="navbar-right">
+        <nav class="nav-links">
+            <a href="#Advertisements">Advertisements</a>
+            <a href="#payment">Payment</a>
+        </nav>
+        <div class="user-info">
+            @* @if (Model.Applicant.Id == currentUserId)
+            {
+            <img src="~/@Model.Applicant.Profile_image" alt="User Photo" class="user-photo" />
+            }
+            <span class="user-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
+            @Model.Applicant.UserName @Model.Applicant.lastName
+            </span> *@
+        </div>
+
+    </div>
+</header>
+
+<br>
+<br>
+<br>
+@* <h2>All Advertisements</h2>
+<partial name="_CompanyAdList" model="Model" />
+@foreach (var company in Model)
+{
+    <partial name="_CompanyAd" model="company" />
+} *@
+<h2 id="Advertisements">@ViewBag.header</h2>
+<div class="ads-container">
+    @foreach (var company in Model)
+    {
+        <partial name="_CompanyAd" model="company" />
+    }
+</div>

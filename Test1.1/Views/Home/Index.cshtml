@@ -1,0 +1,416 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@model Test1._1.Models.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+@* <a href="/Home/SignIn" class="btn btn-primary">Sign In</a> 
+<a href="/Home/SignUp" class="btn btn-primary">Sign Up</a>
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="~/css/home_style_index.css">
+    <link rel="stylesheet" href="~/css/font/home_index_all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-font-awesome"></i>
+            <a href="#">jobify</a>
+        </div>
+        <div class="menu">
+            <div class="menu-links">
+                <a href="#ssssearch">Search</a>
+                <a href="#Sections">Sections</a>
+                <a href="#Applicants">Applicants</a>
+                <a href="#Advertisements">Advertisements</a>
+                <a href="#Contact_us">Contact us</a>
+            </div>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <span class="welcome-text">
+                    @{
+                        string typeOfUser = "ApplicantInfo";
+                    }
+                    @if (User.IsInRole("Company"))
+                    {
+                        typeOfUser = "CompanyInfo";
+                    }
+                    <a asp-controller="@typeOfUser"
+                       asp-action="Index"
+                       asp-route-id="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)"
+                       style="color: inherit; text-decoration: none;">
+                    Welcome, @User.Identity.Name
+                    </a>
+                </span>
+                <form asp-controller="Home" asp-action="Logout" method="post">
+                    <button type="submit" class="sign_up">Log out</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Home" asp-action="SignIn" class="btn log-in">Log in</a>
+                <a asp-controller="Home" asp-action="SignUp" class="btn sign_up">Sign up</a>
+            }
+
+        </div>
+        <div class="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </nav>
+
+
+    <!-- -----------------------search------------------------------ -->
+    <div class="search" id="ssssearch">
+        <div class="box">
+            <input type="text" name=" " id="" placeholder="Search...">
+            <a href="">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+        </div>
+    </div>
+    <!-- ------------------------------------التقسيمه--------------------------------- -->
+    <h2 id="Sections"> Sections</h2>
+    <div class="job-sec">
+        <a href="/Home/Sections?job=UI/UX Designer" class="job-item">
+            <i class="fas fa-palette"></i>
+            <span>UI/UX Designer</span>
+        </a>
+        <a href="/Home/Sections?job=Front-End Developer" class="job-item">
+            <i class="fas fa-laptop-code"></i>
+            <span>Front-End Developer</span>
+        </a>
+        <a href="/Home/Sections?job=Back-End Developer" class="job-item">
+            <i class="fas fa-server"></i>
+            <span>Back-End Developer</span>
+        </a>
+        <a href="/Home/Sections?job=Software Engineer" class="job-item">
+            <i class="fas fa-cogs"></i>
+            <span>Software Engineer</span>
+        </a>
+        <a href="/Home/Sections?job=Data Analyst" class="job-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Data Analyst</span>
+        </a>
+        <a href="/Home/Sections?job=Machine Learning Engineer" class="job-item">
+            <i class="fas fa-robot"></i>
+            <span>Machine Learning Engineer</span>
+        </a>
+        <a href="/Home/Sections?job=AI Engineer" class="job-item">
+            <i class="fas fa-brain"></i>
+            <span>AI Engineer</span>
+        </a>
+        <a href="/Home/Sections?job=Others" class="job-item">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>Others</span>
+        </a>
+    </div>
+    <!-- ---------------------------suggestions------------------------------------------ -->
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        @if (User.IsInRole("Company") && Model.CompanySuggestions != null && Model.CompanySuggestions.Any())
+        {
+            <h2 id="Sections">Suggested For You</h2>
+            <div class="applicant" id="CompanySuggestions">
+                @foreach (var applicant in Model.CompanySuggestions)
+                {
+                    <partial name="_ApplicantCard" model="applicant" />
+                }
+            </div>
+            @if (Model.CompanySuggestions.Count == 8)
+            {
+
+                <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+                    <form asp-controller="CompanyInfo" asp-action="AllSuggestions" method="get">
+                        <button type="submit" class="btn btn-primary details-btn">Show More</button>
+                    </form>
+                </div>
+            }
+        }
+        else if (User.IsInRole("Applicant") && Model.ApplicantSuggestions != null && Model.ApplicantSuggestions.Any())
+        {
+            <h2 id="Sections">Suggested For You</h2>
+            <div class="ads-suggested-container " id="ApplicantSuggestions">
+                @foreach (var company in Model.ApplicantSuggestions)
+                {
+                    <partial name="_CompanyAd" model="company" />
+                }
+            </div>
+            @if (Model.ApplicantSuggestions.Count >= 9)
+            {
+                <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+                    <form asp-controller="ApplicantInfo" asp-action="AllSuggestions" method="get">
+                        <button type="submit" class="btn btn-primary details-btn">Show More</button>
+                    </form>
+                </div>
+            }
+        }
+    }
+
+
+
+    
+    <!-- ---------------------------APPPPPPPPPPPPPPPPPPPPPPPP------------------------------------------ -->
+  <div class="filter-container">
+      <div class="filter-header">
+          <span class="section-title">Applicants</span>
+          <div class="filters">
+              <div class="filter-item">
+                  <label for="governorate-app">Governorate:</label>
+                  <select id="governorate-app">
+                      <option value="">Select Governorate</option>
+                      <option value="Alexandria">Alexandria</option>
+                      <option value="Assiut">Assiut</option>
+                      <option value="Aswan">Aswan</option>
+                      <option value="Beheira">Beheira</option>
+                      <option value="Beni Suef">Beni Suef</option>
+                      <option value="Cairo">Cairo</option>
+                      <option value="Dakahlia">Dakahlia</option>
+                      <option value="Damietta">Damietta</option>
+                      <option value="Fayoum">Fayoum</option>
+                      <option value="Gharbia">Gharbia</option>
+                      <option value="Giza">Giza</option>
+                      <option value="Ismailia">Ismailia</option>
+                      <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                      <option value="Luxor">Luxor</option>
+                      <option value="Matrouh">Matrouh</option>
+                      <option value="Minya">Minya</option>
+                      <option value="Monufia">Monufia</option>
+                      <option value="New Valley">New Valley</option>
+                      <option value="North Sinai">North Sinai</option>
+                      <option value="Port Said">Port Said</option>
+                      <option value="Qalyubia">Qalyubia</option>
+                      <option value="Qena">Qena</option>
+                      <option value="Red Sea">Red Sea</option>
+                      <option value="Sharqia">Sharqia</option>
+                      <option value="Sohag">Sohag</option>
+                      <option value="South Sinai">South Sinai</option>
+                      <option value="Suez">Suez</option>
+                  </select>
+              </div>
+           
+              <div class="filter-item">
+                  <label for="experience">Experience (Years):</label>
+                  <select id="experience">
+                      <option value="">Select Experience</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value=">10">More than 10</option>
+                      <option value=">15">More than 15</option>
+                      <option value=">20">More than 20</option>
+                  </select>
+              </div>
+
+
+              <div class="filter-item">
+                  <label for="job">Field of work:</label>
+                  <select id="job">
+                      <option value="">Select field of work</option>
+                      <option>AI Engineer</option>
+                      <option>AR/VR Developer</option>
+                      <option>Back‑End Developer</option>
+                      <option>Blockchain Developer</option>
+                      <option>Cloud Engineer</option>
+                      <option>Cybersecurity Specialist</option>
+                      <option>Data Analyst</option>
+                      <option>Data Scientist</option>
+                      <option>Database Administrator</option>
+                      <option>DevOps Engineer</option>
+                      <option>Embedded Systems Engineer</option>
+                      <option>Front‑End Developer</option>
+                      <option>Full Stack Developer</option>
+                      <option>Game Developer</option>
+                      <option>IT Project Manager</option>
+                      <option>IT Support Specialist</option>
+                      <option>Machine Learning Engineer</option>
+                      <option>Mobile App Developer</option>
+                      <option>Network Engineer</option>
+                      <option>QA/Test Engineer</option>
+                      <option>Software Engineer</option>
+                      <option>System Administrator</option>
+                      <option>Technical Writer</option>
+                      <option>UI/UX Designer</option>
+                      <option value="Other">Other</option>
+                  </select>
+              </div>
+              <button class="ie">Apply</button>
+          </div>
+      </div>
+  </div>
+
+  <!-- ****************************************************************************************************************************** -->
+    
+  <div class="applicant" id="Applicants">
+      @foreach (var applicant in Model.Applicants)
+      {
+          <partial name="_ApplicantCard" model="applicant" />
+      }
+  </div>
+
+    <!-- ******************************Advs************************************** -->
+    <div class="filter-container">
+        <div class="filter-header">
+            <span class="section-title" id="Advertisements">Advertisements</span>
+            <div class="filters">
+                <div class="filter-item">
+                    <label for="governorate-ad">Governorate:</label>
+                    <select id="governorate-ad">
+                        <option value="">Select Governorate</option>
+                        <option value="Alexandria">Alexandria</option>
+                        <option value="Assiut">Assiut</option>
+                        <option value="Aswan">Aswan</option>
+                        <option value="Beheira">Beheira</option>
+                        <option value="Beni Suef">Beni Suef</option>
+                        <option value="Cairo">Cairo</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Fayoum">Fayoum</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Giza">Giza</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                        <option value="Luxor">Luxor</option>
+                        <option value="Matrouh">Matrouh</option>
+                        <option value="Minya">Minya</option>
+                        <option value="Monufia">Monufia</option>
+                        <option value="New Valley">New Valley</option>
+                        <option value="North Sinai">North Sinai</option>
+                        <option value="Port Said">Port Said</option>
+                        <option value="Qalyubia">Qalyubia</option>
+                        <option value="Qena">Qena</option>
+                        <option value="Red Sea">Red Sea</option>
+                        <option value="Sharqia">Sharqia</option>
+                        <option value="Sohag">Sohag</option>
+                        <option value="South Sinai">South Sinai</option>
+                        <option value="Suez">Suez</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="job-ad">Field of work:</label>
+                    <select id="job-ad">
+                        <option value="">Select field of work</option>
+                        <option>AI Engineer</option>
+                        <option>AR/VR Developer</option>
+                        <option>Back‑End Developer</option>
+                        <option>Blockchain Developer</option>
+                        <option>Cloud Engineer</option>
+                        <option>Cybersecurity Specialist</option>
+                        <option>Data Analyst</option>
+                        <option>Data Scientist</option>
+                        <option>Database Administrator</option>
+                        <option>DevOps Engineer</option>
+                        <option>Embedded Systems Engineer</option>
+                        <option>Front‑End Developer</option>
+                        <option>Full Stack Developer</option>
+                        <option>Game Developer</option>
+                        <option>IT Project Manager</option>
+                        <option>IT Support Specialist</option>
+                        <option>Machine Learning Engineer</option>
+                        <option>Mobile App Developer</option>
+                        <option>Network Engineer</option>
+                        <option>QA/Test Engineer</option>
+                        <option>Software Engineer</option>
+                        <option>System Administrator</option>
+                        <option>Technical Writer</option>
+                        <option>UI/UX Designer</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="salary">Salary:</label>
+                    <select id="salary">
+                        <option value="">Select Salary Range</option>
+                        <option value="2000-4000">2000 - 4000</option>
+                        <option value="4000-6000">4000 - 6000</option>
+                        <option value="6000-8000">6000 - 8000</option>
+                        <option value="8000-10000">8000 - 10000</option>
+                        <option value=">10000">More than 10000</option>
+                        <option value=">15000">More than 15000</option>
+                        <option value=">20000">More than 20000</option>
+                    </select>
+                </div>
+                <button class="aa">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ********************************************************************************************************** -->
+
+    <div class="ads-container">
+        @{
+            int counter = 0;
+        }
+        @foreach (var company in Model.Companies)
+        {
+            counter++;
+            if (counter > 9)
+            {
+                break;
+            }
+            <partial name="_CompanyAd" model="company" />
+
+        }
+    </div>
+    @* @if(counter >= 9)
+    {
+        <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+                    <form asp-controller="#" asp-action="#" method="get">
+                        <button type="submit" class="btn btn-primary details-btn">Show More</button>
+                    </form>
+                </div>
+    } *@
+
+    <!-- ***************************foter************************************* -->
+    <div id="Contact_us">
+        <footer>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-solid fa-g"></i></a>
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <p>01093456964</p>
+
+        </footer>
+    </div>
+
+
+    <script src="~/js/home_index.js"></script>
+    <script>
+        // Copy filter values to hidden fields for Applicants
+        document.querySelector('.action-buttons form[asp-action="AllApplicants"]')?.addEventListener('submit', function(e) {
+            document.getElementById('hidden-governorate-app').value = document.getElementById('governorate-app').value;
+            document.getElementById('hidden-experience-app').value = document.getElementById('experience').value;
+            document.getElementById('hidden-job-app').value = document.getElementById('job').value;
+        });
+        // Copy filter values to hidden fields for Company Ads
+        document.querySelector('.action-buttons form[asp-action="AllAdvertisements"]')?.addEventListener('submit', function(e) {
+            document.getElementById('hidden-governorate-ad').value = document.getElementById('governorate-ad').value;
+            document.getElementById('hidden-job-ad').value = document.getElementById('job-ad').value;
+            document.getElementById('hidden-salary-ad').value = document.getElementById('salary').value;
+        });
+    </script>
+</body>
+</html>

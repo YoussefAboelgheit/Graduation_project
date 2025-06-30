@@ -1,0 +1,20 @@
+﻿@using Test1._1.Models.ViewModels
+@model CompanyAdvHomeViewModel
+
+<div class="ad">
+    <div class="ad-image">
+        <a href="@Url.Action("Index", "CompanyInfo", new { id = Model.CompanyId })">
+        <img src="~/@Model.LogoPath" alt="@Model.CompanyName Logo">
+        <a/>
+    </div>
+    <div class="ad-content">
+        <h3 class="company-name">@Model.CompanyName</h3>
+        <p class="ad-details">
+            <strong>Field of work:</strong> @Model.JobTitle <br />
+            <strong>Salary:</strong> @Model.Salary EGP<br>
+            <strong>Location:</strong> @Model.Location<br>
+            <strong>Time:</strong> @Model.JobTime<br>
+        </p>
+        <a href="@Url.Action("Details", "JobAdvertisement", new { id = Model.AdvertisementId })" class="details-btn">View More Details</a>
+    </div>
+</div>

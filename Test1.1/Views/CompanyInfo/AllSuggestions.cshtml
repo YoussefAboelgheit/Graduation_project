@@ -1,0 +1,45 @@
+﻿@model List<Test1._1.Models.ViewModels.ApplicantCardHomeViewModel>
+@{
+    ViewData["Title"] = "All Applicants";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/styleApplicantProfile.css">
+<link rel="stylesheet" href="~/css/home_style_index.css">
+<link rel="stylesheet" href="~/css/font/home_index_all.min.css">
+<header class="navbar">
+    <div class="navbar-left">
+        <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
+            <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo">
+            <span class="site-name">Jobify</span>
+        </a>
+    </div>
+    <div class="navbar-right">
+        <nav class="nav-links">
+            <a href="#old_advs">Advertisements</a>
+            <a href="#Payment">Payment</a>
+        </nav>
+        @* <div class="company-info">
+        @if (Model.Company.Id == currentUserId)
+        {
+        <img src="~/@Model.Company.Logo" alt="User Photo" class="user-photo" />
+        }
+        <span class="company-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
+        @Model.Company.UserName
+        </span>
+        </div>
+
+        </div> *@
+</header>
+
+<br>
+<br>
+<br>
+
+<h2 id="Advertisements">Suggestion For You</h2>
+<div class="applicant">
+    @foreach (var applicant in Model)
+    {
+        <partial name="_ApplicantCard" model="applicant" />
+    }
+</div>

@@ -1,0 +1,266 @@
+﻿@model Test1._1.Models.ViewModels.SignUpViewModel
+
+@{
+    ViewData["Title"] = "SignUp";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="~/css/styleSignUp.css" />
+</head>
+<body>
+    <div class="container">
+
+        <div class="toggle-container">
+            <div class="toggle-button" onclick="toggleCard()">
+                <span id="toggle-text">Applicant</span>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="flip-card" id="flip-card">
+                <div class="flip-card-inner">
+
+                    <!-- Applicant Side -->
+                    <div class="flip-card-front">
+                        <h2>Sign Up as Applicant</h2>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <form asp-action="ApplicantSignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
+                            <input asp-for="Fname" class="form-control" placeholder="First Name" required /><br>
+                            <span asp-validation-for="Fname" class="text-danger"></span>
+
+                            <input asp-for="Lname" class="form-control" placeholder="Last Name" required /><br>
+                            <span asp-validation-for="Lname" class="text-danger"></span>
+
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email" required /><br>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" required /><br>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" required /><br>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                            <input asp-for="Phone" class="form-control" placeholder="Phone Number" required /><br>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+
+                            <!-- Field of Work Dropdown -->
+                            <label asp-for="Field_work">Field of Work:</label>
+                            <select asp-for="Field_work" id="FieldWorkSelect" class="form-control scrollable" required> <br>
+                                <option>AI Engineer</option>
+                                <option>AR/VR Developer</option>
+                                <option>Back‑End Developer</option>
+                                <option>Blockchain Developer</option>
+                                <option>Cloud Engineer</option>
+                                <option>Cybersecurity Specialist</option>
+                                <option>Data Analyst</option>
+                                <option>Data Scientist</option>
+                                <option>Database Administrator</option>
+                                <option>DevOps Engineer</option>
+                                <option>Embedded Systems Engineer</option>
+                                <option>Front‑End Developer</option>
+                                <option>Full Stack Developer</option>
+                                <option>Game Developer</option>
+                                <option>IT Project Manager</option>
+                                <option>IT Support Specialist</option>
+                                <option>Machine Learning Engineer</option>
+                                <option>Mobile App Developer</option>
+                                <option>Network Engineer</option>
+                                <option>QA/Test Engineer</option>
+                                <option>Software Engineer</option>
+                                <option>System Administrator</option>
+                                <option>Technical Writer</option>
+                                <option>UI/UX Designer</option>
+                                <option>Other</option>
+                            </select>
+
+                            <span asp-validation-for="Field_work" class="text-danger"></span>
+
+                            <input type="text"
+                                    id="FieldWorkOther"
+                                    name="Field_work_other"
+                                    class="form-control"
+                                    placeholder="Please specify your field of work"
+                                    style="display: none;" />
+
+                            @*<input asp-for="Address" class="form-control" placeholder="Address" required /><br>
+                            <span asp-validation-for="Address" class="text-danger"></span>*@
+
+                            <label asp-for="Address">Governorate:</label>
+                            <select asp-for="Address" id="AddressSelect" class="form-control scrollable" required> <br>
+                                <option value="Alexandria">Alexandria</option>
+                                <option value="Assiut">Assiut</option>
+                                <option value="Aswan">Aswan</option>
+                                <option value="Beheira">Beheira</option>
+                                <option value="Beni Suef">Beni Suef</option>
+                                <option value="Cairo">Cairo</option>
+                                <option value="Dakahlia">Dakahlia</option>
+                                <option value="Damietta">Damietta</option>
+                                <option value="Fayoum">Fayoum</option>
+                                <option value="Gharbia">Gharbia</option>
+                                <option value="Giza">Giza</option>
+                                <option value="Ismailia">Ismailia</option>
+                                <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                                <option value="Luxor">Luxor</option>
+                                <option value="Matrouh">Matrouh</option>
+                                <option value="Minya">Minya</option>
+                                <option value="Monufia">Monufia</option>
+                                <option value="New Valley">New Valley</option>
+                                <option value="North Sinai">North Sinai</option>
+                                <option value="Port Said">Port Said</option>
+                                <option value="Qalyubia">Qalyubia</option>
+                                <option value="Qena">Qena</option>
+                                <option value="Red Sea">Red Sea</option>
+                                <option value="Sharqia">Sharqia</option>
+                                <option value="Sohag">Sohag</option>
+                                <option value="South Sinai">South Sinai</option>
+                                <option value="Suez">Suez</option>
+                            </select>
+
+                            <label asp-for="Years_experience">Years of Experience:</label>
+                            <input asp-for="Years_experience" type="number" min="0" class="form-control" /><br>
+                            <span asp-validation-for="Years_experience" class="text-danger"></span>
+
+                            <label asp-for="ProfileImage">Upload Profile Image:</label>
+                            <input asp-for="ProfileImage" type="file" accept=".jpeg,.jpg,.png" class="form-control" required /><br>
+                            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+
+                            <label asp-for="CVFile">Upload CV (PDF):</label>
+                            <input asp-for="CVFile" type="file" accept=".pdf" class="form-control" required /><br>
+                            <span asp-validation-for="CVFile" class="text-danger"></span>
+
+                            <button type="submit" class="btn btn-primary">Submit</button><br>
+                        </form>
+                    </div>
+
+                    <!-- Company Side -->
+                    <div class="flip-card-back">
+                        <h2>Sign Up as Company</h2>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <form asp-action="CompanySignUp" asp-controller="Home" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+
+                            <input asp-for="UserName" class="form-control" placeholder="User Name" required />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" required />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                            <input asp-for="Phone" class="form-control" placeholder="Phone" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+
+                            <input asp-for="FiledWork" class="form-control" placeholder="Field of Work" required />
+                            <span asp-validation-for="FiledWork" class="text-danger"></span>
+
+                            @*<input asp-for="Address" class="form-control" placeholder="Address" required />
+                            <span asp-validation-for="Address" class="text-danger"></span>*@
+
+                            <label asp-for="Address">Governorate:</label>
+                            <select asp-for="Address" id="AddressSelect" class="form-control scrollable" required> <br>
+                                <option value="Alexandria">Alexandria</option>
+                                <option value="Assiut">Assiut</option>
+                                <option value="Aswan">Aswan</option>
+                                <option value="Beheira">Beheira</option>
+                                <option value="Beni Suef">Beni Suef</option>
+                                <option value="Cairo">Cairo</option>
+                                <option value="Dakahlia">Dakahlia</option>
+                                <option value="Damietta">Damietta</option>
+                                <option value="Fayoum">Fayoum</option>
+                                <option value="Gharbia">Gharbia</option>
+                                <option value="Giza">Giza</option>
+                                <option value="Ismailia">Ismailia</option>
+                                <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                                <option value="Luxor">Luxor</option>
+                                <option value="Matrouh">Matrouh</option>
+                                <option value="Minya">Minya</option>
+                                <option value="Monufia">Monufia</option>
+                                <option value="New Valley">New Valley</option>
+                                <option value="North Sinai">North Sinai</option>
+                                <option value="Port Said">Port Said</option>
+                                <option value="Qalyubia">Qalyubia</option>
+                                <option value="Qena">Qena</option>
+                                <option value="Red Sea">Red Sea</option>
+                                <option value="Sharqia">Sharqia</option>
+                                <option value="Sohag">Sohag</option>
+                                <option value="South Sinai">South Sinai</option>
+                                <option value="Suez">Suez</option>
+                            </select>
+
+                            <label asp-for="Logo">Upload Company Logo (Image):</label>
+                            <input asp-for="Logo" type="file" accept=".jpg,.jpeg,.png" class="form-control" />
+                            <span asp-validation-for="Logo" class="text-danger"></span>
+
+                            <label asp-for="TaxCard">Upload Company TaxCard (PDF):</label>
+                            <input asp-for="TaxCard" type="file" accept=".pdf" class="form-control" required />
+                            <span asp-validation-for="TaxCard" class="text-danger"></span>
+
+                            <label asp-for="CommercialRegister">Upload Commercial Register (PDF):</label>
+                            <input asp-for="CommercialRegister" type="file" accept=".pdf" class="form-control" required />
+                            <span asp-validation-for="CommercialRegister" class="text-danger"></span>
+
+                            <textarea asp-for="Description" class="form-control" placeholder="Description" maxlength="1000"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/indexSignUp.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('FieldWorkSelect');
+            const otherInput = document.getElementById('FieldWorkOther');
+
+            select.addEventListener('change', () => {
+                if (select.value === 'Other') {
+                    otherInput.style.display = 'block';
+                    otherInput.required = true;
+                } else {
+                    otherInput.style.display = 'none';
+                    otherInput.required = false;
+                    otherInput.value = '';
+                }
+            });
+
+            // Handle form submission - simplified approach
+            const applicantForm = document.querySelector('form[asp-action="ApplicantSignUp"]');
+            if (applicantForm) {
+                applicantForm.addEventListener('submit', (e) => {
+                    // Basic validation for the "Other" field
+                    if (select.value === 'Other' && otherInput.value.trim() === '') {
+                        e.preventDefault();
+                        alert('Please specify your field of work.');
+                        otherInput.focus();
+                        return false;
+                    }
+
+                    // Let the form submit normally - the server will handle the "Other" logic
+                    return true;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

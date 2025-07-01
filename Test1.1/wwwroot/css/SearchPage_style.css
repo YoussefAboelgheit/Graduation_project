@@ -112,9 +112,9 @@ li a {
     margin-left: 25px;
     font-size: 18px;
     /* Button-specific styling */
-    background-color: #007bff;
+    background-color: #e43f5a;
     color: white;
-    border: none;
+    border: white 2px solid;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;

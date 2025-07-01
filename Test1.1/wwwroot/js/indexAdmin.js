@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+Ôªødocument.addEventListener("DOMContentLoaded", function () {
     // ----------- Companies ------------
     const companyRejectBtns = document.querySelectorAll('.company-box .reject-btn');
     const companyAcceptBtns = document.querySelectorAll('.company-box .accept-btn');
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const newPriceInput = document.getElementById("new-price-input");
     const subscriptionIdInput = document.getElementById("subscription-id");
 
-    // › Õ «·„Êœ«· Ê ⁄»∆… «·»Ì«‰« 
+    // √ù√ä√ç √á√°√£√¶√è√á√° √¶√ä√ö√à√Ü√â √á√°√à√≠√á√§√á√ä
     function openModal(id, name, price) {
     subscriptionNameEl.innerText = name;
         oldPriceEl.innerText = `$${price}`;

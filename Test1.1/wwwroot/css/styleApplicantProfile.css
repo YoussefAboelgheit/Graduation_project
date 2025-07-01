@@ -188,6 +188,21 @@ body {
     resize: none;
 }
 
+.myphoto {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 2px solid black;
+    margin: 0 10px;
+}
+
+.myprofile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
 
 /* ====================================advs================================================== */
 .ads-container {

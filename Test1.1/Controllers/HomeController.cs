@@ -64,7 +64,7 @@ namespace Test1._1.Controllers
 
             // كل المستخدمين
             var generalApplicants = _context.Applicants
-                .Take(5)
+                .Take(8)
                 .Select(a => new ApplicantCardHomeViewModel
                 {
                     Id = a.Id,
@@ -341,7 +341,7 @@ namespace Test1._1.Controllers
                 .ToList();
 
             ViewBag.header = "All Advertisements";
-            return View("AllAdvertisements", advertisements);
+            return PartialView("_CompanyAdList", advertisements);
         }
 
 

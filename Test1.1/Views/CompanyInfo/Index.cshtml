@@ -63,19 +63,34 @@
     <br>
     <br>
     <br>
-    <div class="profile-container">
-        <div class="profile-image">
-            <img src="~/@Model.Company.Logo" alt="Company Logo" />
+    @if (Model.Company.Id == currentUserId)
+    {
+        <div class="myprofile-container">
+            <div>
+                <img class="myphoto" src="~/@Model.Company.Logo" alt="Applicant Photo" />
+            </div>
+            <div class="profile-details">
+                <p><strong>Name:</strong> @Model.Company.UserName </p><br />
+                <p><strong>Field of Work:</strong> @Model.Company.FiledWork</p><br />
+            </div>
         </div>
-        <div class="profile-details">
-            <p><strong>Company Name:</strong> @Model.Company.UserName</p><br />
-            <p><strong>Field of Work:</strong> @Model.Company.FiledWork</p><br />
-            <p><strong>Email:</strong> @Model.Company.Email</p><br />
-            <p><strong>Phone:</strong> @Model.Company.PhoneNumber</p><br />
-            <p><strong>Address:</strong> @Model.Company.address</p><br />
-            <p><strong>Description:</strong> @Model.Company.Description</p><br />
+    }
+    else
+    {
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="~/@Model.Company.Logo" alt="Company Logo" />
+            </div>
+            <div class="profile-details">
+                <p><strong>Company Name:</strong> @Model.Company.UserName</p><br />
+                <p><strong>Field of Work:</strong> @Model.Company.FiledWork</p><br />
+                <p><strong>Email:</strong> @Model.Company.Email</p><br />
+                <p><strong>Phone:</strong> @Model.Company.PhoneNumber</p><br />
+                <p><strong>Address:</strong> @Model.Company.address</p><br />
+                <p><strong>Description:</strong> @Model.Company.Description</p><br />
+            </div>
         </div>
-    </div>
+    }
 
     <!-- ==================== Suggested Applicants ==================== -->
     @if (Model.Company.Id == currentUserId)

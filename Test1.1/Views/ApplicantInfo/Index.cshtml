@@ -51,17 +51,15 @@
     <br />
     <br />
     <br />
-    <div class="profile-container">
-        <div class="profile-image">
-            <img src="~/@Model.Applicant.Profile_image" alt="Applicant Photo" />
+    @if (Model.Applicant.Id == currentUserId)
+    {
+    <div class="myprofile-container">
+        <div>
+            <img class="myphoto" src="~/@Model.Applicant.Profile_image" alt="Applicant Photo" />
         </div>
         <div class="profile-details">
             <p><strong>Name:</strong> @Model.Applicant.UserName @Model.Applicant.lastName</p><br />
             <p><strong>Field of Work:</strong> @Model.Applicant.Field_work</p><br />
-            <p><strong>Years of Experience:</strong> @Model.Applicant.Years_experience</p><br />
-            <p><strong>Email:</strong> @Model.Applicant.Email</p><br />
-            <p><strong>Phone:</strong> @Model.Applicant.PhoneNumber</p><br />
-            <p><strong>Address:</strong> @Model.Applicant.address</p><br />
             <p>
                 <strong>CV:</strong>
                 @if (string.IsNullOrEmpty(Model.Applicant.CV))
@@ -75,7 +73,35 @@
             </p>
         </div>
     </div>
+    }
+    else
+    {
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="~/@Model.Applicant.Profile_image" alt="Applicant Photo" />
+            </div>
+            <div class="profile-details">
+                <p><strong>Name:</strong> @Model.Applicant.UserName @Model.Applicant.lastName</p><br />
+                <p><strong>Field of Work:</strong> @Model.Applicant.Field_work</p><br />
+                <p><strong>Years of Experience:</strong> @Model.Applicant.Years_experience</p><br />
+                <p><strong>Email:</strong> @Model.Applicant.Email</p><br />
+                <p><strong>Phone:</strong> @Model.Applicant.PhoneNumber</p><br />
+                <p><strong>Address:</strong> @Model.Applicant.address</p><br />
+                <p>
+                    <strong>CV:</strong>
+                    @if (string.IsNullOrEmpty(Model.Applicant.CV))
+                    {
+                        <span>No CV uploaded</span>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("ViewCV", "ApplicantInfo", new { id = Model.Applicant.Id })" target="_blank">View CV</a>
+                    }
+                </p>
+            </div>
+        </div>
 
+    }
     <!-- ============================ Suggestions ============================ -->
     @if (Model.Applicant.Id == currentUserId)
     {

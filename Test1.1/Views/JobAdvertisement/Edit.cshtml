@@ -1,0 +1,329 @@
+﻿@model Test1._1.Models.ViewModels.JobAdvertisementEditViewModel
+@{
+    ViewData["Title"] = "Edit Job Advertisement";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/styleform.css">
+    <style>
+        /* Custom validation styles */
+        .field-error {
+            border: 2px solid #dc3545 !important;
+            background-color: #f8d7da !important;
+        }
+
+        .error-message {
+            color: white;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .validation-summary {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #dc3545;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Edit Job Advertisement</h2>
+        <br />
+        <form asp-action="Edit" method="post" novalidate>
+            @if (Model.HasPendingEdits)
+            {
+                <div class="alert alert-warning">
+                    You have pending edits awaiting admin approval. You cannot make further changes until your current edits are approved or rejected.
+                </div>
+                <br />
+            }
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CompanyId" />
+
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="FieldWork">Field of Work:</label>
+                <select asp-for="FieldWork" id="fieldwork-select">
+                    <option value="">Select Field of Work</option>
+                    <option value="AI Engineer">AI Engineer</option>
+                    <option value="AR/VR Developer">AR/VR Developer</option>
+                    <option value="Back‑End Developer">Back‑End Developer</option>
+                    <option value="Blockchain Developer">Blockchain Developer</option>
+                    <option value="Cloud Engineer">Cloud Engineer</option>
+                    <option value="Cybersecurity Specialist">Cybersecurity Specialist</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Database Administrator">Database Administrator</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="Embedded Systems Engineer">Embedded Systems Engineer</option>
+                    <option value="Front‑End Developer">Front‑End Developer</option>
+                    <option value="Full Stack Developer">Full Stack Developer</option>
+                    <option value="Game Developer">Game Developer</option>
+                    <option value="IT Project Manager">IT Project Manager</option>
+                    <option value="IT Support Specialist">IT Support Specialist</option>
+                    <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                    <option value="Mobile App Developer">Mobile App Developer</option>
+                    <option value="Network Engineer">Network Engineer</option>
+                    <option value="QA/Test Engineer">QA/Test Engineer</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="System Administrator">System Administrator</option>
+                    <option value="Technical Writer">Technical Writer</option>
+                    <option value="UI/UX Designer">UI/UX Designer</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="FieldWork" class="field-validation-error"></span>
+                <span class="error-message" id="fieldwork-error" style="display: none;">Please specify field of work</span>
+
+                <input type="text"
+                       id="FieldWorkOther"
+                       name="FieldWorkOther"
+                       class="form-control mt-2"
+                       placeholder="Please specify your field of work"
+                       style="display: none;" />
+                <span class="error-message" id="fieldwork-other-error" style="display: none;">Please specify your field of work</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Salary">Salary:</label>
+                <select asp-for="Salary" id="salary-select">
+                    <option value="">Select Salary Range</option>
+                    <option value="2000-4000">2000 - 4000</option>
+                    <option value="4000-6000">4000 - 6000</option>
+                    <option value="6000-8000">6000 - 8000</option>
+                    <option value="8000-10000">8000 - 10000</option>
+                    <option value=">10000">More than 10000</option>
+                    <option value=">15000">More than 15000</option>
+                    <option value=">20000">More than 20000</option>
+                </select>
+                <span asp-validation-for="Salary" class="field-validation-error"></span>
+                <span class="error-message" id="salary-error" style="display: none;">Please select a salary range</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City">City:</label>
+                <select asp-for="City" id="city-select">
+                    <option value="">Select City</option>
+                    <option value="Alexandria">Alexandria</option>
+                    <option value="Assiut">Assiut</option>
+                    <option value="Aswan">Aswan</option>
+                    <option value="Beheira">Beheira</option>
+                    <option value="Beni Suef">Beni Suef</option>
+                    <option value="Cairo">Cairo</option>
+                    <option value="Dakahlia">Dakahlia</option>
+                    <option value="Damietta">Damietta</option>
+                    <option value="Fayoum">Fayoum</option>
+                    <option value="Gharbia">Gharbia</option>
+                    <option value="Giza">Giza</option>
+                    <option value="Ismailia">Ismailia</option>
+                    <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+                    <option value="Luxor">Luxor</option>
+                    <option value="Matrouh">Matrouh</option>
+                    <option value="Minya">Minya</option>
+                    <option value="Monufia">Monufia</option>
+                    <option value="New Valley">New Valley</option>
+                    <option value="North Sinai">North Sinai</option>
+                    <option value="Port Said">Port Said</option>
+                    <option value="Qalyubia">Qalyubia</option>
+                    <option value="Qena">Qena</option>
+                    <option value="Red Sea">Red Sea</option>
+                    <option value="Sharqia">Sharqia</option>
+                    <option value="Sohag">Sohag</option>
+                    <option value="South Sinai">South Sinai</option>
+                    <option value="Suez">Suez</option>
+                </select>
+                <span asp-validation-for="City" class="field-validation-error"></span>
+                <span class="error-message" id="city-error" style="display: none;">Please select a city</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobTime">Job Time:</label>
+                <select asp-for="JobTime" id="jobtime-select">
+                    <option value="">Select Job Time</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                </select>
+                <span asp-validation-for="JobTime" class="field-validation-error"></span>
+                <span class="error-message" id="jobtime-error" style="display: none;">Please select job time</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Job_Requirements">Job Requirements:</label>
+                <textarea asp-for="Job_Requirements" id="jobreq-textarea" placeholder="Enter job requirements"></textarea>
+                <span asp-validation-for="Job_Requirements" class="field-validation-error"></span>
+                <span class="error-message" id="jobreq-error" style="display: none;">Please fill out job requirements</span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="JobDescription">Job Description:</label>
+                <textarea asp-for="JobDescription" id="jobdesc-textarea" placeholder="Enter job description"></textarea>
+                <span asp-validation-for="JobDescription" class="field-validation-error"></span>
+                <span class="error-message" id="jobdesc-error" style="display: none;">Please fill out job description</span>
+            </div>
+
+            @if (!Model.HasPendingEdits)
+            {
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="@Url.Action("Details", new { id = Model.Id })" class="btn btn-secondary">Cancel</a>
+                </div>
+            }
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fieldworkSelect = document.getElementById('fieldwork-select');
+            const fieldworkOtherInput = document.getElementById('FieldWorkOther');
+            const fieldworkOtherError = document.getElementById('fieldwork-other-error');
+
+            // Set initial values from model
+        @if (!string.IsNullOrEmpty(Model.FieldWork))
+        {
+            @if (new[] { "AI Engineer", "AR/VR Developer", "Back‑End Developer", "Blockchain Developer",
+                "Cloud Engineer", "Cybersecurity Specialist", "Data Analyst", "Data Scientist",
+                "Database Administrator", "DevOps Engineer", "Embedded Systems Engineer",
+                "Front‑End Developer", "Full Stack Developer", "Game Developer", "IT Project Manager",
+                "IT Support Specialist", "Machine Learning Engineer", "Mobile App Developer",
+                "Network Engineer", "QA/Test Engineer", "Software Engineer", "System Administrator",
+                "Technical Writer", "UI/UX Designer" }.Contains(Model.FieldWork))
+            {
+                @:fieldworkSelect.value = '@Model.FieldWork';
+            }
+            else
+            {
+                @:fieldworkSelect.value = 'Other';
+                @:fieldworkOtherInput.value = '@Model.FieldWork';
+                @:fieldworkOtherInput.style.display = 'block';
+            }
+        }
+
+                // Set other dropdown values
+                document.getElementById('salary-select').value = '@Model.Salary';
+            document.getElementById('city-select').value = '@Model.City';
+            document.getElementById('jobtime-select').value = '@Model.JobTime';
+
+            // Field of Work "Other" option handling
+            fieldworkSelect.addEventListener('change', function () {
+                if (this.value === 'Other') {
+                    fieldworkOtherInput.style.display = 'block';
+                    fieldworkOtherInput.required = true;
+                } else {
+                    fieldworkOtherInput.style.display = 'none';
+                    fieldworkOtherInput.required = false;
+                    fieldworkOtherInput.value = '';
+                    fieldworkOtherError.style.display = 'none';
+                    fieldworkOtherInput.classList.remove('field-error');
+                }
+            });
+
+            // Validation for the "Other" field
+            function validateFieldWorkOther() {
+                if (fieldworkSelect.value === 'Other' && !fieldworkOtherInput.value.trim()) {
+                    fieldworkOtherInput.classList.add('field-error');
+                    fieldworkOtherError.style.display = 'block';
+                    return false;
+                }
+                return true;
+            }
+
+            // Clear error when user starts typing in "Other" field
+            fieldworkOtherInput.addEventListener('input', function () {
+                if (this.value.trim()) {
+                    this.classList.remove('field-error');
+                    fieldworkOtherError.style.display = 'none';
+                }
+            });
+
+            document.querySelector('form').addEventListener('submit', function (e) {
+                if (!confirm('Your changes will be submitted for admin approval. Continue?')) {
+                    e.preventDefault();
+                }
+            });
+
+            // Form submission handler
+            document.querySelector('form').addEventListener('submit', function (e) {
+                // First, handle the "Other" field if selected
+                if (fieldworkSelect.value === 'Other') {
+                    const customValue = fieldworkOtherInput.value.trim();
+
+                    if (!customValue) {
+                        e.preventDefault();
+                        fieldworkOtherInput.classList.add('field-error');
+                        fieldworkOtherError.style.display = 'block';
+                        fieldworkOtherInput.focus();
+                        return;
+                    }
+
+                    // Create a hidden input to store the custom value
+                    const hiddenFieldWorkInput = document.createElement('input');
+                    hiddenFieldWorkInput.type = 'hidden';
+                    hiddenFieldWorkInput.name = 'FieldWork';
+                    hiddenFieldWorkInput.value = customValue;
+                    this.appendChild(hiddenFieldWorkInput);
+
+                    // Disable the original select to prevent it from being submitted
+                    fieldworkSelect.disabled = true;
+                }
+
+                // Validate other required fields
+                let isValid = true;
+
+                if (!fieldworkSelect.value) {
+                    document.getElementById('fieldwork-error').style.display = 'block';
+                    fieldworkSelect.classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!document.getElementById('salary-select').value) {
+                    document.getElementById('salary-error').style.display = 'block';
+                    document.getElementById('salary-select').classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!document.getElementById('city-select').value) {
+                    document.getElementById('city-error').style.display = 'block';
+                    document.getElementById('city-select').classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!document.getElementById('jobtime-select').value) {
+                    document.getElementById('jobtime-error').style.display = 'block';
+                    document.getElementById('jobtime-select').classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!document.getElementById('jobreq-textarea').value.trim()) {
+                    document.getElementById('jobreq-error').style.display = 'block';
+                    document.getElementById('jobreq-textarea').classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!document.getElementById('jobdesc-textarea').value.trim()) {
+                    document.getElementById('jobdesc-error').style.display = 'block';
+                    document.getElementById('jobdesc-textarea').classList.add('field-error');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

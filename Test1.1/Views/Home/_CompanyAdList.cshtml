@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<Test1._1.Models.ViewModels.CompanyAdvHomeViewModel>
+
+
+@if (Model != null && Model.Any())
+{
+    var companiesToShow = Model.Take(9).ToList();
+    foreach (var company in companiesToShow)
+    {
+        
+        <partial name="_CompanyAd" model="company" />
+        
+    }
+    if (Model.Count > 9)
+    {
+        <div>
+
+        </div>
+        <div style="text-align:center; margin-top: 20px;" class="action-buttons">
+            <form asp-controller="Home" asp-action="AllAdvertisements" method="get" class="show-more-ads-form">
+                <input type="hidden" name="governorate" />
+                <input type="hidden" name="job" />
+                <input type="hidden" name="salary" />
+                <button type="submit" class="btn btn-primary details-btn">Show More</button>
+            </form>
+        </div>
+    }
+}

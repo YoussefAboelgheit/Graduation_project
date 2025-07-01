@@ -26,7 +26,7 @@ namespace Test1._1.Models.Configration
 			builder.HasOne(x => x.Company)
 				   .WithMany(x => x.JobAdvertisments)
 				   .HasForeignKey(x => x.CompanyId)
-				   .OnDelete(DeleteBehavior.Cascade);
+				   .OnDelete(DeleteBehavior.NoAction);
 
 			
 

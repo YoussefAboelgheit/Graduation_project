@@ -1,0 +1,239 @@
+﻿@model Test1._1.Models.ViewModels.CompanyProfileViewModel
+@inject Test1._1.Models.Entity.AppDBContext _context
+@using Microsoft.EntityFrameworkCore
+
+
+@{
+    ViewData["Title"] = "Company Profile";
+    Layout = null;
+    var subscriptions = ViewBag.CompanySubscraptions as List<Test1._1.Models.Entity.CompanySubscraption>;
+
+    var activeTransaction = _context.CompanyTransactions
+        .Include(t => t.CompanySubscraption)
+        .FirstOrDefault(t => t.CompanyId == Model.Company.Id && t.IsPaid && t.IsActive);
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Profile</title>
+    <link rel="stylesheet" href="~/css/styleCompanyProfile.css">
+    <link rel="stylesheet" href="~/css/font/home_index_all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>@ViewData["Title"]</title>
+</head>
+
+<body>
+    <!-- ==================== Navbar ==================== -->
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="@Url.Action("Index", "Home")" style="text-decoration: none; color: inherit;">
+                <img src="~/uploads/JobifyLogo.jpg" alt="Jobify Logo" class="logo">
+                <span class="site-name">Jobify</span>
+            </a>
+        </div>
+        <div class="navbar-right">
+            <nav class="nav-links">
+                <a href="#JobPostings">Job Postings</a>
+                <a href="#Applications">Applications</a>
+                <a href="#Subscriptions">Subscriptions</a>
+            </nav>
+            <div class="company-info">
+                @if (Model.Company.Id == currentUserId)
+                {
+                    <img src="~/@Model.Company.Logo" alt="User Photo" class="user-photo" />
+                }
+                <span class="company-name" style="color: #ec0027; font-size: larger; font-weight: 800;">
+                    @Model.Company.UserName
+                </span>
+            </div>
+            @if (Model.Company.Id == currentUserId)
+            {
+                <a href="@Url.Action("Edit", "CompanyInfo", new { id = Model.Company.Id })" id="editBtn" class="edit-btn" title="Edit Profile">&#9998;</a>
+            }
+        </div>
+
+    </header>
+
+    <!-- ==================== Company Details ==================== -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="profile-container">
+        <div class="profile-image">
+            <img src="~/@Model.Company.Logo" alt="Company Logo" />
+        </div>
+        <div class="profile-details">
+            <p><strong>Company Name:</strong> @Model.Company.UserName</p><br />
+            <p><strong>Field of Work:</strong> @Model.Company.FiledWork</p><br />
+            <p><strong>Email:</strong> @Model.Company.Email</p><br />
+            <p><strong>Phone:</strong> @Model.Company.PhoneNumber</p><br />
+            <p><strong>Address:</strong> @Model.Company.address</p><br />
+            <p><strong>Description:</strong> @Model.Company.Description</p><br />
+        </div>
+    </div>
+
+    <!-- ==================== Suggested Applicants ==================== -->
+    @if (Model.Company.Id == currentUserId)
+    {
+        @if (Model.SuggestedApplicants != null && Model.SuggestedApplicants.Any())
+        {
+            <h2 id="old_advs">Suggested Applicants</h2>
+
+            <div class="applicant" id="Applicants">
+                @foreach (var applicant in Model.SuggestedApplicants)
+                {
+                    <partial name="_ApplicantCard" model="applicant" />
+                }
+
+            </div>
+        }
+    }
+@*     @if (Model.Company.Id == currentUserId)
+    {
+        @if (Model.SuggestedApplicants != null && Model.SuggestedApplicants.Any())
+                {
+            <h2 id="old_advs">Suggested Applicants</h2>
+
+            <div class="applicant">
+                @foreach (var applicant in Model.SuggestedApplicants)
+                {
+                    <div class="card">
+                        <img src="@applicant.ImagePath" alt="Abdel Fattah El-Eisi" />
+                        <div class="info">
+                            <span class="name">@applicant.Name</span>
+                            <span class="role">@applicant.FieldWork</span>
+                </div>
+                    </div>
+                }
+        }
+    }
+ 
+    </div>
+        }
+    } *@
+
+    <!-- ==================== Published Advertisements ==================== -->
+    <h2 id="old_advs">Published Advertisements</h2>
+    <div class="ads-container">
+        @if (Model.JobAdvertisments != null && Model.JobAdvertisments.Any())
+        {
+            // Show all ads for the company owner, only active ads for others
+            var adsToShow = Model.JobAdvertisments
+            .Where(ad => (User.Identity.IsAuthenticated && Model.Company.Id == currentUserId) ||
+            (ad.IsActive && !ad.IsManuallyDeactivated && ad.ExpiryDate > DateTime.Now))
+            .OrderByDescending(a => a.CreatedDate);
+
+            foreach (var ad in adsToShow)
+            {
+                var isOwner = User.Identity.IsAuthenticated && Model.Company.Id == currentUserId;
+                var isActive = ad.IsActive && !ad.IsManuallyDeactivated && ad.ExpiryDate > DateTime.Now;
+
+                <div class="ad @(isOwner && !isActive ? "inactive-ad" : "")">
+                    @if (isOwner && isActive)
+            {
+                        <form asp-controller="JobAdvertisement" asp-action="Deactivate" asp-route-id="@ad.Id"
+                              onsubmit="return confirm('Are you sure you want to deactivate this advertisement?');">
+                            <button type="submit" class="close-ad-btn" title="Deactivate Ad">&times;</button>
+                        </form>
+                    }
+
+                    <div class="ad-image">
+                        <img src="~/@Model.Company.Logo" alt="@Model.Company.UserName Logo">
+                    </div>
+                    <div class="ad-content">
+                        <h3 class="company-name">@Model.Company.UserName</h3>
+                        <p class="ad-details">
+                            <strong>Field of work:</strong> @ad.jobtitle <br />
+                            <strong>Salary:</strong> @ad.salary EGP<br>
+                            <strong>Location:</strong> @ad.governorate<br>
+                            <strong>Time:</strong> @ad.Job_time<br>
+                            @if (isOwner && !isActive)
+                            {
+                                <strong>Status:</strong> <span style="color:red;">Inactive</span>
+                                <br>
+                            }
+                        </p>
+                        <a href="@Url.Action("Details", "JobAdvertisement", new { id = ad.Id })" class="details-btn">
+                            View More Details
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="text-align: center; color: #ccc; font-style: italic;">
+                @(User.Identity.IsAuthenticated && Model.Company.Id == currentUserId ?
+                    "No advertisements published yet." : "No active advertisements available.")
+            </p>
+        }
+    </div>
+
+    <!-- ==================== Create New Advertisement Button ==================== -->
+    @if (Model.Company.Id == currentUserId)
+    {
+        <br />
+        <div class="button-wrapper">
+            <a href="@Url.Action("Create", "JobAdvertisement", new { companyId = Model.Company.Id })"
+               class="Create_New_Advertisements"
+               style="display: inline-block; none; text-align: center; line-height: normal;">
+                Create New Advertisements
+            </a>
+        </div>
+    }
+
+    <style>
+        .button-wrapper {
+            display: flex;
+            align-items: center;
+            height: 100px;
+        }
+    </style>
+
+    <!-- ==================== Payment Section ==================== -->
+    @if (Model.Company.Id == currentUserId)
+    {
+        <h2 id="Subscriptions">Available Subscriptions</h2>
+    <div class="subscriptions-container">
+        @if (subscriptions != null && subscriptions.Any())
+        {
+            foreach (var sub in subscriptions)
+            {
+                var isActive = activeTransaction != null && activeTransaction.CompanySubscraptionId == sub.Id;
+                var cardStyle = isActive ? "background-color:#d4edda; border:2px solid #28a745;" : "";
+                var statusText = isActive
+                ? $"<p style='color:#155724; font-weight:bold;'>Active - Ends at: {activeTransaction.EndDate.ToShortDateString()}</p>"
+                : "";
+
+                <div class="subscription-card" style="@cardStyle">
+                    <h3>@sub.SubType</h3>
+                    <p><strong>Price:</strong> @sub.Price EGP</p>
+
+                    @Html.Raw(statusText)
+
+                    @if (!isActive)
+                    {
+                            <form asp-controller="CompanySubscraptions" asp-action="Select"method="post">
+                            <input type="hidden" name="subId" value="@sub.Id" />
+                            <input type="hidden" name="companyId" value="@Model.Company.Id" />
+                            <button type="submit" class="subscribe-btn">Subscribe</button>
+                        </form>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <p>No subscriptions available.</p>
+        }
+    </div>
+    }
+
+    <script src="~/js/indexCompanyInfo.js" asp-append-version="true"></script>
+</body>
+</html>

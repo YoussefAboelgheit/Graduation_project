@@ -1,0 +1,92 @@
+function viewApplicant(applicantId) {
+    window.location.href = '/Applicant/Details/' + applicantId;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the anti-forgery token
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+    // Handle Accept button clicks
+    document.querySelectorAll('.accept').forEach(btn => {
+        btn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const applicationId = row.dataset.applicationId;
+
+            try {
+                const response = await fetch('/JobAdvertisement/UpdateApplicationStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({
+                        applicationId: parseInt(applicationId),
+                        status: "Accepted"
+                    })
+                });
+
+                if (response.ok) {
+                    location.reload(); // Refresh to see changes
+                } else {
+                    console.error('Failed to update status:', await response.text());
+                    alert('Failed to accept applicant. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // Handle Reject/Delete button clicks
+    document.querySelectorAll('.reject, .delete').forEach(btn => {
+        btn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const applicationId = row.dataset.applicationId;
+            const isDelete = btn.classList.contains('delete');
+
+            try {
+                const response = await fetch('/JobAdvertisement/UpdateApplicationStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({
+                        applicationId: parseInt(applicationId),
+                        status: isDelete ? "Pending" : "Rejected"
+                    })
+                });
+
+                if (response.ok) {
+                    location.reload(); // Refresh to see changes
+                } else {
+                    console.error('Failed to update status:', await response.text());
+                    alert('Failed to update applicant status. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // Sorting functionality (if needed)
+    function setupSorting(tableId) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+
+        table.querySelectorAll("thead th").forEach(th => {
+            th.addEventListener("click", () => {
+                // Implement sorting logic here if needed
+            });
+        });
+    }
+
+    // Initialize sorting for both tables
+    ["table-a", "table-b"].forEach(id => {
+        setupSorting(id);
+    });
+});

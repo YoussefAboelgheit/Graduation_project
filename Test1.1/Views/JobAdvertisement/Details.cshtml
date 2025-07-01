@@ -1,0 +1,188 @@
+﻿@model Test1._1.Models.Entity.JobAdvertisment
+
+@{
+    ViewData["Title"] = Model.Company.UserName + " Job Details";
+    Layout = null;
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var hasApplied = Model.Applications?.Any(a => a.ApplicantId == currentUserId && !a.IsDeleted) ?? false;
+    var acceptedApplicants = Model.Applications?.Where(a => a.Status == "Accepted" && !a.IsDeleted).ToList();
+    var pendingApplicants = Model.Applications?.Where(a => a.Status == "Pending" && !a.IsDeleted).ToList();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/styleDetailsAdv.css">
+</head>
+<body>
+    @Html.AntiForgeryToken()
+
+    <div class="ad-container">
+        <div class="ad-content">
+            <div class="ad-image">
+                <img src="/@Model.Company.Logo" alt="@Model.Company.UserName Logo">
+            </div>
+            <div class="ad-details">
+                <h2>
+                    <span>@Model.Company.UserName</span>
+                    @if (ViewBag.HasBeenEdited)
+                    {
+                        <span style="font-size: 0.6em; color: #aaa; margin-left: 10px; vertical-align: middle;">(Edited)</span>
+                    }
+                </h2>
+                <p><strong>Field of work:</strong> @Model.jobtitle</p>
+                <p><strong>Salary:</strong> @Model.salary</p>
+                <p><strong>City:</strong> @Model.governorate</p>
+                <p><strong>Job Time:</strong> @Model.Job_time</p>
+                <p><strong>Job Requirements:</strong> @Model.JobRequirements</p>
+                <p><strong>Job Description:</strong> @Model.Jobdetail</p>
+                <p><strong>Posted Date:</strong> @Model.CreatedDate.ToString("MMM dd, yyyy")</p>
+            </div>
+        </div>
+        @if (Model.Company.Id == currentUserId && Model.IsActive)
+        {
+            <div class="ad-button">
+                <button onclick="location.href='@Url.Action("Edit", "JobAdvertisement", new { id = Model.Id })'">
+                    Edit
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="ad-button">
+                @if (User.IsInRole("Applicant"))
+                {
+                    @if (hasApplied)
+                    {
+                        <!-- User has already applied -->
+                        @*<button type="button" disabled style="background-color: #28a745; color: white;">
+                            <button onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id })'">
+                            Applied
+                            </button>
+                        </button>*@
+                        <button onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id })'"
+                                style="background-color: #28a745; color: white;">
+                            Applied
+                        </button>
+                        <p style="color: #28a745; font-size: 16px; margin-top: 5px;">
+                            You have successfully applied to this job
+                        </p>
+                    }
+                    else
+                    {
+                        <!-- User can apply -->
+                        <button onclick="location.href='@Url.Action("Apply", "JobAdvertisement", new { id = Model.Id })'">
+                            Apply Now
+                        </button>
+                    }
+                }
+                else if (Model.Company.Id == currentUserId && !Model.IsActive)
+                {
+
+                }
+                else
+                {
+                    <button type="button" disabled style="background-color: #ccc; cursor: not-allowed;">
+                        Apply Now
+                    </button>
+                    <p style="color: red; font-size: 16px; margin-top: 5px;">
+                        Only applicants can apply
+                    </p>
+                }
+            </div>  
+        }
+    </div>
+    <br>
+    <br>
+    @if (Model.Company.Id == currentUserId)
+    {
+        <main>
+            <!-- Table A: Accepted applicants -->
+            <section class="table-container">
+                <h2>Accepted applicants</h2>
+                <table id="table-a">
+                    <thead>
+                        <tr>
+                            <th data-field="name">Name <span class="arrow"></span></th>
+                            <th data-field="fieldOfWork">Field of work <span class="arrow"></span></th>
+                            <th data-field="yearsExperience">Experience <span class="arrow"></span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var applicant in acceptedApplicants)
+                        {
+                            <tr data-applicant-id="@applicant.ApplicantId" data-application-id="@applicant.Id">
+                                <td>
+                                <a asp-controller="ApplicantInfo"
+                                   asp-action="Index"
+                                   asp-route-id="@applicant.ApplicantId"
+                                   style="color: inherit; text-decoration: none;">
+                                    @applicant.Applicant.UserName @applicant.Applicant.lastName
+                                </a>
+                                </td>
+                                <td>@applicant.Applicant.Field_work</td>
+                                <td>@applicant.Applicant.Years_experience</td>
+                                <td>
+                                    <button class="delete">Unaccept</button>
+                                    <button class="View" onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id, applicantId = applicant.ApplicantId })'">View response</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Table B: All Applicants -->
+            <section class="table-container">
+                <h2>All Applicants</h2>
+                <table id="table-b">
+                    <thead>
+                        <tr>
+                            <th data-field="name">Name <span class="arrow"></span></th>
+                            <th data-field="fieldOfWork">Field of work <span class="arrow"></span></th>
+                            <th data-field="yearsExperience">Experience <span class="arrow"></span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var applicant in pendingApplicants)
+                        {
+                            <tr data-applicant-id="@applicant.ApplicantId" data-application-id="@applicant.Id">
+                                <td>
+                                    <a asp-controller="ApplicantInfo"
+                                       asp-action="Index"
+                                       asp-route-id="@applicant.ApplicantId"
+                                       style="color: inherit; text-decoration: none;">
+                                        @applicant.Applicant.UserName @applicant.Applicant.lastName
+                                    </a>
+                                </td>
+                                <td>@applicant.Applicant.Field_work</td>
+                                <td>@applicant.Applicant.Years_experience</td>
+                                <td>
+                                    <button class="accept">Accept</button>
+                                    <button class="reject">Reject</button>
+                                    <button class="View" onclick="location.href='@Url.Action("Form", "JobAdvertisement", new { id = Model.Id, applicantId = applicant.ApplicantId })'">View response</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    }
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <script src="~/js/scriptDetailsAdv.js"></script>
+</body>
+</html>

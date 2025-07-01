@@ -1,16 +1,15 @@
 ﻿namespace Test1._1.Models.Entity
 {
-	public class ApplicantAdvertisment
-	{
-		//not completed yet
-		public int Id { get; set; }
-		public int ApplicantId { get; set; }
-		public Applicant Applicant { get; set; }
-		public int JobAdvertismentId { get; set; }
-		public JobAdvertisment JobAdvertisment { get; set; }
-		public string? TellAboutYou { get; set; }
-		public DateTime Submation_Date { get; set; }
-		public bool IsDeleted { get; set; }
-
-	}
+    public class ApplicantAdvertisment
+    {
+        public int Id { get; set; }
+        public string ApplicantId { get; set; }
+        public Applicant Applicant { get; set; }
+        public int JobAdvertismentId { get; set; }
+        public JobAdvertisment JobAdvertisment { get; set; }
+        public DateTime SubmissionDate { get; set; }
+        public bool IsDeleted { get; set; }
+        public string Status { get; set; } = "Pending"; // New: Pending/Accepted/Rejected
+        public ICollection<Answer> Answers { get; set; } = new List<Answer>();
+    }
 }

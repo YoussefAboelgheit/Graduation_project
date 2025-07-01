@@ -4,39 +4,34 @@ using Test1._1.Models.Entity;
 
 namespace Test1._1.Models.Configration
 {
-	public class ApplicantAdvertiseConfigration :IEntityTypeConfiguration<ApplicantAdvertisment>
-	{
-		public void Configure(EntityTypeBuilder<ApplicantAdvertisment> builder)
-		{
-			builder.HasKey(x => x.Id);
-			builder.Property(x => x.Id).UseIdentityColumn();
+    public class ApplicantAdvertiseConfigration : IEntityTypeConfiguration<ApplicantAdvertisment>
+    {
+        public void Configure(EntityTypeBuilder<ApplicantAdvertisment> builder)
+        {
+            builder.HasKey(aa => aa.Id);
+            builder.Property(aa => aa.Id).UseIdentityColumn();
 
-		
+            builder.Property(aa => aa.SubmissionDate)
+                .HasColumnType("DATETIME")
+                .IsRequired();
 
-			builder.Property(x => x.Submation_Date)
-				.HasColumnType("DATETIME")
-				.IsRequired();
+            builder.Property(aa => aa.Status)
+                .HasColumnType("VARCHAR")
+                .HasMaxLength(20)
+                .IsRequired();
 
-			builder.Property(x => x.TellAboutYou)
-				.HasColumnType("Varchar")
-				.IsRequired();
+            // Configure relationships
+            builder.HasOne(aa => aa.Applicant)
+                .WithMany(a => a.ApplicantAdvertisments)
+                .HasForeignKey(aa => aa.ApplicantId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-			// العلاقة مع Applicant
-			builder.HasOne(x => x.Applicant)
-				   .WithMany(x => x.ApplicantAdvertisments)
-				   .HasForeignKey(x => x.ApplicantId)
-				   .OnDelete(DeleteBehavior.Cascade);  // ✅ Cascade هنا فقط
+            builder.HasOne(aa => aa.JobAdvertisment)
+                .WithMany(ja => ja.Applications)
+                .HasForeignKey(aa => aa.JobAdvertismentId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-			// العلاقة مع JobAdvertisment
-			builder.HasOne(x => x.JobAdvertisment)
-				   .WithMany(x => x.ApplicantAdvertisments)
-				   .HasForeignKey(x => x.JobAdvertismentId)
-				   .OnDelete(DeleteBehavior.NoAction);
-
-
-
-			builder.ToTable("ApplicantAdvertisments");
-			
-		}
-	}
+            builder.ToTable("ApplicantAdvertisements");
+        }
+    }
 }

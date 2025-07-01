@@ -1,0 +1,230 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a2e;
+    min-height: 100vh;
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 80%;
+    margin: 0 auto;
+    background: #162447;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto 0;
+    background: #162447;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .form-group button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #e43f5a;
+        color: #fff;
+        font-size: 1em;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .form-group button:hover {
+            background-color: #ff6363;
+        }
+
+/* Updated question styling to match styleform2 */
+.questions .question {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-right: 2rem;
+}
+
+.questions label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
+
+.questions input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* the "×" delete button */
+.remove-question-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #ff6363;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+}
+
+    .remove-question-btn:hover {
+        color: #e43f5a;
+    }
+
+#done-btn {
+    display: block;
+    margin: 1.5rem 0 0 auto;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #e43f5a;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+    #done-btn:hover {
+        background: #ff6363;
+    }
+
+#add-question-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: none;
+    border-radius: 50%;
+    background: #e43f5a;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+
+    #add-question-btn:hover {
+        background: #ff6363;
+    }
+
+.nav-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .nav-buttons button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        background-color: #e43f5a;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+        .nav-buttons button:hover {
+            background-color: #ff6363;
+        }
+
+/* Validation styling */
+.field-validation-error {
+    color: #ff6363;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+.validation-summary {
+    color: #ff6363;
+    margin-bottom: 15px;
+}
+
+    .validation-summary ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .validation-summary li {
+        margin-bottom: 5px;
+    }
+
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    width: 553px;
+    margin-top: 12px;
+}
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }

@@ -340,7 +340,6 @@ namespace Test1._1.Controllers
                 })
                 .ToList();
 
-            ViewBag.header = "All Advertisements";
             return PartialView("_CompanyAdList", advertisements);
         }
 

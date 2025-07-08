@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('focus', () => {
             input.style.width = '400px';
         });
-
+        
         // Clicking anywhere else hides suggestions
         document.addEventListener('click', (e) => {
             if (!box.contains(e.target)) {

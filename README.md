@@ -1,4 +1,5 @@
 🎓 Jobify – Graduation Project
+
 A dynamic job recruitment website built with ASP.NET Core MVC, using Entity Framework (Code First) and SQL Server. Developed with Visual Studio 2022, Jobify connects companies with applicants through a smart, streamlined system.
 Companies can post job ads and search for applicants, while applicants can explore opportunities and apply.
 🔹 Roles: Admin, Company, Applicant
